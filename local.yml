@@ -1,0 +1,14 @@
+version: "3.1"
+
+services:
+  postgresql:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=greendeco
+    ports:
+      - "5432:5432"
+    volumes:
+      - .:/app:z
