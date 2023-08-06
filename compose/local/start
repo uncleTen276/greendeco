@@ -1,0 +1,12 @@
+ #!/bin/bash
+
+ set -o errexit
+ set -o pipefail
+ set -o nounset
+ 
+air --build.cmd "swag init && go build -buildvcs=false -o ./greendeco.bin ." \
+  --build.bin "./greendeco.bin" \
+  --build.exclude_dir "assets,tmp,vendor,testdata,docs" \
+  --build.exclude_regex "_test.go" \
+  --build.include_ext "go,tpl,tmpl,html" \
+  -- serve --http 0.0.0.0:8080

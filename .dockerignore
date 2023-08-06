@@ -1,0 +1,4 @@
+.gitignore
+tmp
+**/node_modules
+.air.toml

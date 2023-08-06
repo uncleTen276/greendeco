@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
+	"github.com/sekke276/greendeco.git/web"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -18,7 +19,7 @@ func handler() http.HandlerFunc {
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
 	})
-
+	web.HandleUi(app)
 	// app.Get("/docs/*", swagger.HandlerDefault)
 	// app.Get("/api/", func(c *fiber.Ctx) error {
 	// 	return c.Redirect("/docs")
