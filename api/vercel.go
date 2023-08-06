@@ -19,7 +19,7 @@ func handler() http.HandlerFunc {
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
 	})
-	web.HandleUi(app)
+	web.Routes(app)
 	// app.Get("/docs/*", swagger.HandlerDefault)
 	// app.Get("/api/", func(c *fiber.Ctx) error {
 	// 	return c.Redirect("/docs")
