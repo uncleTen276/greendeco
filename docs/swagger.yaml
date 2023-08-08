@@ -1,4 +1,17 @@
 info:
-  contact: {}
+  contact:
+    email: tringuyen2762001@gmail.com
+    name: Nguyen Tri
+  description: greendeco
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Fiber Go API
+  version: "1.0"
 paths: {}
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

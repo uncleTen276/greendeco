@@ -1,19 +1,22 @@
 package main
 
 import (
-	"log"
-
-	"github.com/gofiber/fiber/v2"
-	"github.com/sekke276/greendeco.git/web"
+	"github.com/sekke276/greendeco.git/cmd/server"
 )
 
+// @title Fiber Go API
+// @version 1.0
+// @description greendeco
+// @contact.name Nguyen Tri
+// @contact.email tringuyen2762001@gmail.com
+// @termsOfService
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+// @host localhost:8080
+// @BasePath /api
 func main() {
-	app := fiber.New()
-	app.Get("/hello", func(c *fiber.Ctx) error {
-		return c.SendString("Hellooo")
-	})
-	web.Routes(app)
-	if err := app.Listen(":8080"); err != nil {
-		log.Fatal("not response")
-	}
+	server.Serve()
 }

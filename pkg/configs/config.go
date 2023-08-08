@@ -1,6 +1,8 @@
-package config
+package configs
 
-import "github.com/kelseyhightower/envconfig"
+import (
+	"github.com/kelseyhightower/envconfig"
+)
 
 type Config struct {
 	Database struct {

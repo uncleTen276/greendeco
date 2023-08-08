@@ -1,7 +1,24 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "greendeco",
+        "title": "Fiber Go API",
+        "contact": {
+            "name": "Nguyen Tri",
+            "email": "tringuyen2762001@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
     },
-    "paths": {}
+    "paths": {},
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
 }

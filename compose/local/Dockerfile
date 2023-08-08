@@ -12,6 +12,7 @@ WORKDIR /build
 
 COPY go.mod go.sum main.go ./
 COPY app ./app
+COPY pkg ./pkg
 COPY web/web.go ./web/web.go
 COPY web/dist ./web/dist/
 
