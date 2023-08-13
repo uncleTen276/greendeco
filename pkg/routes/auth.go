@@ -1,7 +1,19 @@
-package routers
+package routes
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/sekke276/greendeco.git/app/controller"
+)
 
 func AuthRoutes(app fiber.Router) {
-	_ = app.Group("/auth")
+	auth := app.Group("/auth")
+	publicAuthRouter(auth)
+	privateAuthRouter(auth)
+}
+
+func publicAuthRouter(app fiber.Router) {
+	app.Post("/register", controller.CreateUser)
+}
+
+func privateAuthRouter(app fiber.Router) {
 }

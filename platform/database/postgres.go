@@ -16,7 +16,7 @@ type DB struct {
 var defaultDB = &DB{}
 
 func (db *DB) ConnectPostgresql(cfg *configs.Config) error {
-	dns := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", cfg.Database.Host, cfg.Database.User, cfg.Database.Password, cfg.Database.Name, cfg.Database.Port)
+	dns := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Database.Host, cfg.Database.User, cfg.Database.Password, cfg.Database.Name, cfg.Database.Port, cfg.Database.SSLMode)
 	db.DB = sqlx.MustOpen("pgx", dns)
 
 	db.SetMaxIdleConns(10)

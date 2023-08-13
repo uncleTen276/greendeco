@@ -10,7 +10,8 @@ type Config struct {
 		Port     string `envconfig:"DB_PORT" default:"5432"`
 		User     string `envconfig:"DB_USER" default:"postgres"`
 		Password string `envconfig:"DB_PASSWORD" default:"postgres"`
-		Name     string `envConfig:"DB_NAME" default:"postgres"`
+		Name     string `envConfig:"DB_NAME" default:"greendeco"`
+		SSLMode  string `envConfig:"SSL_MODE" default:"disable"`
 	}
 }
 

@@ -6,11 +6,11 @@ root = "."
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "$GOPATH/bin/swag init  && go build -o ./greendeco ./main.go"
+cmd = "swag init  && go build -o ./greendeco ./main.go"
 # Binary file yields from `cmd`.
 bin = "greendeco"
 # Customize binary.
-full_bin = "./greendeco"
+full_bin = "./greendeco "
 # Watch these filename extensions.
 include_ext = ["go", "tpl", "tmpl", "html", "mustache", "hbs", "pug"]
 # Ignore these filename extensions or directories.
