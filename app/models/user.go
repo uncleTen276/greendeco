@@ -28,3 +28,13 @@ type CreateUser struct {
 	LastName    string `json:"lastName" validate:"required,lte=50"`
 	PhoneNumber string `json:"phoneNumber" validate:"required,e164"`
 }
+
+type UserLogin struct {
+	Identifier string `json:"identifier" validate:"required,lte=100"`
+	Password   string `json:"password" validate:"required,lte=50,gte=8"`
+}
+
+type UserTokens struct {
+	AccessToken  string `json:"access_Token"`
+	RefreshToken string `json:"refresh_Token"`
+}

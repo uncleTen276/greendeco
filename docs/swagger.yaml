@@ -28,6 +28,32 @@ definitions:
     - password
     - phoneNumber
     type: object
+  models.ErrorResponse:
+    properties:
+      errors: {}
+      msg:
+        type: string
+    type: object
+  models.UserLogin:
+    properties:
+      identifier:
+        maxLength: 100
+        type: string
+      password:
+        maxLength: 50
+        minLength: 8
+        type: string
+    required:
+    - identifier
+    - password
+    type: object
+  models.UserTokens:
+    properties:
+      access_Token:
+        type: string
+      refresh_Token:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -40,6 +66,46 @@ info:
   title: Fiber Go API
   version: "1.0"
 paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Use for login response the refresh_token and access_Token
+      parameters:
+      - description: Login
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLogin'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserTokens'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: User Login
+      tags:
+      - Auth
   /auth/register:
     post:
       consumes:
@@ -57,6 +123,22 @@ paths:
         "200":
           description: OK
         "400":
-          description: Bad Request
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
       summary: Create new user
+      tags:
+      - Auth
 swagger: "2.0"

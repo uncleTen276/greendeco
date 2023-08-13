@@ -12,26 +12,26 @@ import (
 
 // @CreateUser() godoc
 // @Summary Create new user
-// @Tag Auth
+// @Tags Auth
 // @Param todo body models.CreateUser true "New User"
 // @Accept json
 // @Produce json
 // @Success 200
-// @Failure 400
+// @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
 // @Router /auth/register [post]
 func CreateUser(c *fiber.Ctx) error {
 	user := &models.CreateUser{}
 	if err := c.BodyParser(user); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"msg": err.Error(),
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: err.Error(),
 		})
 	}
 
 	validate := validators.NewValidator()
 	if err := validate.Struct(user); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"msg":    "invalid input found",
-			"errors": validators.ValidatorErrors(err),
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+			Errors:  validators.ValidatorErrors(err),
 		})
 	}
 
@@ -39,45 +39,95 @@ func CreateUser(c *fiber.Ctx) error {
 	// find user by identifier
 	userExist, err := userRepo.FindUserByIdentifier(user.Identifier)
 	if err != nil && err != models.ErrNotFound {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"msg": err.Error(),
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: err.Error(),
 		})
 	}
 
 	if userExist != nil {
-		return c.Status(fiber.StatusConflict).JSON(fiber.Map{
-			"msg": "this user identifier already exists",
+		return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
+			Message: "this user identifier already exists",
 		})
 	}
 
 	// find user by email
 	userExist, err = userRepo.FindUserByEmail(user.Email)
 	if err != nil && err != models.ErrNotFound {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"msg": err.Error(),
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: err.Error(),
 		})
 	}
 
 	if userExist != nil {
-		return c.Status(fiber.StatusConflict).JSON(fiber.Map{
-			"msg": "this user email already exists",
+		return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
+			Message: "this user email already exists",
 		})
 	}
 
 	hashedPassword, err := GeneratePasswordHash([]byte(user.Password))
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"msg": "some thing bad happended",
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "some thing bad happended",
 		})
 	}
 
 	user.Password = hashedPassword
 	err = userRepo.Create(user)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"msg": "some thing bad happended",
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "some thing bad happended",
 		})
 	}
 
 	return c.Status(http.StatusCreated).SendString("create success")
+}
+
+// Login
+// @Login godoc
+// @Summary User Login
+// @Description Use for login response the refresh_token and access_Token
+// @Tags Auth
+// @Accept json
+// @Param todo body models.UserLogin true "Login"
+// @Success 200 {object} models.UserTokens
+// @Failure 400,401,403,404,500 {object} models.ErrorResponse "Error"
+// @Router /auth/login [post]
+func Login(c *fiber.Ctx) error {
+	user := &models.UserLogin{}
+	if err := c.BodyParser(user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	validate := validators.NewValidator()
+	if err := validate.Struct(user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&models.ErrorResponse{
+			Message: "invalid input found",
+			Errors:  validators.ValidatorErrors(err),
+		})
+	}
+
+	userRepo := repository.NewUserRepo(database.GetDB())
+	userExist, err := userRepo.FindUserByIdentifier(user.Identifier)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(&models.ErrorResponse{
+			Message: "user not found",
+		})
+	}
+
+	if !IsValidPassword(userExist.Password, user.Password) {
+		return c.Status(fiber.StatusForbidden).JSON(&models.ErrorResponse{
+			Message: "wrong password",
+		})
+	}
+
+	tokens, err := GenerateTokens(userExist.ID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "some thing bad happended",
+		})
+	}
+
+	return c.JSON(tokens)
 }

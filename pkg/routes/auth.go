@@ -13,6 +13,7 @@ func AuthRoutes(app fiber.Router) {
 
 func publicAuthRouter(app fiber.Router) {
 	app.Post("/register", controller.CreateUser)
+	app.Post("/login", controller.Login)
 }
 
 func privateAuthRouter(app fiber.Router) {

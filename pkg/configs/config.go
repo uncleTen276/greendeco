@@ -13,12 +13,23 @@ type Config struct {
 		Name     string `envConfig:"DB_NAME" default:"greendeco"`
 		SSLMode  string `envConfig:"SSL_MODE" default:"disable"`
 	}
+	Auth struct {
+		JWTRefreshToken     string `envconfig:"JWT_REFRESH_SECRET" default:"refresh-secret"`
+		JWTSecret           string `envconfig:"JWT_SECRET" default:"token-secret"`
+		TokenExpire         int    `envconfig:"TOKEN_EXPIRE" default:"15"`
+		RefreshTokenExpires int    `envconfig:"REFRESH_TOKEN_EXPIRE" default:"720"`
+	}
 }
 
-func LoadConfig() (*Config, error) {
-	cfg := new(Config)
-	if err := envconfig.Process("", cfg); err != nil {
-		return nil, err
+var appConfig = &Config{}
+
+func AppConfig() *Config {
+	return appConfig
+}
+
+func LoadConfig() error {
+	if err := envconfig.Process("", appConfig); err != nil {
+		return err
 	}
-	return cfg, nil
+	return nil
 }

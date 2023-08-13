@@ -15,7 +15,10 @@ type DB struct {
 
 var defaultDB = &DB{}
 
-func (db *DB) ConnectPostgresql(cfg *configs.Config) error {
+// Connect postgresql
+// This support to call once
+func (db *DB) ConnectPostgresql() error {
+	cfg := configs.AppConfig()
 	dns := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Database.Host, cfg.Database.User, cfg.Database.Password, cfg.Database.Name, cfg.Database.Port, cfg.Database.SSLMode)
 	db.DB = sqlx.MustOpen("pgx", dns)
 
@@ -34,6 +37,6 @@ func GetDB() *DB {
 	return defaultDB
 }
 
-func ConnectDB(cfg *configs.Config) error {
-	return defaultDB.ConnectPostgresql(cfg)
+func ConnectDB() error {
+	return defaultDB.ConnectPostgresql()
 }

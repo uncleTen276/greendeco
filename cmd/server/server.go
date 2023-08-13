@@ -12,12 +12,12 @@ import (
 )
 
 func Serve() {
-	cfg, err := configs.LoadConfig()
+	err := configs.LoadConfig()
 	if err != nil {
 		log.Fatal("error")
 	}
 
-	if err := database.ConnectDB(cfg); err != nil {
+	if err := database.ConnectDB(); err != nil {
 		log.Panic(err)
 	}
 	app := fiber.New()
