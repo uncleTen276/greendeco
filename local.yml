@@ -15,6 +15,8 @@ services:
       interval: 30s
       retries: 5
       start_period: 30s
+    networks:
+      - db-network
 
   greendeco-be:
     build:
@@ -26,12 +28,16 @@ services:
       postgresql:
         condition: service_healthy
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=postgresql
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
     ports:
       - 8080:8080
     restart: always
     command: /start
+    networks:
+      - db-network
 
 networks:
-  db-networks:
+  db-network:
     driver: bridge

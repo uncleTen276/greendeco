@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/app/repository"
@@ -62,12 +64,20 @@ func CreateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	err = userRepo.Create(user)
+	hashedPassword, err := GeneratePasswordHash([]byte(user.Password))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"msg": err.Error(),
+			"msg": "some thing bad happended",
 		})
 	}
 
-	return nil
+	user.Password = hashedPassword
+	err = userRepo.Create(user)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"msg": "some thing bad happended",
+		})
+	}
+
+	return c.Status(http.StatusCreated).SendString("create success")
 }

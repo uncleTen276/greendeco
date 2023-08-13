@@ -13,6 +13,8 @@ WORKDIR /build
 COPY go.mod go.sum main.go ./
 COPY app ./app
 COPY pkg ./pkg
+COPY cmd ./cmd
+COPY platform ./platform
 COPY web/web.go ./web/web.go
 COPY web/dist ./web/dist/
 
