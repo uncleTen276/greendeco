@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	_ "github.com/jackc/pgx/v4/stdlib" // load pgx driver for PostgreSQL
@@ -21,7 +22,7 @@ func (db *DB) ConnectPostgresql() error {
 	cfg := configs.AppConfig()
 	dns := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Database.Host, cfg.Database.User, cfg.Database.Password, cfg.Database.Name, cfg.Database.Port, cfg.Database.SSLMode)
 	db.DB = sqlx.MustOpen("pgx", dns)
-
+	log.Fatal(dns)
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(100)
 	db.SetConnMaxLifetime(time.Hour)
