@@ -2,7 +2,7 @@
 SET TIMEZONE="Asia/Dhaka";
 -- create users table
 CREATE TABLE "users"(
-id serial PRIMARY KEY,
+id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP WITH TIME ZONE  DEFAULT NOW (),
 email VARCHAR(50) UNIQUE NOT NULL,

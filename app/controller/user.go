@@ -64,7 +64,7 @@ func CreateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	hashedPassword, err := GeneratePasswordHash([]byte(user.Password))
+	hashedPassword, err := generatePasswordHash([]byte(user.Password))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "some thing bad happended",
@@ -116,13 +116,13 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	if !IsValidPassword(userExist.Password, user.Password) {
+	if !isValidPassword(userExist.Password, user.Password) {
 		return c.Status(fiber.StatusForbidden).JSON(&models.ErrorResponse{
 			Message: "wrong password",
 		})
 	}
 
-	tokens, err := GenerateTokens(userExist.ID)
+	tokens, err := generateTokens(userExist.ID)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "some thing bad happended",

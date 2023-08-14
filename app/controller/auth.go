@@ -3,13 +3,13 @@ package controller
 import (
 	"time"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/pkg/configs"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func GeneratePasswordHash(password []byte) (string, error) {
+func generatePasswordHash(password []byte) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
 	if err != nil {
 		return "", err
@@ -18,7 +18,7 @@ func GeneratePasswordHash(password []byte) (string, error) {
 }
 
 // IsValidPassword() use to compare hash password
-func IsValidPassword(hash, password string) bool {
+func isValidPassword(hash, password string) bool {
 	if err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)); err != nil {
 		return false
 	}
@@ -26,9 +26,9 @@ func IsValidPassword(hash, password string) bool {
 }
 
 // GenerateToken() use to create accessToken and refreshToken
-func GenerateTokens(uId uint) (*models.UserTokens, error) {
+func generateTokens(uId string) (*models.UserTokens, error) {
 	auth := configs.AppConfig().Auth
-	accessToken, err := GenerateAccessClaims(
+	accessToken, err := generateAccessClaims(
 		uId,
 		time.Duration(auth.TokenExpire)*time.Minute,
 	)
@@ -36,7 +36,7 @@ func GenerateTokens(uId uint) (*models.UserTokens, error) {
 		return nil, err
 	}
 
-	refreshToken, err := GenerateAccessClaims(
+	refreshToken, err := generateAccessClaims(
 		uId,
 		time.Duration(auth.RefreshTokenExpires)*time.Hour,
 	)
@@ -51,13 +51,13 @@ func GenerateTokens(uId uint) (*models.UserTokens, error) {
 }
 
 // GenerateAccessClaims() use to create new token
-func GenerateAccessClaims(uId uint, timeNumber time.Duration) (string, error) {
-	t := time.Now()
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
-	claims["sub"] = uId
-	claims["exp"] = t.Add(timeNumber).Unix()
-	tokenString, err := token.SignedString([]byte(configs.AppConfig().Auth.JWTSecret))
+func generateAccessClaims(uId string, timeNumber time.Duration) (string, error) {
+	claims := jwt.MapClaims{
+		"sub": uId,
+		"exp": time.Now().Add(timeNumber).Unix(),
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	tokenString, err := token.SignedString(configs.AppConfig().Auth.JWTSecret)
 	if err != nil {
 		return "", err
 	}
