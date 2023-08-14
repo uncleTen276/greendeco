@@ -28,7 +28,6 @@ func Serve() {
 	web.Routes(app)
 	api := app.Group("/api/v1")
 	routes.AuthRoutes(api)
-	routes.NotFoundRoute(api)
 
 	if err := app.Listen(":8080"); err != nil {
 		log.Fatal("not response")

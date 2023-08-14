@@ -20,7 +20,8 @@ func Routes(app fiber.Router) {
 	}
 
 	app.Use("/", filesystem.New(filesystem.Config{
-		Root:   http.FS(dist),
-		Browse: true,
+		Root:         http.FS(dist),
+		Browse:       true,
+		NotFoundFile: "404.html",
 	}))
 }

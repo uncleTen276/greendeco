@@ -12,11 +12,3 @@ func SwaggerRoute(a fiber.Router) {
 		return c.Redirect("/docs")
 	})
 }
-
-func NotFoundRoute(a fiber.Router) {
-	a.Use(func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"msg": "sorry end point not found",
-		})
-	})
-}
