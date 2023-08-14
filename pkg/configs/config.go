@@ -11,7 +11,7 @@ type Config struct {
 		User     string `envconfig:"DB_USER" default:"postgres"`
 		Password string `envconfig:"DB_PASSWORD" default:"postgres"`
 		Name     string `envConfig:"DB_NAME" default:"greendeco"`
-		SSLMode  string `envConfig:"SSL_MODE" default:"disable"`
+		SSLMode  string `envConfig:"DB_SSL_MODE" default:"disable"`
 	}
 	Auth struct {
 		JWTRefreshToken     string `envconfig:"JWT_REFRESH_SECRET" default:"refresh-secret"`
