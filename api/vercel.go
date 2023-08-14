@@ -12,6 +12,12 @@ import (
 	"github.com/sekke276/greendeco.git/web"
 )
 
+func Handler(w http.ResponseWriter, r *http.Request) {
+	r.RequestURI = r.URL.String()
+
+	handler().ServeHTTP(w, r)
+}
+
 // @title Fiber Go API
 // @version 1.0
 // @description greendeco
@@ -21,12 +27,6 @@ import (
 // @license.name MIT
 // @license.url https://opensource.org/licenses/MIT
 // @BasePath  /api/v1
-func Handler(w http.ResponseWriter, r *http.Request) {
-	r.RequestURI = r.URL.String()
-
-	handler().ServeHTTP(w, r)
-}
-
 func handler() http.HandlerFunc {
 	err := configs.LoadConfig()
 	if err != nil {
