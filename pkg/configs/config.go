@@ -7,11 +7,11 @@ import (
 type Config struct {
 	Database struct {
 		Host     string `envconfig:"DB_HOST" default:"localhost"`
-		Name     string `envConfig:"DB_NAME" default:"greendeco"`
+		Name     string `envconfig:"DB_NAME" default:"greendeco"`
 		Port     string `envconfig:"DB_PORT" default:"5432"`
 		User     string `envconfig:"DB_USER" default:"postgres"`
 		Password string `envconfig:"DB_PASSWORD" default:"postgres"`
-		SSLMode  string `envConfig:"SSL_MODE" default:"disable"`
+		SSLMode  string `envconfig:"SSL_MODE" default:"disable"`
 	}
 	Auth struct {
 		JWTRefreshToken     string `envconfig:"JWT_REFRESH_SECRET" default:"refresh-secret"`
