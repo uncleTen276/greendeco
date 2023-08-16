@@ -39,11 +39,13 @@ func RefreshToken(c *fiber.Ctx) error {
 			Message: "invalid or missing token",
 		})
 	}
+
 	userRepo := repository.NewUserRepo(database.GetDB())
 	user, err := userRepo.GetUserById(uId)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 			Message: "Id not found",
+			Errors:  err.Error(),
 		})
 	}
 
@@ -68,10 +70,10 @@ func parseToken(tokenString string) (string, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, jwt.ErrSignatureInvalid
 		}
-		return configs.AppConfig().Auth.JWTSecret, nil
+		return []byte(configs.AppConfig().Auth.JWTRefreshToken), nil
 	})
 	if err != nil {
-		return userId, fiber.NewError(fiber.StatusUnauthorized, "invalid or missing token")
+		return "", fiber.NewError(fiber.StatusUnauthorized, "invalid or missing token")
 	}
 
 	if !token.Valid {
@@ -112,18 +114,23 @@ func isValidPassword(hash, password string) bool {
 // generateToken() use to create accessToken and refreshToken
 func generateTokens(user *models.User) (*models.UserTokens, error) {
 	auth := configs.AppConfig().Auth
-	accessToken, err := generateAccessClaims(
+
+	// generate accessToken
+	accessClaim := generateAccessClaims(
 		user,
 		time.Duration(auth.TokenExpire)*time.Minute,
 	)
+	accessToken, err := accessClaim.SignedString([]byte(auth.JWTSecret))
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken, err := generateAccessClaims(
+	// generate refreshToken
+	refreshClaim := generateAccessClaims(
 		user,
 		time.Duration(auth.RefreshTokenExpires)*time.Hour,
 	)
+	refreshToken, err := refreshClaim.SignedString([]byte(auth.JWTRefreshToken))
 	if err != nil {
 		return nil, err
 	}
@@ -134,17 +141,13 @@ func generateTokens(user *models.User) (*models.UserTokens, error) {
 	}, nil
 }
 
-// GenerateAccessClaims() use to create new token
-func generateAccessClaims(user *models.User, timeNumber time.Duration) (string, error) {
+// GenerateAccessClaims() use to create new claim
+// this suggest to call before call generateTokens
+func generateAccessClaims(user *models.User, timeNumber time.Duration) *jwt.Token {
 	claims := jwt.MapClaims{
 		"user_id": user.ID,
 		"admin":   user.IsAdmin,
 		"exp":     time.Now().Add(timeNumber).Unix(),
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
-	tokenString, err := token.SignedString([]byte(configs.AppConfig().Auth.JWTSecret))
-	if err != nil {
-		return "", err
-	}
-	return tokenString, nil
+	return jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 }

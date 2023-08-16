@@ -71,6 +71,6 @@ func (repo *UserRepo) FindUserByPhoneNumber(phoneNumber string) (*models.User, e
 func (repo *UserRepo) GetUserById(uId string) (*models.User, error) {
 	user := models.NewUser()
 	query := `SELECT * FROM "users" WHERE id = $1`
-	err := repo.db.Get(&user, query, uId)
+	err := repo.db.Get(user, query, uId)
 	return user, err
 }
