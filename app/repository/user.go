@@ -12,6 +12,7 @@ type UserRepository interface {
 	FindUserByIdentifier(identifier string) (*models.User, error)
 	FindUserByEmail(email string) (*models.User, error)
 	FindUserByPhoneNumber(phoneNumber string) (*models.User, error)
+	GetUserById(uId string) (*models.User, error)
 }
 
 type UserRepo struct {
@@ -65,4 +66,11 @@ func (repo *UserRepo) FindUserByPhoneNumber(phoneNumber string) (*models.User, e
 		return nil, err
 	}
 	return user, nil
+}
+
+func (repo *UserRepo) GetUserById(uId string) (*models.User, error) {
+	user := models.NewUser()
+	query := `SELECT * FROM "users" WHERE id = $1`
+	err := repo.db.Get(&user, query, uId)
+	return user, err
 }

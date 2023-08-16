@@ -14,6 +14,7 @@ type User struct {
 	FirstName   string    `db:"first_name"`
 	LastName    string    `db:"last_name"`
 	PhoneNumber string    `db:"phone_number"`
+	IsAdmin     bool      `db:"admin"`
 }
 
 func NewUser() *User {

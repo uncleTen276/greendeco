@@ -1,5 +1,10 @@
 basePath: /api/v1
 definitions:
+  controller.RefreshToken.request:
+    properties:
+      refresh_token:
+        type: string
+    type: object
   models.CreateUser:
     properties:
       email:
@@ -87,6 +92,42 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: User Login
+      tags:
+      - Auth
+  /auth/refresh-token:
+    post:
+      description: Create a new access token.
+      parameters:
+      - description: refresh_token
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.RefreshToken.request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserTokens'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
         "401":
           description: Error
           schema:
@@ -103,7 +144,7 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: User Login
+      summary: create a new access token
       tags:
       - Auth
   /auth/register:

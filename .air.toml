@@ -6,9 +6,9 @@ root = "."
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "swag init  && go build -o ./greendeco.bin ."
+cmd = "swag init  && go build -o ./greendeco ./main.go"
 # Binary file yields from `cmd`.
-bin = "greendeco.bin"
+bin = "greendeco"
 # Customize binary.
 full_bin = "./greendeco "
 # Watch these filename extensions.

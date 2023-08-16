@@ -90,7 +90,7 @@ func CreateUser(c *fiber.Ctx) error {
 // @Accept json
 // @Param todo body models.UserLogin true "Login"
 // @Success 200 {object} models.UserTokens
-// @Failure 400,401,403,404,500 {object} models.ErrorResponse "Error"
+// @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
 // @Router /auth/login [post]
 func Login(c *fiber.Ctx) error {
 	user := &models.UserLogin{}
@@ -122,10 +122,11 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	tokens, err := generateTokens(userExist.ID)
+	tokens, err := generateTokens(userExist)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "some thing bad happended",
+			Errors:  err.Error(),
 		})
 	}
 
