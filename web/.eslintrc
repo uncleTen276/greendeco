@@ -1,6 +1,36 @@
 {
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
     "extends": [
         "next/core-web-vitals",
         "plugin:prettier/recommended"
-    ]
+    ],
+    "plugins": [
+        "prettier"
+    ],
+    "rules": {
+        "prettier/prettier": "warn",
+        "prefer-const": [
+            "error",
+            {
+                "destructuring": "any"
+            }
+        ],
+        "no-var": "error",
+        "arrow-body-style": [
+            "error",
+            "as-needed"
+        ],
+        "max-lines": [
+            "error",
+            {
+                "max": 500,
+                "skipBlankLines": true,
+                "skipComments": true
+            }
+        ],
+    }
 }
