@@ -40,10 +40,10 @@ func handler() http.HandlerFunc {
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
 	})
-	web.Routes(app)
 	routes.SwaggerRoute(app)
 	api := app.Group("/api/v1")
 	routes.AuthRoutes(api)
-
+	routes.UserRoutes(api)
+	web.Routes(app)
 	return adaptor.FiberApp(app)
 }
