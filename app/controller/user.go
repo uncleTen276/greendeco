@@ -4,8 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/app/repository"
+	"github.com/sekke276/greendeco.git/pkg/middlewares"
 	"github.com/sekke276/greendeco.git/pkg/validators"
 	"github.com/sekke276/greendeco.git/platform/database"
 )
@@ -131,4 +133,40 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(tokens)
+}
+
+// GetUserInfo()
+// @GetUserInfo godoc
+// @Summary get user information by Id
+// @Description route get user Id from token then get user information
+// @Tags User
+// @Accept json
+// @Success 200 {object} models.User
+// @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
+// @Router /user/me [get]
+// @Security Bearer
+func GetUserInfo(c *fiber.Ctx) error {
+	token, ok := c.Locals("user").(*jwt.Token)
+	if !ok {
+		return c.Status(fiber.ErrInternalServerError.Code).JSON(models.ErrorResponse{
+			Message: "can not parse token",
+		})
+	}
+
+	userId, err := middlewares.GetUserIdFromToken(token)
+	if err != nil {
+		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	userRepo := repository.NewUserRepo(database.GetDB())
+	user, err := userRepo.GetUserById(userId)
+	if err != nil {
+		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
+			Message: "user not found",
+		})
+	}
+
+	return c.JSON(user)
 }

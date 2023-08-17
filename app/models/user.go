@@ -10,7 +10,7 @@ type User struct {
 	UpdatedAt   time.Time `db:"updated_at"`
 	Email       string    `db:"email"`
 	Identifier  string    `db:"identifier"`
-	Password    string    `db:"password"`
+	Password    string    `db:"password" json:"-"`
 	FirstName   string    `db:"first_name"`
 	LastName    string    `db:"last_name"`
 	PhoneNumber string    `db:"phone_number"`

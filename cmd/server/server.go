@@ -30,10 +30,10 @@ func Serve() {
 		return c.SendString("Hellooo")
 	})
 	routes.SwaggerRoute(app)
-	web.Routes(app)
 	api := app.Group("/api/v1")
+	routes.UserRoutes(api)
 	routes.AuthRoutes(api)
-
+	web.Routes(app)
 	if err := app.Listen(":8080"); err != nil {
 		log.Fatal("not response")
 	}

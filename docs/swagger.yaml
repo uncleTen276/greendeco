@@ -39,6 +39,27 @@ definitions:
       msg:
         type: string
     type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+      identifier:
+        type: string
+      isAdmin:
+        type: boolean
+      lastName:
+        type: string
+      phoneNumber:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   models.UserLogin:
     properties:
       identifier:
@@ -182,4 +203,41 @@ paths:
       summary: Create new user
       tags:
       - Auth
+  /user/me:
+    get:
+      consumes:
+      - application/json
+      description: route get user Id from token then get user information
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: get user information by Id
+      tags:
+      - User
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
