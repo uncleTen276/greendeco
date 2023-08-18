@@ -10,7 +10,8 @@
         "plugin:prettier/recommended"
     ],
     "plugins": [
-        "prettier"
+        "prettier",
+        "@typescript-eslint"
     ],
     "rules": {
         "prettier/prettier": "warn",
