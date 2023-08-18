@@ -4,6 +4,7 @@
         "node": true,
         "es6": true
     },
+    "parser": "@typescript-eslint/parser",
     "extends": [
         "next/core-web-vitals",
         "plugin:prettier/recommended"
