@@ -23,6 +23,34 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/auth/forgot-password": {
+            "post": {
+                "description": "send email to user for reset password",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "option when user forgot password",
+                "parameters": [
+                    {
+                        "description": "user email",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.ForgotPassword.userEmailReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "Use for login response the refresh_token and access_Token",
@@ -244,6 +272,18 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controller.ForgotPassword.userEmailReq": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "maxLength": 150
+                }
+            }
+        },
         "controller.RefreshToken.request": {
             "type": "object",
             "properties": {

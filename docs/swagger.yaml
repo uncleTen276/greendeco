@@ -1,5 +1,13 @@
 basePath: /api/v1
 definitions:
+  controller.ForgotPassword.userEmailReq:
+    properties:
+      email:
+        maxLength: 150
+        type: string
+    required:
+    - email
+    type: object
   controller.RefreshToken.request:
     properties:
       refresh_token:
@@ -92,6 +100,24 @@ info:
   title: Fiber Go API
   version: "1.0"
 paths:
+  /auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: send email to user for reset password
+      parameters:
+      - description: user email
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/controller.ForgotPassword.userEmailReq'
+      responses:
+        "200":
+          description: OK
+      summary: option when user forgot password
+      tags:
+      - Auth
   /auth/login:
     post:
       consumes:

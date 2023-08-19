@@ -9,9 +9,9 @@ import (
 
 type UserRepository interface {
 	Create(u *models.CreateUser) error
-	FindUserByIdentifier(identifier string) (*models.User, error)
-	FindUserByEmail(email string) (*models.User, error)
-	FindUserByPhoneNumber(phoneNumber string) (*models.User, error)
+	GetUserByIdentifier(identifier string) (*models.User, error)
+	GetUserByEmail(email string) (*models.User, error)
+	GetUserByPhoneNumber(phoneNumber string) (*models.User, error)
 	GetUserById(uId string) (*models.User, error)
 }
 
@@ -31,7 +31,7 @@ func (repo *UserRepo) Create(u *models.CreateUser) error {
 	return err
 }
 
-func (repo *UserRepo) FindUserByEmail(email string) (*models.User, error) {
+func (repo *UserRepo) GetUserByEmail(email string) (*models.User, error) {
 	user := models.NewUser()
 	query := `SELECT * FROM "users" WHERE email = $1`
 	err := repo.db.Get(user, query, email)
@@ -44,7 +44,7 @@ func (repo *UserRepo) FindUserByEmail(email string) (*models.User, error) {
 	return user, nil
 }
 
-func (repo *UserRepo) FindUserByIdentifier(identifier string) (*models.User, error) {
+func (repo *UserRepo) GetUserByIdentifier(identifier string) (*models.User, error) {
 	user := models.NewUser()
 	query := `SELECT * FROM "users" WHERE identifier = $1`
 	err := repo.db.Get(user, query, identifier)
@@ -56,7 +56,7 @@ func (repo *UserRepo) FindUserByIdentifier(identifier string) (*models.User, err
 	return user, nil
 }
 
-func (repo *UserRepo) FindUserByPhoneNumber(phoneNumber string) (*models.User, error) {
+func (repo *UserRepo) GetUserByPhoneNumber(phoneNumber string) (*models.User, error) {
 	user := models.NewUser()
 	query := `SELECT * FROM "users" WHERE phone_number = $1`
 	err := repo.db.Get(user, query, phoneNumber)

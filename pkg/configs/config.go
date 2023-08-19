@@ -5,6 +5,10 @@ import (
 )
 
 type Config struct {
+	App struct {
+		Host string `envconfig:"APP_HOST" default:"localhost"`
+		PORT string `envconfig:"APP_PORT" default:":8080"`
+	}
 	Database struct {
 		Host     string `envconfig:"DB_HOST" default:"localhost"`
 		Name     string `envconfig:"DB_NAME" default:"greendeco"`
@@ -18,6 +22,11 @@ type Config struct {
 		JWTSecret           string `envconfig:"JWT_SECRET" default:"token-secret"`
 		TokenExpire         int    `envconfig:"TOKEN_EXPIRE" default:"15"`
 		RefreshTokenExpires int    `envconfig:"REFRESH_TOKEN_EXPIRE" default:"720"`
+	}
+	SMTP struct {
+		Email             string `envconfig:"SMTP_EMAIL" default:"kristiannguyen276@gmail.com"`
+		Password          string `envconfig:"SMTP_PASSWORD" default:"cdrplghspkujcvkf"`
+		LinkResetPassword string `envconfig:"SMTP_LINK_RESET_PSW" default:"localhost:8080"`
 	}
 }
 

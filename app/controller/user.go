@@ -1,15 +1,22 @@
 package controller
 
 import (
+	"bytes"
+	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/app/repository"
+	"github.com/sekke276/greendeco.git/app/templates"
+	"github.com/sekke276/greendeco.git/pkg/configs"
 	"github.com/sekke276/greendeco.git/pkg/middlewares"
 	"github.com/sekke276/greendeco.git/pkg/validators"
 	"github.com/sekke276/greendeco.git/platform/database"
+	gomail "gopkg.in/mail.v2"
 )
 
 // @CreateUser() godoc
@@ -39,7 +46,7 @@ func CreateUser(c *fiber.Ctx) error {
 
 	userRepo := repository.NewUserRepo(database.GetDB())
 	// find user by identifier
-	userExist, err := userRepo.FindUserByIdentifier(user.Identifier)
+	userExist, err := userRepo.GetUserByIdentifier(user.Identifier)
 	if err != nil && err != models.ErrNotFound {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: err.Error(),
@@ -53,7 +60,7 @@ func CreateUser(c *fiber.Ctx) error {
 	}
 
 	// find user by email
-	userExist, err = userRepo.FindUserByEmail(user.Email)
+	userExist, err = userRepo.GetUserByEmail(user.Email)
 	if err != nil && err != models.ErrNotFound {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: err.Error(),
@@ -111,7 +118,7 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	userRepo := repository.NewUserRepo(database.GetDB())
-	userExist, err := userRepo.FindUserByIdentifier(user.Identifier)
+	userExist, err := userRepo.GetUserByIdentifier(user.Identifier)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(&models.ErrorResponse{
 			Message: "user not found",
@@ -169,4 +176,64 @@ func GetUserInfo(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(user)
+}
+
+// ForgotPassword
+// @ForgotPassword godoc
+// @Summary option when user forgot password
+// @Description send email to user for reset password
+// @Tags Auth
+// @Accept json
+// @Param todo body controller.ForgotPassword.userEmailReq true "user email"
+// @Success 200
+// @Router /auth/forgot-password [post]
+func ForgotPassword(c *fiber.Ctx) error {
+	type userEmailReq struct {
+		Email string `json:"email" validate:"required,email,lte=150"`
+	}
+	reqEmail := &userEmailReq{}
+	if err := c.BodyParser(reqEmail); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "Invalid request body",
+		})
+	}
+
+	userRepo := repository.NewUserRepo(database.GetDB())
+
+	user, err := userRepo.GetUserByEmail(reqEmail.Email)
+	if err != nil && err != models.ErrNotFound {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	token, _ := generateTokens(user)
+
+	go sendEmail(reqEmail.Email, token.AccessToken)
+	return c.SendString("Place check your email")
+}
+
+// sendEmail use for send uemail to reset password
+func sendEmail(email string, token string) {
+	cfg := configs.AppConfig().SMTP
+	newMessage := gomail.NewMessage()
+	newMessage.SetHeader("From", "greendeco@gmail.com")
+	newMessage.SetHeader("To", email)
+	newMessage.SetHeader("Subject", "Reset Password")
+	tmpl := template.Must(template.New("").Parse(templates.TemplateEmail))
+	buff := new(bytes.Buffer)
+
+	if err := tmpl.Execute(buff, models.EmailResponse{
+		Link:   cfg.LinkResetPassword + fmt.Sprintf("/reset-password?token=%s", token),
+		Sender: "greendeco@gmail.com",
+	}); err != nil {
+		log.Println("Failed to send email! Err: ", err)
+	}
+
+	newMessage.SetBody("text/html", buff.String())
+
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, cfg.Email, cfg.Password)
+	if err := dialer.DialAndSend(newMessage); err != nil {
+		log.Println("Failed to send email! Err: ", err)
+	}
 }

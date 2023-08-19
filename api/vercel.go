@@ -18,7 +18,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	handler().ServeHTTP(w, r)
 }
 
-// @title Fiber Go API
+// @title Greendeco API
 // @version 1.0
 // @description greendeco
 // @contact.name Nguyen Tri

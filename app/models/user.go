@@ -39,3 +39,9 @@ type UserTokens struct {
 	AccessToken  string `json:"access_Token"`
 	RefreshToken string `json:"refresh_Token"`
 }
+
+type EmailResponse struct {
+	Link     string
+	Username string
+	Sender   string
+}
