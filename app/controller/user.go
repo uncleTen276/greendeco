@@ -197,6 +197,14 @@ func ForgotPassword(c *fiber.Ctx) error {
 		})
 	}
 
+	validate := validators.NewValidator()
+	if err := validate.Struct(reqEmail); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+			Errors:  validators.ValidatorErrors(err),
+		})
+	}
+
 	userRepo := repository.NewUserRepo(database.GetDB())
 
 	user, err := userRepo.GetUserByEmail(reqEmail.Email)
@@ -223,8 +231,7 @@ func sendEmail(email string, token string) {
 	buff := new(bytes.Buffer)
 
 	if err := tmpl.Execute(buff, models.EmailResponse{
-		Link:   cfg.LinkResetPassword + fmt.Sprintf("/reset-password?token=%s", token),
-		Sender: "greendeco@gmail.com",
+		Link: cfg.LinkResetPassword + fmt.Sprintf("/reset-password?token=%s", token),
 	}); err != nil {
 		fmt.Println("Failed to send email! Err: ", err)
 	}
@@ -235,4 +242,65 @@ func sendEmail(email string, token string) {
 	if err := dialer.DialAndSend(newMessage); err != nil {
 		fmt.Println("Failed to send email! Err: ", err)
 	}
+}
+
+// UpdatePassword
+// @Update godoc
+// @Description Update Password
+// @Tags Auth
+// @Accept json
+// @Param todo body controller.UpdatePassword.userPassword true "Updated Password"
+// @Success 204
+// @Security Bearer
+// @Router /auth/password [put]
+func UpdatePassword(c *fiber.Ctx) error {
+	token, ok := c.Locals("user").(*jwt.Token)
+	if !ok {
+		return c.Status(fiber.ErrInternalServerError.Code).JSON(models.ErrorResponse{
+			Message: "can not parse token",
+		})
+	}
+
+	userId, err := middlewares.GetUserIdFromToken(token)
+	if err != nil {
+		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	type userPassword struct {
+		Password string `json:"password" validate:"required,lte=50,gte=8"`
+	}
+
+	req := &userPassword{}
+	if err = c.BodyParser(req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&models.ErrorResponse{
+			Message: "invalid input found",
+			Errors:  validators.ValidatorErrors(err),
+		})
+	}
+
+	validate := validators.NewValidator()
+	if err := validate.Struct(req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+			Errors:  validators.ValidatorErrors(err),
+		})
+	}
+
+	hashedPassword, err := generatePasswordHash([]byte(req.Password))
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "some thing bad happended",
+		})
+	}
+
+	userRepo := repository.NewUserRepo(database.GetDB())
+	if err = userRepo.UpdatePasswordById(hashedPassword, userId); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "some thing bad happended",
+		})
+	}
+
+	return c.SendStatus(fiber.StatusNoContent)
 }

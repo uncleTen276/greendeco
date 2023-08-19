@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sekke276/greendeco.git/app/controller"
+	"github.com/sekke276/greendeco.git/pkg/middlewares"
 )
 
 func AuthRoutes(app fiber.Router) {
@@ -19,4 +20,6 @@ func publicAuthRouter(app fiber.Router) {
 }
 
 func privateAuthRouter(app fiber.Router) {
+	app.Use(middlewares.JWTProtected())
+	app.Put("/password", controller.UpdatePassword)
 }

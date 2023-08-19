@@ -13,6 +13,7 @@ type UserRepository interface {
 	GetUserByEmail(email string) (*models.User, error)
 	GetUserByPhoneNumber(phoneNumber string) (*models.User, error)
 	GetUserById(uId string) (*models.User, error)
+	UpdatePasswordById(password string, id string) error
 }
 
 type UserRepo struct {
@@ -73,4 +74,14 @@ func (repo *UserRepo) GetUserById(uId string) (*models.User, error) {
 	query := `SELECT * FROM "users" WHERE id = $1`
 	err := repo.db.Get(user, query, uId)
 	return user, err
+}
+
+func (repo *UserRepo) UpdatePasswordById(password string, id string) error {
+	query := `UPDATE "users" SET password = $1 WHERE id = $2`
+	_, err := repo.db.Exec(query, password, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

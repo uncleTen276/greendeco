@@ -43,5 +43,4 @@ type UserTokens struct {
 type EmailResponse struct {
 	Link     string
 	Username string
-	Sender   string
 }
