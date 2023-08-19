@@ -227,13 +227,13 @@ func sendEmail(email string, token string) {
 		Link:   cfg.LinkResetPassword + fmt.Sprintf("/reset-password?token=%s", token),
 		Sender: "greendeco@gmail.com",
 	}); err != nil {
-		log.Fatal("Failed to send email! Err: ", err)
+		log.Println("Failed to send email! Err: ", err)
 	}
 
 	newMessage.SetBody("text/html", buff.String())
 
-	dialer := gomail.NewDialer("smtp.gmail.com", 587, cfg.Email, cfg.Password)
+	dialer := gomail.NewDialer("smtp.gmail.com", 465, cfg.Email, cfg.Password)
 	if err := dialer.DialAndSend(newMessage); err != nil {
-		log.Fatal("Failed to send email! Err: ", err)
+		log.Println("Failed to send email! Err: ", err)
 	}
 }
