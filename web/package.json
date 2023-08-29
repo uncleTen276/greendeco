@@ -8,7 +8,7 @@
 		"npm": "please-use-yarn"
 	},
 	"lint-staged": {
-		"*": "prettier --write",
+		"*": "prettier --write -u",
 		"*.{js,ts,tsx}": [
 			"eslint"
 		]
