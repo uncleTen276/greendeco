@@ -1,40 +1,37 @@
 {
-    "env": {
-        "browser": true,
-        "node": true,
-        "es6": true
-    },
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-        "next",
-        "next/core-web-vitals",
-        "eslint:recommended",
-        "plugin:prettier/recommended"
-    ],
-    "plugins": [
-        "prettier",
-        "@typescript-eslint"
-    ],
-    "rules": {
-        "prettier/prettier": "warn",
-        "prefer-const": [
-            "error",
-            {
-                "destructuring": "any"
-            }
-        ],
-        "no-var": "error",
-        "arrow-body-style": [
-            "error",
-            "as-needed"
-        ],
-        "max-lines": [
-            "error",
-            {
-                "max": 500,
-                "skipBlankLines": true,
-                "skipComments": true
-            }
-        ],
-    }
+	"env": {
+		"browser": true,
+		"node": true,
+		"es6": true
+	},
+	"parser": "@typescript-eslint/parser",
+	"extends": [
+		"next",
+		"next/core-web-vitals",
+		"eslint:recommended",
+		"plugin:prettier/recommended",
+		"plugin:tailwindcss/recommended"
+	],
+	"plugins": ["prettier", "@typescript-eslint"],
+	"rules": {
+		"prettier/prettier": "warn",
+		"tailwindcss/no-custom-classname": "error",
+		"tailwindcss/no-contradicting-classname": "error",
+		"prefer-const": [
+			"error",
+			{
+				"destructuring": "any"
+			}
+		],
+		"no-var": "error",
+		"arrow-body-style": ["error", "as-needed"],
+		"max-lines": [
+			"error",
+			{
+				"max": 500,
+				"skipBlankLines": true,
+				"skipComments": true
+			}
+		]
+	}
 }
