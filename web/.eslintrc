@@ -17,6 +17,8 @@
 		"prettier/prettier": "warn",
 		"tailwindcss/no-custom-classname": "error",
 		"tailwindcss/no-contradicting-classname": "error",
+		"tailwindcss/enforces-negative-arbitrary-values": "error",
+		"tailwindcss/enforces-shorthand": "warn",
 		"prefer-const": [
 			"error",
 			{
