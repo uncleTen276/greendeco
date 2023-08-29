@@ -4,7 +4,12 @@
 		"node": true,
 		"es6": true
 	},
-	"parser": "@typescript-eslint/parser",
+	"overrides": [
+		{
+			"files": ["*.ts", "*.tsx", "*.js"],
+			"parser": "@typescript-eslint/parser"
+		}
+	],
 	"extends": [
 		"next",
 		"next/core-web-vitals",
