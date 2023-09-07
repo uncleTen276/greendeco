@@ -1,0 +1,11 @@
+.yarn
+.next
+dist
+node_modules
+yarn.lock
+.husky
+.prettierignore
+.eslintignore
+.gitignore
+README.md
+

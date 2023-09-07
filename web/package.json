@@ -1,25 +1,58 @@
 {
-  "name": "web",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@types/node": "20.4.5",
-    "@types/react": "18.2.17",
-    "@types/react-dom": "18.2.7",
-    "autoprefixer": "10.4.14",
-    "eslint": "8.46.0",
-    "eslint-config-next": "13.4.12",
-    "next": "13.4.12",
-    "postcss": "8.4.27",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
-  }
+	"name": "greendeco-frontend",
+	"version": "0.1.0",
+	"private": true,
+	"engines": {
+		"node": ">=18.0.0",
+		"yarn": ">=1.22.0",
+		"npm": "please-use-yarn"
+	},
+	"lint-staged": {
+		"*": "prettier --write -u .",
+		"*.{js,ts,tsx}": [
+			"eslint"
+		]
+	},
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"prettier": "prettier --write .",
+		"prepare": "cd .. && husky install web/.husky",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"@emotion/react": "^11.11.1",
+		"@emotion/styled": "^11.11.0",
+		"@mui/material": "^5.14.5",
+		"@tanstack/react-query": "^4.33.0",
+		"@types/node": "20.4.5",
+		"@types/react": "18.2.17",
+		"@types/react-dom": "18.2.7",
+		"autoprefixer": "10.4.14",
+		"axios": "^1.4.0",
+		"clsx": "^2.0.0",
+		"eslint": "8.46.0",
+		"eslint-config-next": "13.4.12",
+		"framer-motion": "^10.16.0",
+		"next": "13.4.12",
+		"postcss": "8.4.27",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
+		"tailwindcss": "3.3.3",
+		"typescript": "5.1.6"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^17.7.1",
+		"@commitlint/config-conventional": "^17.7.0",
+		"@typescript-eslint/eslint-plugin": "^6.4.0",
+		"@typescript-eslint/parser": "^6.4.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-prettier": "^5.0.0",
+		"eslint-plugin-tailwindcss": "^3.13.0",
+		"husky": "^8.0.3",
+		"lint-staged": "^14.0.1",
+		"prettier": "^3.0.1",
+		"prettier-plugin-tailwindcss": "^0.5.2"
+	}
 }
