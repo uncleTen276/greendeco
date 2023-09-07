@@ -8,11 +8,6 @@ definitions:
     required:
     - email
     type: object
-  controller.RefreshToken.request:
-    properties:
-      refresh_token:
-        type: string
-    type: object
   controller.UpdatePassword.userPassword:
     properties:
       password:
@@ -90,11 +85,9 @@ definitions:
     - identifier
     - password
     type: object
-  models.UserTokens:
+  models.UserToken:
     properties:
       access_Token:
-        type: string
-      refresh_Token:
         type: string
     type: object
 host: localhost:8080
@@ -131,7 +124,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Use for login response the refresh_token and access_Token
+      description: Use for login response the access_Token
       parameters:
       - description: Login
         in: body
@@ -143,7 +136,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.UserTokens'
+            $ref: '#/definitions/models.UserToken'
         "400":
           description: Error
           schema:
@@ -180,46 +173,6 @@ paths:
           description: No Content
       security:
       - Bearer: []
-      tags:
-      - Auth
-  /auth/refresh-token:
-    post:
-      description: Create a new access token.
-      parameters:
-      - description: refresh_token
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/controller.RefreshToken.request'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.UserTokens'
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "401":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "403":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: create a new access token
       tags:
       - Auth
   /auth/register:

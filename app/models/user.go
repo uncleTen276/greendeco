@@ -35,9 +35,8 @@ type UserLogin struct {
 	Password   string `json:"password" validate:"required,lte=50,gte=8"`
 }
 
-type UserTokens struct {
-	AccessToken  string `json:"access_Token"`
-	RefreshToken string `json:"refresh_Token"`
+type UserToken struct {
+	AccessToken string `json:"access_Token"`
 }
 
 type EmailResponse struct {

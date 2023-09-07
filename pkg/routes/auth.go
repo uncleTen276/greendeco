@@ -15,7 +15,6 @@ func AuthRoutes(app fiber.Router) {
 func publicAuthRouter(app fiber.Router) {
 	app.Post("/register", controller.CreateUser)
 	app.Post("/login", controller.Login)
-	app.Post("/refresh-token", controller.RefreshToken)
 	app.Post("/forgot-password", controller.ForgotPassword)
 }
 

@@ -53,7 +53,7 @@ const docTemplate = `{
         },
         "/auth/login": {
             "post": {
-                "description": "Use for login response the refresh_token and access_Token",
+                "description": "Use for login response the access_Token",
                 "consumes": [
                     "application/json"
                 ],
@@ -76,7 +76,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.UserTokens"
+                            "$ref": "#/definitions/models.UserToken"
                         }
                     },
                     "400": {
@@ -134,67 +134,6 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "No Content"
-                    }
-                }
-            }
-        },
-        "/auth/refresh-token": {
-            "post": {
-                "description": "Create a new access token.",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "create a new access token",
-                "parameters": [
-                    {
-                        "description": "refresh_token",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controller.RefreshToken.request"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.UserTokens"
-                        }
-                    },
-                    "400": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
                     }
                 }
             }
@@ -316,14 +255,6 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.RefreshToken.request": {
-            "type": "object",
-            "properties": {
-                "refresh_token": {
-                    "type": "string"
-                }
-            }
-        },
         "controller.UpdatePassword.userPassword": {
             "type": "object",
             "required": [
@@ -433,13 +364,10 @@ const docTemplate = `{
                 }
             }
         },
-        "models.UserTokens": {
+        "models.UserToken": {
             "type": "object",
             "properties": {
                 "access_Token": {
-                    "type": "string"
-                },
-                "refresh_Token": {
                     "type": "string"
                 }
             }

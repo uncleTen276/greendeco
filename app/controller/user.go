@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
@@ -93,11 +94,11 @@ func CreateUser(c *fiber.Ctx) error {
 // Login
 // @Login godoc
 // @Summary User Login
-// @Description Use for login response the refresh_token and access_Token
+// @Description Use for login response the access_Token
 // @Tags Auth
 // @Accept json
 // @Param todo body models.UserLogin true "Login"
-// @Success 200 {object} models.UserTokens
+// @Success 200 {object} models.UserToken
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
 // @Router /auth/login [post]
 func Login(c *fiber.Ctx) error {
@@ -130,7 +131,8 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	tokens, err := generateTokens(userExist)
+	config := configs.AppConfig().Auth
+	token, err := generateToken(userExist, time.Duration(config.TokenExpire*int(time.Minute)*24))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "some thing bad happended",
@@ -138,7 +140,9 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(tokens)
+	return c.JSON(models.UserToken{
+		AccessToken: token,
+	})
 }
 
 // GetUserInfo()
@@ -214,9 +218,13 @@ func ForgotPassword(c *fiber.Ctx) error {
 		})
 	}
 
-	token, _ := generateTokens(user)
+	config := configs.AppConfig().Auth
+	token, err := generateToken(user, time.Duration(config.ShortTokenExpire*int(time.Minute)))
+	if err != nil {
+		print(err)
+	}
 
-	go sendEmail(reqEmail.Email, token.AccessToken)
+	go sendEmail(reqEmail.Email, token)
 	return c.SendString("Please check your email")
 }
 

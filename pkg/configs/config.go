@@ -18,10 +18,9 @@ type Config struct {
 		SSLMode  string `envconfig:"SSL_MODE" default:"disable"`
 	}
 	Auth struct {
-		JWTRefreshToken     string `envconfig:"JWT_REFRESH_SECRET" default:"refresh-secret"`
-		JWTSecret           string `envconfig:"JWT_SECRET" default:"token-secret"`
-		TokenExpire         int    `envconfig:"TOKEN_EXPIRE" default:"15"`
-		RefreshTokenExpires int    `envconfig:"REFRESH_TOKEN_EXPIRE" default:"720"`
+		JWTSecret        string `envconfig:"JWT_SECRET" default:"token-secret"`
+		TokenExpire      int    `envconfig:"TOKEN_EXPIRE" default:"60"`
+		ShortTokenExpire int    `envconfig:"SHORT_TOKEN_EXPIRE" default:"15"`
 	}
 	SMTP struct {
 		Email             string `envconfig:"SMTP_EMAIL" default:"kristiannguyen276@gmail.com"`
