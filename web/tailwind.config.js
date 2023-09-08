@@ -5,6 +5,10 @@ module.exports = {
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
+	corePlugins: {
+		preflight: false,
+	},
+	important: '#root',
 	theme: {
 		extend: {
 			fontSize: {
