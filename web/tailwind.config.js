@@ -21,6 +21,11 @@ module.exports = {
 				'body-sm': '1.4rem',
 				'body-xsm': '1.2rem',
 			},
+			fontWeight: {
+				bold: 700,
+				regular: 400,
+				light: 300,
+			},
 			spacing: {
 				compact: '0.8rem',
 				cozy: '1.6rem',
