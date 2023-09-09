@@ -8,7 +8,7 @@ module.exports = {
 	corePlugins: {
 		preflight: false,
 	},
-	important: '#root',
+	important: '#__next',
 	theme: {
 		extend: {
 			fontSize: {
@@ -36,7 +36,7 @@ module.exports = {
 				common: '2rem',
 				comfortable: '3.2rem',
 			},
-			backgroundColor: {
+			colors: {
 				primary: {
 					580: {
 						DEFAULT: '#BFCBA8',
