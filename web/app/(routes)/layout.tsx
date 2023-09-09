@@ -1,7 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import React from 'react'
-import { StyledEngineProvider } from '@mui/material/styles'
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -12,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang='en'>
 			<body>
-				<StyledEngineProvider injectFirst>{children}</StyledEngineProvider>
+				<div id='__next'>{children}</div>
 			</body>
 		</html>
 	)
