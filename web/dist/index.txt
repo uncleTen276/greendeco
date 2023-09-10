@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 0:["_hsxxyFRTfvg1ioAh5sGr",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/a677654c25104325.css",{"as":"style"}]
 4:I{"id":7767,"chunks":["272:static/chunks/webpack-f7396f8066f50b53.js","971:static/chunks/fd9d1056-d25f4732bf5a2bb9.js","596:static/chunks/596-953bb4c04c8293cb.js"],"name":"default","async":false}
@@ -24,6 +25,8 @@
 >>>>>>> 7ba5830 (feat: implement image to the layout, change max width for extra large screen breakpoint)
 =======
 >>>>>>> 77a3e3c (fix: fix overflow image)
+=======
+>>>>>>> 3691432 (build: add config for next Image, implement to authentication layout)
 <<<<<<< HEAD
 0:["f6PaJIud7c-vTKUjUTZWJ",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/15961b2591bba4f0.css",{"as":"style"}]
@@ -43,6 +46,8 @@
 >>>>>>> 873abb1 (feat: implement image to the layout, change max width for extra large screen breakpoint)
 =======
 >>>>>>> 7f536e8 (fix: fix overflow image)
+=======
+>>>>>>> 9ca3f8b (build: add config for next Image, implement to authentication layout)
 <<<<<<< HEAD
 0:["N4ySn39ztYvex-G69wO9S",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/537195506b007710.css",{"as":"style"}]
@@ -62,6 +67,8 @@
 >>>>>>> 9c976a7 (feat: implement image to the layout, change max width for extra large screen breakpoint)
 =======
 >>>>>>> ff1f6c2 (fix: fix overflow image)
+=======
+>>>>>>> f4cb742 (build: add config for next Image, implement to authentication layout)
 <<<<<<< HEAD
 0:["NBhpJzRXNr80vCUSvl6FU",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 =======
@@ -77,6 +84,8 @@
 >>>>>>> 015fabe (feat: implement image to the layout, change max width for extra large screen breakpoint)
 =======
 >>>>>>> db4f1ea (fix: fix overflow image)
+=======
+>>>>>>> e0c739c (build: add config for next Image, implement to authentication layout)
 <<<<<<< HEAD
 0:["vc-8X25xWxmv8BQirldpk",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 >>>>>>> 9751a80 (feat: initial authentication layout, add zod and react-hook-form)
@@ -97,6 +106,8 @@
 >>>>>>> 54d6af9 (feat: implement image to the layout, change max width for extra large screen breakpoint)
 =======
 >>>>>>> 7197881 (fix: fix overflow image)
+=======
+>>>>>>> cdcf057 (build: add config for next Image, implement to authentication layout)
 <<<<<<< HEAD
 0:["0wbpKzLn5YWF-z2Vl57Mg",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/0d3df4926e72fc86.css",{"as":"style"}]
@@ -117,6 +128,8 @@
 >>>>>>> 1c87d4d (feat: implement image to the layout, change max width for extra large screen breakpoint)
 =======
 >>>>>>> c9d0613 (fix: fix overflow image)
+=======
+>>>>>>> 82b3c14 (build: add config for next Image, implement to authentication layout)
 <<<<<<< HEAD
 0:["5CT7GF9xntPxl6aLpGxLI",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/f9009c9b95b71d1b.css",{"as":"style"}]
@@ -205,9 +218,31 @@
 5:I{"id":7920,"chunks":["272:static/chunks/webpack-09274cf3f4f60342.js","971:static/chunks/fd9d1056-5fc0659828b82348.js","596:static/chunks/596-dca21600ca7eea8c.js"],"name":"default","async":false}
 1:["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"template":["$","$L5",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":[["$","html",null,{"lang":"en","children":["$","body",null,{"children":["$","div",null,{"id":"__next","children":["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children","(routes)","children"],"error":"$undefined","errorStyles":"$undefined","loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"template":["$","$L5",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":[["$","h1",null,{"children":"Hello World"}],null],"segment":"__PAGE__"},"styles":[]}]}]}]}],null],"segment":"(routes)"},"styles":[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/69988c17ff64b899.css","precedence":"next"}]]}]
 >>>>>>> 678c4fc (fix: fix overflow image)
+<<<<<<< HEAD
 >>>>>>> c9d0613 (fix: fix overflow image)
+<<<<<<< HEAD
 >>>>>>> 7197881 (fix: fix overflow image)
+<<<<<<< HEAD
 >>>>>>> ff1f6c2 (fix: fix overflow image)
+<<<<<<< HEAD
 >>>>>>> 7f536e8 (fix: fix overflow image)
+<<<<<<< HEAD
 >>>>>>> 77a3e3c (fix: fix overflow image)
+=======
+=======
+=======
+=======
+=======
+=======
+0:["VhDJWczbmTsu7x4Lbwzxk",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
+3:HL["/_next/static/css/985bb33a0476eff5.css",{"as":"style"}]
+4:I{"id":7767,"chunks":["272:static/chunks/webpack-0ce7cb9af685a579.js","971:static/chunks/fd9d1056-5fc0659828b82348.js","596:static/chunks/596-dca21600ca7eea8c.js"],"name":"default","async":false}
+5:I{"id":7920,"chunks":["272:static/chunks/webpack-0ce7cb9af685a579.js","971:static/chunks/fd9d1056-5fc0659828b82348.js","596:static/chunks/596-dca21600ca7eea8c.js"],"name":"default","async":false}
+1:["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"template":["$","$L5",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":[["$","html",null,{"lang":"en","children":["$","body",null,{"children":["$","div",null,{"id":"__next","children":["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children","(routes)","children"],"error":"$undefined","errorStyles":"$undefined","loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"template":["$","$L5",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":[["$","h1",null,{"children":"Hello World"}],null],"segment":"__PAGE__"},"styles":[]}]}]}]}],null],"segment":"(routes)"},"styles":[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/985bb33a0476eff5.css","precedence":"next"}]]}]
+>>>>>>> 8fd05d3 (build: add config for next Image, implement to authentication layout)
+>>>>>>> 82b3c14 (build: add config for next Image, implement to authentication layout)
+>>>>>>> cdcf057 (build: add config for next Image, implement to authentication layout)
+>>>>>>> f4cb742 (build: add config for next Image, implement to authentication layout)
+>>>>>>> 9ca3f8b (build: add config for next Image, implement to authentication layout)
+>>>>>>> 3691432 (build: add config for next Image, implement to authentication layout)
 2:[["$","meta","0",{"charSet":"utf-8"}],["$","title","1",{"children":"Create Next App"}],["$","meta","2",{"name":"description","content":"Generated by create next app"}],["$","meta","3",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
