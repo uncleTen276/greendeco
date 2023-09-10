@@ -26,7 +26,7 @@ export default function RegisterForm() {
 		<>
 			<form
 				onSubmit={handleSubmit((data) => console.log(data))}
-				className='flex flex-col gap-cozy'
+				className='flex w-full flex-col gap-cozy'
 			>
 				<input
 					type='text'

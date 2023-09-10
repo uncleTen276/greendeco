@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 0:["_hsxxyFRTfvg1ioAh5sGr",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/a677654c25104325.css",{"as":"style"}]
 4:I{"id":7767,"chunks":["272:static/chunks/webpack-f7396f8066f50b53.js","971:static/chunks/fd9d1056-d25f4732bf5a2bb9.js","596:static/chunks/596-953bb4c04c8293cb.js"],"name":"default","async":false}
@@ -15,6 +16,8 @@
 >>>>>>> 662343a (feat: set up schema correctly based on swager - implement react-hook-form)
 =======
 >>>>>>> a652dd9 (build: add shadow style)
+=======
+>>>>>>> 03891af (feat: set up layout for authentication pages)
 <<<<<<< HEAD
 0:["f6PaJIud7c-vTKUjUTZWJ",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/15961b2591bba4f0.css",{"as":"style"}]
@@ -28,6 +31,8 @@
 >>>>>>> 84ff036 (feat: set up schema correctly based on swager - implement react-hook-form)
 =======
 >>>>>>> 49dd35d (build: add shadow style)
+=======
+>>>>>>> 1de46de (feat: set up layout for authentication pages)
 <<<<<<< HEAD
 0:["N4ySn39ztYvex-G69wO9S",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/537195506b007710.css",{"as":"style"}]
@@ -41,6 +46,8 @@
 >>>>>>> 83dd7f0 (feat: set up schema correctly based on swager - implement react-hook-form)
 =======
 >>>>>>> 23a2ceb (build: add shadow style)
+=======
+>>>>>>> 11ef59b (feat: set up layout for authentication pages)
 <<<<<<< HEAD
 0:["NBhpJzRXNr80vCUSvl6FU",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 =======
@@ -50,6 +57,8 @@
 >>>>>>> 4d16805 (feat: set up schema correctly based on swager - implement react-hook-form)
 =======
 >>>>>>> 88f7002 (build: add shadow style)
+=======
+>>>>>>> 20291b0 (feat: set up layout for authentication pages)
 <<<<<<< HEAD
 0:["vc-8X25xWxmv8BQirldpk",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 >>>>>>> 9751a80 (feat: initial authentication layout, add zod and react-hook-form)
@@ -64,6 +73,8 @@
 >>>>>>> 2794ee1 (feat: set up schema correctly based on swager - implement react-hook-form)
 =======
 >>>>>>> b45bf29 (build: add shadow style)
+=======
+>>>>>>> ac6db21 (feat: set up layout for authentication pages)
 <<<<<<< HEAD
 0:["0wbpKzLn5YWF-z2Vl57Mg",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/0d3df4926e72fc86.css",{"as":"style"}]
@@ -78,6 +89,8 @@
 >>>>>>> 9c9cd0c (feat: set up schema correctly based on swager - implement react-hook-form)
 =======
 >>>>>>> d08b241 (build: add shadow style)
+=======
+>>>>>>> 4b0ff1c (feat: set up layout for authentication pages)
 <<<<<<< HEAD
 0:["5CT7GF9xntPxl6aLpGxLI",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/f9009c9b95b71d1b.css",{"as":"style"}]
@@ -114,6 +127,9 @@
 =======
 =======
 0:["KbaImgH8yrO_f8_3-q1gn",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
+=======
+0:["FAFf3dVnyFhujH3FGcfYQ",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
+>>>>>>> 55fd740 (feat: set up layout for authentication pages)
 3:HL["/_next/static/css/0879937c964dd3da.css",{"as":"style"}]
 4:I{"id":7767,"chunks":["272:static/chunks/webpack-de5d2d861f2e09af.js","971:static/chunks/fd9d1056-5fc0659828b82348.js","596:static/chunks/596-dca21600ca7eea8c.js"],"name":"default","async":false}
 5:I{"id":7920,"chunks":["272:static/chunks/webpack-de5d2d861f2e09af.js","971:static/chunks/fd9d1056-5fc0659828b82348.js","596:static/chunks/596-dca21600ca7eea8c.js"],"name":"default","async":false}
