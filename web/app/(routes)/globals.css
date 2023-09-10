@@ -12,6 +12,10 @@
 		font-family: 'Be Vietnam Pro', sans-serif;
 	}
 
+	a {
+		@apply text-action-link;
+	}
+
 	h1,
 	h2,
 	h3,
@@ -31,5 +35,23 @@
 	}
 	h4 {
 		@apply text-heading-4;
+	}
+}
+
+@layer utilities {
+	.flex-col-center {
+		@apply flex flex-col items-center;
+	}
+	.flex-col-start {
+		@apply flex flex-col;
+	}
+	.flex-col-end {
+		@apply flex flex-col items-end;
+	}
+	.flex-row-center {
+		@apply flex justify-center;
+	}
+	.flex-row-between {
+		@apply flex justify-between;
 	}
 }
