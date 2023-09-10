@@ -3,11 +3,17 @@ import * as z from 'zod'
 
 export const RegisterSchema = z
 	.object({
-		name: z
+		firstName: z
 			.string()
-			.min(1, 'Name is required')
-			.max(32, 'Name must be less than 100 characters'),
+			.min(1, 'First name is required')
+			.max(32, 'Name must be less than 32 characters'),
+		lastName: z
+			.string()
+			.min(1, 'Last name is required')
+			.max(32, 'Name must be less than 32 characters'),
 		email: z.string().min(1, 'Email is required').email('Email is invalid'),
+		phoneNumber: z.string().min(1, 'Phone number is required').max(9, 'Invalid phone number'),
+
 		password: z
 			.string()
 			.min(MIN_PASSWORD, `Password must be more than ${MIN_PASSWORD} characters`)
