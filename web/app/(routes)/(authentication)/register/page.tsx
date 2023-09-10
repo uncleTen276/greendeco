@@ -6,7 +6,7 @@ export default function RegisterPage() {
 		<>
 			<div className='flex-col-start gap-common'>
 				<div>
-					<span className='mb-cozy block text-body-xl'>
+					<span className='mb-compact block text-body-xl'>
 						Welcome to <span className='text-heading font-bold'>GreenDeco</span> 👋
 					</span>
 					<div className='flex-col-start gap-compact'>

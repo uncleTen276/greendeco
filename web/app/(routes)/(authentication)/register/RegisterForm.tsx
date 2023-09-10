@@ -25,20 +25,61 @@ export default function RegisterForm() {
 	return (
 		<>
 			<form
+				autoComplete='off'
 				onSubmit={handleSubmit((data) => console.log(data))}
-				className='flex w-full flex-col gap-cozy'
+				className='flex w-full flex-col gap-cozy text-body-sm'
 			>
-				<input
-					type='text'
-					placeholder='first name'
-					{...register('firstName')}
-				/>
-				{errors?.firstName?.message && <p>{errors.firstName.message}</p>}
-				<input
-					type='text'
-					placeholder='last name'
-				/>
-				<input type='text' />
+				<div className='flex-row-between gap-cozy'>
+					<div className='flex-1'>
+						<input
+							type='text'
+							placeholder='First Name'
+							{...register('firstName')}
+						/>
+						{errors?.firstName?.message && <p>{errors.firstName.message}</p>}
+					</div>
+					<div className='flex-1'>
+						<input
+							type='text'
+							placeholder='Last Name'
+							{...register('lastName')}
+						/>
+						{errors?.lastName?.message && <p>{errors.lastName.message}</p>}
+					</div>
+				</div>
+				<div>
+					<input
+						type='email'
+						placeholder='Email'
+						{...register('email')}
+					/>
+					{errors?.email?.message && <p>{errors.email.message}</p>}
+				</div>
+				<div>
+					<input
+						type='tel'
+						placeholder='Phone Number'
+						{...register('phoneNumber')}
+					/>
+					{errors?.phoneNumber?.message && <p>{errors.phoneNumber.message}</p>}
+				</div>
+				<div>
+					<input
+						type='password'
+						placeholder='Password'
+						{...register('password')}
+					/>
+					{errors?.password?.message && <p>{errors.password.message}</p>}
+				</div>
+				<div>
+					<input
+						type='password'
+						placeholder='Confirm Password'
+						{...register('passwordConfirm')}
+					/>
+					{errors?.passwordConfirm?.message && <p>{errors.passwordConfirm.message}</p>}
+				</div>
+				<button type='submit'>Sign Up</button>
 			</form>
 		</>
 	)
