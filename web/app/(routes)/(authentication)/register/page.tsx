@@ -1,4 +1,5 @@
 import RegisterForm from './RegisterForm'
+import Link from 'next/link'
 
 export default function RegisterPage() {
 	return (
@@ -14,6 +15,9 @@ export default function RegisterPage() {
 					</div>
 				</div>
 				<RegisterForm />
+				<span className='text-center text-body-md'>
+					Don&apos;t you have an account? <Link href={'/login'}>Sign up</Link>
+				</span>
 			</div>
 		</>
 	)
