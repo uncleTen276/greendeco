@@ -6,10 +6,10 @@ export default function RegisterPage() {
 		<>
 			<div className='flex-col-start gap-common'>
 				<div>
-					<span className='mb-compact block text-body-xl'>
-						Welcome to <span className='text-heading font-bold'>GreenDeco</span> 👋
+					<span className='mb-compact block text-body-lg'>
+						Welcome to <span className=' text-heading-2 font-bold'>GreenDeco</span> 👋
 					</span>
-					<div className='flex-col-start gap-compact'>
+					<div className='flex-col-start gap-[4px]'>
 						<h1>Create An Account</h1>
 						<p className='text-body-md'>Become one of the plant lovers now!</p>
 					</div>
