@@ -42,7 +42,7 @@
 
 @layer components {
 	.base-input {
-		@apply flex w-full gap-compact border-[1px] border-primary-5555-20 p-[8px] focus-within:outline focus-within:outline-[2px] focus-within:outline-[border-primary-5555];
+		@apply flex w-full gap-compact border-[1px] border-primary-5555-20 p-[8px] focus-within:border-transparent focus-within:outline focus-within:outline-[2px] focus-within:outline-[border-primary-5555];
 	}
 }
 
@@ -61,5 +61,12 @@
 	}
 	.flex-row-between {
 		@apply flex justify-between;
+	}
+
+	.input-disabled {
+		@apply bg-neutral-gray-3 text-neutral-500;
+	}
+	.input-error {
+		@apply border-status-error focus-within:border-transparent;
 	}
 }

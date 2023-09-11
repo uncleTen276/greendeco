@@ -14,10 +14,13 @@ const CustomInput = React.forwardRef(function CustomInput(
 			ref={ref}
 			slotProps={{
 				root: {
-					className: clsx(['base-input', className]),
+					className: clsx(['base-input', className], {
+						'input-disabled': props.disabled,
+						'input-error': props.error,
+					}),
 				},
 				input: {
-					className: 'w-full outline-none',
+					className: 'w-full outline-none bg-inherit',
 				},
 			}}
 		/>
