@@ -10,6 +10,8 @@
 	}
 	* {
 		font-family: 'Be Vietnam Pro', sans-serif;
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;
 	}
 
 	a {
@@ -35,6 +37,12 @@
 	}
 	h4 {
 		@apply text-heading-4;
+	}
+}
+
+@layer components {
+	.base-input {
+		@apply flex w-full gap-compact border-[1px] border-primary-5555-20 p-[8px] focus-within:outline focus-within:outline-[2px] focus-within:outline-[border-primary-5555];
 	}
 }
 
