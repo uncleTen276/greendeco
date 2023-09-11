@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 0:["_hsxxyFRTfvg1ioAh5sGr",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/a677654c25104325.css",{"as":"style"}]
 4:I{"id":7767,"chunks":["272:static/chunks/webpack-f7396f8066f50b53.js","971:static/chunks/fd9d1056-d25f4732bf5a2bb9.js","596:static/chunks/596-953bb4c04c8293cb.js"],"name":"default","async":false}
@@ -33,6 +34,8 @@
 >>>>>>> 334b694 (feat: implement validation to register form)
 =======
 >>>>>>> ebf45b2 (feat: change font size and gap)
+=======
+>>>>>>> c293d04 (build: build dist)
 <<<<<<< HEAD
 0:["f6PaJIud7c-vTKUjUTZWJ",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/15961b2591bba4f0.css",{"as":"style"}]
@@ -58,6 +61,8 @@
 >>>>>>> 3d1d434 (feat: implement validation to register form)
 =======
 >>>>>>> 273cf75 (feat: change font size and gap)
+=======
+>>>>>>> 5ef6cf2 (build: build dist)
 <<<<<<< HEAD
 0:["N4ySn39ztYvex-G69wO9S",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/537195506b007710.css",{"as":"style"}]
@@ -83,6 +88,8 @@
 >>>>>>> f42239d (feat: implement validation to register form)
 =======
 >>>>>>> 38df398 (feat: change font size and gap)
+=======
+>>>>>>> 91eb6c7 (build: build dist)
 <<<<<<< HEAD
 0:["NBhpJzRXNr80vCUSvl6FU",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 =======
@@ -104,6 +111,8 @@
 >>>>>>> e3b3121 (feat: implement validation to register form)
 =======
 >>>>>>> 8a46503 (feat: change font size and gap)
+=======
+>>>>>>> 786fe9e (build: build dist)
 <<<<<<< HEAD
 0:["vc-8X25xWxmv8BQirldpk",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 >>>>>>> 9751a80 (feat: initial authentication layout, add zod and react-hook-form)
@@ -130,6 +139,8 @@
 >>>>>>> e0a8bfd (feat: implement validation to register form)
 =======
 >>>>>>> 6655ed8 (feat: change font size and gap)
+=======
+>>>>>>> 19945b6 (build: build dist)
 <<<<<<< HEAD
 0:["0wbpKzLn5YWF-z2Vl57Mg",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/0d3df4926e72fc86.css",{"as":"style"}]
@@ -156,6 +167,8 @@
 >>>>>>> 2d53515 (feat: implement validation to register form)
 =======
 >>>>>>> bb09715 (feat: change font size and gap)
+=======
+>>>>>>> e652843 (build: build dist)
 <<<<<<< HEAD
 0:["5CT7GF9xntPxl6aLpGxLI",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/f9009c9b95b71d1b.css",{"as":"style"}]
@@ -286,6 +299,9 @@
 =======
 =======
 0:["wjrMugiMkLz1iYHIo5ljY",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
+=======
+0:["As1nF2CdDgZMTBLcXo8lT",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
+>>>>>>> e8542fd (build: build dist)
 3:HL["/_next/static/css/e0f051d59b27463b.css",{"as":"style"}]
 4:I{"id":7767,"chunks":["272:static/chunks/webpack-d9e21c0025e8f711.js","971:static/chunks/fd9d1056-5fc0659828b82348.js","596:static/chunks/596-dca21600ca7eea8c.js"],"name":"default","async":false}
 5:I{"id":7920,"chunks":["272:static/chunks/webpack-d9e21c0025e8f711.js","971:static/chunks/fd9d1056-5fc0659828b82348.js","596:static/chunks/596-dca21600ca7eea8c.js"],"name":"default","async":false}
