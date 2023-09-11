@@ -17,21 +17,33 @@
 		"plugin:prettier/recommended",
 		"plugin:tailwindcss/recommended"
 	],
-	"plugins": ["prettier", "@typescript-eslint"],
+	"plugins": ["prettier", "@typescript-eslint", "tailwindcss"],
 	"rules": {
-		"prettier/prettier": "warn",
+		"prettier/prettier": [
+			"warn",
+			{
+				"arrowParens": "always",
+				"bracketSameLine": false,
+				"bracketSpacing": true,
+				"semi": false,
+				"singleQuote": true,
+				"jsxSingleQuote": true,
+				"quoteProps": "as-needed",
+				"trailingComma": "all",
+				"singleAttributePerLine": true
+			}
+		],
 		"tailwindcss/no-custom-classname": "error",
 		"tailwindcss/no-contradicting-classname": "error",
 		"tailwindcss/enforces-negative-arbitrary-values": "error",
 		"tailwindcss/enforces-shorthand": "warn",
+		"no-unused-vars": "off",
 		"prefer-const": [
 			"error",
 			{
 				"destructuring": "any"
 			}
 		],
-		"no-var": "error",
-		"arrow-body-style": ["error", "as-needed"],
 		"max-lines": [
 			"error",
 			{
