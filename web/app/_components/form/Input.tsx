@@ -1,6 +1,6 @@
 'use client'
 import * as React from 'react'
-import { Input as BaseInput, Input, InputProps } from '@mui/base/Input'
+import { Input as BaseInput, InputProps } from '@mui/base/Input'
 import clsx from 'clsx'
 
 const CustomInput = React.forwardRef(function CustomInput(
@@ -27,4 +27,21 @@ const CustomInput = React.forwardRef(function CustomInput(
 	)
 })
 
+const Input = React.forwardRef(function Input(
+	props: InputProps,
+	ref: React.ForwardedRef<HTMLInputElement>,
+) {
+	const renderInputType = (type: React.HTMLInputTypeAttribute) => {
+		return <span>{type}</span>
+	}
+	return (
+		<CustomInput
+			{...props}
+			ref={ref}
+			startAdornment={props.type && renderInputType(props.type)}
+		/>
+	)
+})
+
 export default CustomInput
+export { Input }
