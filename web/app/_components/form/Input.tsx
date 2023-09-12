@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/solid'
 
 //NOTE: Input
-const CustomInput = React.forwardRef(function CustomInput(
+const Input = React.forwardRef(function Input(
 	props: InputProps,
 	ref: React.ForwardedRef<HTMLInputElement>,
 ) {
@@ -40,11 +40,11 @@ type StartIconType = {
 const StartIconArray: StartIconType[] = [
 	{
 		type: 'email',
-		icon: <EnvelopeIcon className='aspect-square w-[1.6rem] text-primary-418-60' />,
+		icon: <EnvelopeIcon className='aspect-square w-[1.8rem] text-primary-418-60' />,
 	},
 	{
 		type: 'password',
-		icon: <LockClosedIcon className='aspect-square w-[1.6rem] text-primary-418-60' />,
+		icon: <LockClosedIcon className='aspect-square w-[1.8rem] text-primary-418-60' />,
 	},
 ]
 
@@ -53,4 +53,4 @@ const renderStartAndormentIcon = (type: React.HTMLInputTypeAttribute) => {
 	if (startIcon) return startIcon.icon
 }
 
-export default CustomInput
+export default Input
