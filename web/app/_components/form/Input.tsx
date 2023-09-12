@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { Input as BaseInput, InputProps } from '@mui/base/Input'
 import clsx from 'clsx'
-import { log } from 'console'
+import { EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/solid'
 
 //NOTE: Input
 const CustomInput = React.forwardRef(function CustomInput(
@@ -14,7 +14,7 @@ const CustomInput = React.forwardRef(function CustomInput(
 		<BaseInput
 			{...props}
 			ref={ref}
-			startAdornment={type && renderInputType(type)}
+			startAdornment={type && renderStartAndormentIcon(type)}
 			slotProps={{
 				root: {
 					className: clsx(['base-input', className], {
@@ -30,11 +30,7 @@ const CustomInput = React.forwardRef(function CustomInput(
 	)
 })
 
-//NOTE: Input startAdornment
-const renderInputType = (type: React.HTMLInputTypeAttribute) => {
-	const startIcon = StartIconArray.find((startIcon) => startIcon['type'] == type)
-	if (startIcon) return startIcon.icon
-}
+//NOTE: Input renderStartAdornment
 
 type StartIconType = {
 	type: 'email' | 'password'
@@ -44,12 +40,17 @@ type StartIconType = {
 const StartIconArray: StartIconType[] = [
 	{
 		type: 'email',
-		icon: <span>Email</span>,
+		icon: <EnvelopeIcon className='aspect-square w-[1.6rem] text-primary-418-60' />,
 	},
 	{
 		type: 'password',
-		icon: <span>Password</span>,
+		icon: <LockClosedIcon className='aspect-square w-[1.6rem] text-primary-418-60' />,
 	},
 ]
+
+const renderStartAndormentIcon = (type: React.HTMLInputTypeAttribute) => {
+	const startIcon = StartIconArray.find((startIcon) => startIcon['type'] == type)
+	if (startIcon) return startIcon.icon
+}
 
 export default CustomInput
