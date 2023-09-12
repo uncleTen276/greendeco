@@ -44,6 +44,10 @@
 	.base-input {
 		@apply flex w-full items-center gap-compact rounded-[3px] border-[1px] border-primary-5555-20 px-cozy py-compact focus-within:border-transparent  focus-within:outline focus-within:outline-[2px] focus-within:outline-primary-5555;
 	}
+
+	.btn {
+		@apply rounded-[8px] border-[1px] border-primary-5555 bg-primary-625 p-[12px] text-body-md font-bold text-neutral-gray-1 disabled:pointer-events-none disabled:opacity-[70%];
+	}
 }
 
 @layer utilities {
