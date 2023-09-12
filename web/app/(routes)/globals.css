@@ -42,7 +42,7 @@
 
 @layer components {
 	.base-input {
-		@apply flex w-full gap-compact border-[1px] border-primary-5555-20 px-cozy py-compact focus-within:border-transparent  focus-within:outline focus-within:outline-[2px] focus-within:outline-[border-primary-5555];
+		@apply flex w-full items-center gap-compact rounded-[3px] border-[1px] border-primary-5555-20 px-cozy py-compact focus-within:border-transparent  focus-within:outline focus-within:outline-[2px] focus-within:outline-primary-5555;
 	}
 }
 
