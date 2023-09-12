@@ -10,6 +10,8 @@
 	}
 	* {
 		font-family: 'Be Vietnam Pro', sans-serif;
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;
 	}
 
 	a {
@@ -38,6 +40,12 @@
 	}
 }
 
+@layer components {
+	.base-input {
+		@apply flex w-full items-center gap-compact rounded-[3px] border-[1px] border-primary-5555-20 px-cozy py-compact focus-within:border-transparent  focus-within:outline focus-within:outline-[2px] focus-within:outline-primary-5555;
+	}
+}
+
 @layer utilities {
 	.flex-col-center {
 		@apply flex flex-col items-center;
@@ -53,5 +61,12 @@
 	}
 	.flex-row-between {
 		@apply flex justify-between;
+	}
+
+	.input-disabled {
+		@apply bg-neutral-gray-3 text-neutral-500;
+	}
+	.input-error {
+		@apply border-status-error focus-within:border-transparent;
 	}
 }
