@@ -192,6 +192,37 @@ const docTemplate = `{
                 }
             }
         },
+        "/media/upload": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create new image return image",
+                "operationId": "image",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "upfile",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/user/me": {
             "get": {
                 "security": [

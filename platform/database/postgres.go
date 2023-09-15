@@ -17,7 +17,7 @@ var defaultDB = &DB{}
 
 // Connect postgresql
 // This support to call once
-func (db *DB) ConnectPostgresql() error {
+func (db *DB) connectPostgresql() error {
 	cfg := configs.AppConfig()
 	dns := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Database.Host, cfg.Database.User, cfg.Database.Password, cfg.Database.Name, cfg.Database.Port, cfg.Database.SSLMode)
 	db.DB = sqlx.MustOpen("pgx", dns)
@@ -37,5 +37,5 @@ func GetDB() *DB {
 }
 
 func ConnectDB() error {
-	return defaultDB.ConnectPostgresql()
+	return defaultDB.connectPostgresql()
 }

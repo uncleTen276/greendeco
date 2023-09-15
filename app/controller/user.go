@@ -49,7 +49,7 @@ func CreateUser(c *fiber.Ctx) error {
 	userExist, err := userRepo.GetUserByIdentifier(user.Identifier)
 	if err != nil && err != models.ErrNotFound {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
-			Message: err.Error(),
+			Message: "fail to create user",
 		})
 	}
 
@@ -60,14 +60,14 @@ func CreateUser(c *fiber.Ctx) error {
 	}
 
 	// find user by email
-	userExist, err = userRepo.GetUserByEmail(user.Email)
+	userEmail, err := userRepo.GetUserByEmail(user.Email)
 	if err != nil && err != models.ErrNotFound {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
-			Message: err.Error(),
+			Message: "fail to create user",
 		})
 	}
 
-	if userExist != nil {
+	if userEmail != nil {
 		return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
 			Message: "this user email already exists",
 		})

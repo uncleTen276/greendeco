@@ -210,6 +210,25 @@ paths:
       summary: Create new user
       tags:
       - Auth
+  /media/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      operationId: image
+      parameters:
+      - description: upfile
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Create new image return image
   /user/me:
     get:
       consumes:
