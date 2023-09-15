@@ -44,6 +44,7 @@ func handler() http.HandlerFunc {
 	api := app.Group("/api/v1")
 	routes.AuthRoutes(api)
 	routes.UserRoutes(api)
+	routes.MediaRoutes(api)
 	web.Routes(app)
 	return adaptor.FiberApp(app)
 }
