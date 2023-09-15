@@ -1,12 +1,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 0:["NBhpJzRXNr80vCUSvl6FU",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 =======
 =======
 >>>>>>> fd45c34 (feat(button): develop button CSS)
 =======
 >>>>>>> bee2fb1 (feat(textfield): develop first Text Field component version)
+=======
+>>>>>>> 948f877 (feat: change FormControlProps type name)
 <<<<<<< HEAD
 0:["vc-8X25xWxmv8BQirldpk",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 >>>>>>> 5e96fe3 (feat(button): inital Button components)
@@ -41,4 +44,14 @@
 8:I{"id":3089,"chunks":["606:static/chunks/606-2a03cae9149324d9.js","689:static/chunks/app/(routes)/page-f8ee9908deefe076.js"],"name":"","async":false}
 1:["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"template":["$","$L5",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":[["$","html",null,{"lang":"en","children":["$","body",null,{"children":["$","div",null,{"id":"__next","children":["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children","(routes)","children"],"error":"$undefined","errorStyles":"$undefined","loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"template":["$","$L5",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":[["$","div",null,{"className":"w-[50%] p-comfortable","children":[["$","$L6",null,{"children":"Lmao","className":"btn w-full"}],["$","$L7",null,{"label":"First Name","className":"flex flex-col gap-[4px] text-body-sm","error":true,"type":"email","required":true,"children":[["$","label",null,{"className":"font-bold","children":["First Name"," ",""]}],["$","$L8",null,{"type":"email","className":"w-full","value":"$undefined","error":true,"disabled":"$undefined","onChange":"$undefined","defaultValue":"$undefined"}],"$undefined"]}]]}],null],"segment":"__PAGE__"},"styles":[]}]}]}]}],null],"segment":"(routes)"},"styles":[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/241d60e0977d460c.css","precedence":"next"}]]}]
 >>>>>>> 9923e81 (feat(textfield): develop first Text Field component version)
+=======
+0:["UJvwTzZG-NfE9iG33bBtB",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
+3:HL["/_next/static/css/241d60e0977d460c.css",{"as":"style"}]
+4:I{"id":7767,"chunks":["272:static/chunks/webpack-b2d3cbb5a1c731cb.js","971:static/chunks/fd9d1056-74478ccf9a86b089.js","596:static/chunks/596-9219ca67f71afdae.js"],"name":"default","async":false}
+5:I{"id":7920,"chunks":["272:static/chunks/webpack-b2d3cbb5a1c731cb.js","971:static/chunks/fd9d1056-74478ccf9a86b089.js","596:static/chunks/596-9219ca67f71afdae.js"],"name":"default","async":false}
+6:I{"id":4750,"chunks":["606:static/chunks/606-2a03cae9149324d9.js","689:static/chunks/app/(routes)/page-a95edf87d12877b2.js"],"name":"Button","async":false}
+7:I{"id":5598,"chunks":["606:static/chunks/606-2a03cae9149324d9.js","689:static/chunks/app/(routes)/page-a95edf87d12877b2.js"],"name":"FormControl","async":false}
+8:I{"id":3089,"chunks":["606:static/chunks/606-2a03cae9149324d9.js","689:static/chunks/app/(routes)/page-a95edf87d12877b2.js"],"name":"","async":false}
+1:["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"template":["$","$L5",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":[["$","html",null,{"lang":"en","children":["$","body",null,{"children":["$","div",null,{"id":"__next","children":["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children","(routes)","children"],"error":"$undefined","errorStyles":"$undefined","loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"template":["$","$L5",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":[["$","div",null,{"className":"w-[50%] p-comfortable","children":[["$","$L6",null,{"children":"Lmao","className":"btn w-full"}],["$","$L7",null,{"label":"First Name","className":"flex flex-col gap-[4px] text-body-sm","type":"email","required":true,"children":[["$","label",null,{"className":"font-bold","children":["First Name"," ",""]}],["$","$L8",null,{"type":"email","className":"w-full","value":"$undefined","error":"$undefined","disabled":"$undefined","onChange":"$undefined","defaultValue":"$undefined"}],"$undefined"]}]]}],null],"segment":"__PAGE__"},"styles":[]}]}]}]}],null],"segment":"(routes)"},"styles":[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/241d60e0977d460c.css","precedence":"next"}]]}]
+>>>>>>> d8d0381 (feat: change FormControlProps type name)
 2:[["$","meta","0",{"charSet":"utf-8"}],["$","title","1",{"children":"Create Next App"}],["$","meta","2",{"name":"description","content":"Generated by create next app"}],["$","meta","3",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]

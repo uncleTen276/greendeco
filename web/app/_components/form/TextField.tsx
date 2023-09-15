@@ -2,9 +2,7 @@ import * as React from 'react'
 import { FormControl, FormControlProps } from '@mui/base/FormControl'
 import Input from './Input'
 import clsx from 'clsx'
-export default function TextField(
-	props: FormControlPropsWithLabelAndTextHelpder<FormControlProps>,
-) {
+export default function TextField(props: CustomFormControlProps<FormControlProps>) {
 	return (
 		<>
 			<FormControl
@@ -34,7 +32,7 @@ export default function TextField(
 	)
 }
 
-type FormControlPropsWithLabelAndTextHelpder<T> = Partial<T> & {
+type CustomFormControlProps<T> = Partial<T> & {
 	label?: string
 	helperText?: string
 	type?: React.HTMLInputTypeAttribute
