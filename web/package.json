@@ -9,7 +9,7 @@
 	},
 	"lint-staged": {
 		"*": "prettier --write -u .",
-		"*.{js,ts,tsx}": [
+		"./app/**/*.{js,ts,jsx,tsx,mdx}": [
 			"eslint"
 		]
 	},
