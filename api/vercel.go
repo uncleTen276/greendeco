@@ -9,6 +9,7 @@ import (
 	"github.com/sekke276/greendeco.git/pkg/configs"
 	"github.com/sekke276/greendeco.git/pkg/routes"
 	"github.com/sekke276/greendeco.git/platform/database"
+	"github.com/sekke276/greendeco.git/platform/storage"
 	"github.com/sekke276/greendeco.git/web"
 )
 
@@ -36,6 +37,11 @@ func handler() http.HandlerFunc {
 	if err := database.ConnectDB(); err != nil {
 		log.Panic(err)
 	}
+
+	if err := storage.ConnectStorage(); err != nil {
+		log.Panic(err)
+	}
+
 	app := fiber.New()
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
