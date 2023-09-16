@@ -41,7 +41,7 @@
 }
 
 @layer components {
-	.base-input {
+	.baseInput {
 		@apply flex w-full items-center gap-compact rounded-[3px] border-[1px] border-primary-5555-20 px-cozy py-compact focus-within:border-transparent  focus-within:outline focus-within:outline-[2px] focus-within:outline-primary-5555;
 	}
 
@@ -67,17 +67,17 @@
 		@apply flex justify-between;
 	}
 
-	.input-disabled {
+	.inputDisabled {
 		@apply bg-neutral-gray-3 text-neutral-500;
 	}
-	.input-error {
+	.inputError {
 		@apply outline outline-[2px] outline-status-error focus-within:outline-primary-5555;
 	}
 
-	.textHelper--error {
+	.helperTextError {
 		@apply text-status-error;
 	}
-	.textHelper--success {
+	.helperTextSuccess {
 		@apply text-status-success;
 	}
 }
