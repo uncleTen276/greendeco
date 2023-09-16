@@ -12,6 +12,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 0:["_hsxxyFRTfvg1ioAh5sGr",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/a677654c25104325.css",{"as":"style"}]
 4:I{"id":7767,"chunks":["272:static/chunks/webpack-f7396f8066f50b53.js","971:static/chunks/fd9d1056-d25f4732bf5a2bb9.js","596:static/chunks/596-953bb4c04c8293cb.js"],"name":"default","async":false}
@@ -45,6 +46,8 @@
 >>>>>>> 598b0d1 (fix: fix rebase error)
 =======
 >>>>>>> 21da962 (build: migrate to main folder)
+=======
+>>>>>>> 51a37c1 (feat: init axios register request)
 <<<<<<< HEAD
 0:["f6PaJIud7c-vTKUjUTZWJ",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/15961b2591bba4f0.css",{"as":"style"}]
@@ -78,6 +81,8 @@
 >>>>>>> 2a9142c (fix: fix rebase error)
 =======
 >>>>>>> fa7c7ce (build: migrate to main folder)
+=======
+>>>>>>> e4b0334 (feat: init axios register request)
 <<<<<<< HEAD
 0:["N4ySn39ztYvex-G69wO9S",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/537195506b007710.css",{"as":"style"}]
@@ -111,6 +116,8 @@
 >>>>>>> b630a2c (fix: fix rebase error)
 =======
 >>>>>>> 0c796f0 (build: migrate to main folder)
+=======
+>>>>>>> 6f7c2a0 (feat: init axios register request)
 <<<<<<< HEAD
 0:["NBhpJzRXNr80vCUSvl6FU",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 =======
@@ -368,6 +375,9 @@
 =======
 0:["5DN4Qh1qLH3iU1XvCofcq",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 >>>>>>> 140db5a (build: migrate to main folder)
+=======
+0:["wJQRtpcqOSfAIuAukIR52",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
+>>>>>>> 70452d1 (feat: init axios register request)
 3:HL["/_next/static/css/cfa8f634334fdde4.css",{"as":"style"}]
 4:I{"id":7767,"chunks":["272:static/chunks/webpack-60929b175c5ac6ab.js","971:static/chunks/fd9d1056-6f6e5cee19b17eb5.js","596:static/chunks/596-399857f081b08751.js"],"name":"default","async":false}
 5:I{"id":7920,"chunks":["272:static/chunks/webpack-60929b175c5ac6ab.js","971:static/chunks/fd9d1056-6f6e5cee19b17eb5.js","596:static/chunks/596-399857f081b08751.js"],"name":"default","async":false}
