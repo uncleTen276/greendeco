@@ -1,24 +1,50 @@
 import * as React from 'react'
 import { FormControl, FormControlProps } from '@mui/base/FormControl'
-import { Input } from '@mui/base/Input'
+import Input from './Input'
+import clsx from 'clsx'
 
-export default function TextField(props: FormControlProps) {
+type CustomFormControlProps<T> = Partial<T> & {
+	label?: string
+	helperText?: string
+	type?: React.HTMLInputTypeAttribute
+}
+
+export default function TextField(props: CustomFormControlProps<FormControlProps>) {
+	const {
+		className,
+		label,
+		helperText,
+		type,
+		required,
+		value,
+		error,
+		disabled,
+		onChange,
+		defaultValue,
+		...otherFormControlProps
+	} = props
+
 	return (
 		<>
 			<FormControl
-				{...props}
-				defaultValue=''
-				required
+				{...otherFormControlProps}
+				className={clsx('flex flex-col gap-[4px]', className)}
 			>
+				{label && (
+					<label className='font-bold'>
+						{label} {required ? '*' : ''}
+					</label>
+				)}
 				<Input
-					placeholder='Write your name here'
-					slotProps={{
-						input: {
-							className:
-								'p-[1.2rem] max-w-full border-primary-5555-20 border-[0.1rem] rounded-[0.3rem]',
-						},
-					}}
+					type={type}
+					className='w-full'
+					value={value}
+					error={error}
+					disabled={disabled}
+					onChange={onChange}
+					defaultValue={defaultValue}
 				/>
+				{helperText && <p className={clsx({ 'text-status-error': error })}>{helperText}</p>}
 			</FormControl>
 		</>
 	)

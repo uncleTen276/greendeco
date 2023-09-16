@@ -9,17 +9,17 @@ const Input = React.forwardRef(function Input(
 	props: InputProps,
 	ref: React.ForwardedRef<HTMLInputElement>,
 ) {
-	const { className, type } = props
+	const { className, type, disabled, error, ...otherInputProps } = props
 	return (
 		<BaseInput
-			{...props}
+			{...otherInputProps}
 			ref={ref}
 			startAdornment={type && renderStartAndormentIcon(type)}
 			slotProps={{
 				root: {
-					className: clsx(['base-input', className], {
-						'input-disabled': props.disabled,
-						'input-error': props.error,
+					className: clsx(['baseInput', className], {
+						inputDisabled: disabled,
+						inputError: error,
 					}),
 				},
 				input: {
