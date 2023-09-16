@@ -35,4 +35,4 @@ export const RegisterSchema = z
 		message: 'Invalid phone number',
 	})
 
-export type RegisterInputType = z.infer<typeof RegisterSchema>
+export type RegisterFormInputType = z.infer<typeof RegisterSchema>
