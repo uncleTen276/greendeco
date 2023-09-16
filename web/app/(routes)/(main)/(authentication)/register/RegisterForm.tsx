@@ -1,10 +1,13 @@
 'use client'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { RegisterSchema, RegisterInputType } from '@/app/_configs/schemas/authentication'
+import { RegisterSchema, RegisterFormInputType } from '@/app/_configs/schemas/authentication'
+import { useMutation } from '@tanstack/react-query'
+import { registerAccount } from '@/app/_api/axios/authentication'
+import { AxiosError } from 'axios'
 
 export default function RegisterForm() {
-	const defaultInputValues: RegisterInputType = {
+	const defaultInputValues: RegisterFormInputType = {
 		firstName: '',
 		lastName: '',
 		email: '',
@@ -13,20 +16,43 @@ export default function RegisterForm() {
 		passwordConfirm: '',
 	}
 	const {
+		reset,
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<RegisterInputType>({
+	} = useForm<RegisterFormInputType>({
 		mode: 'onBlur',
 		reValidateMode: 'onSubmit',
 		resolver: zodResolver(RegisterSchema),
 		defaultValues: defaultInputValues,
 	})
+
+	const registerMutation = useMutation({
+		mutationFn: registerAccount,
+		onSuccess: (data) => {
+			reset()
+			console.log('success', data)
+		},
+		onError: (error: AxiosError) => console.log(error.response?.data),
+	})
+
+	const onSubmitHandler: SubmitHandler<RegisterFormInputType> = (values) => {
+		// ? Execute the Mutation
+		registerMutation.mutate({
+			identifier: values.email,
+			firstName: values.firstName,
+			lastName: values.lastName,
+			email: values.email,
+			password: values.password,
+			phoneNumber: values.phoneNumber,
+		})
+	}
+
 	return (
 		<>
 			<form
 				autoComplete='off'
-				onSubmit={handleSubmit((data) => console.log(data))}
+				onSubmit={handleSubmit(onSubmitHandler)}
 				className='flex w-full flex-col gap-cozy text-body-sm'
 			>
 				<div className='flex-row-between gap-cozy'>

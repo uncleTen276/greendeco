@@ -14,6 +14,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 0:["_hsxxyFRTfvg1ioAh5sGr",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/a677654c25104325.css",{"as":"style"}]
 4:I{"id":7767,"chunks":["272:static/chunks/webpack-f7396f8066f50b53.js","971:static/chunks/fd9d1056-d25f4732bf5a2bb9.js","596:static/chunks/596-953bb4c04c8293cb.js"],"name":"default","async":false}
@@ -51,6 +52,8 @@
 >>>>>>> 51a37c1 (feat: init axios register request)
 =======
 >>>>>>> 9d8089b (feat: change type name)
+=======
+>>>>>>> f156cd0 (feat(register): implement registerAccount)
 <<<<<<< HEAD
 0:["f6PaJIud7c-vTKUjUTZWJ",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/15961b2591bba4f0.css",{"as":"style"}]
@@ -88,6 +91,8 @@
 >>>>>>> e4b0334 (feat: init axios register request)
 =======
 >>>>>>> 0d76ecb (feat: change type name)
+=======
+>>>>>>> 239890c (feat(register): implement registerAccount)
 <<<<<<< HEAD
 0:["N4ySn39ztYvex-G69wO9S",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 3:HL["/_next/static/css/537195506b007710.css",{"as":"style"}]
@@ -125,6 +130,8 @@
 >>>>>>> 6f7c2a0 (feat: init axios register request)
 =======
 >>>>>>> 2e2a228 (feat: change type name)
+=======
+>>>>>>> 24e24bc (feat(register): implement registerAccount)
 <<<<<<< HEAD
 0:["NBhpJzRXNr80vCUSvl6FU",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 =======
@@ -388,6 +395,9 @@
 =======
 0:["HomTqsT3QgodY0YY91R-6",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
 >>>>>>> 480f168 (feat: change type name)
+=======
+0:["_J2ld5ISHwlIx90W8EodW",[[["",{"children":["(routes)",{"children":["__PAGE__",{}]},"$undefined","$undefined",true]}],"$L1",[[],"$L2"]]]]
+>>>>>>> beb78d1 (feat(register): implement registerAccount)
 3:HL["/_next/static/css/cfa8f634334fdde4.css",{"as":"style"}]
 4:I{"id":7767,"chunks":["272:static/chunks/webpack-60929b175c5ac6ab.js","971:static/chunks/fd9d1056-d7f86558bf0afdf1.js","596:static/chunks/596-b93f82359d001a93.js"],"name":"default","async":false}
 5:I{"id":7920,"chunks":["272:static/chunks/webpack-60929b175c5ac6ab.js","971:static/chunks/fd9d1056-d7f86558bf0afdf1.js","596:static/chunks/596-b93f82359d001a93.js"],"name":"default","async":false}
