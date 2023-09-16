@@ -6,10 +6,10 @@ const Button = React.forwardRef(function Button(
 	props: ButtonProps,
 	ref: React.ForwardedRef<HTMLButtonElement>,
 ) {
-	const { className, ...rest } = props
+	const { className, ...otherButtonProps } = props
 	return (
 		<BaseButton
-			{...rest}
+			{...otherButtonProps}
 			ref={ref}
 			className={clsx('btn', className)}
 		/>
