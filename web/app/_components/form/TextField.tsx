@@ -2,11 +2,13 @@ import * as React from 'react'
 import { FormControl, FormControlProps } from '@mui/base/FormControl'
 import Input from './Input'
 import clsx from 'clsx'
+import { UseFormRegisterReturn } from 'react-hook-form'
 
 type CustomFormControlProps<T> = Partial<T> & {
 	label?: string
 	helperText?: string
 	type?: React.HTMLInputTypeAttribute
+	register?: UseFormRegisterReturn
 }
 
 export default function TextField(props: CustomFormControlProps<FormControlProps>) {
@@ -19,8 +21,8 @@ export default function TextField(props: CustomFormControlProps<FormControlProps
 		value,
 		error,
 		disabled,
-		onChange,
 		defaultValue,
+		register,
 		...otherFormControlProps
 	} = props
 
@@ -28,7 +30,7 @@ export default function TextField(props: CustomFormControlProps<FormControlProps
 		<>
 			<FormControl
 				{...otherFormControlProps}
-				className={clsx('flex flex-col gap-[4px]', className)}
+				className={clsx('flex flex-col gap-compact', className)}
 			>
 				{label && (
 					<label className='font-bold'>
@@ -41,8 +43,8 @@ export default function TextField(props: CustomFormControlProps<FormControlProps
 					value={value}
 					error={error}
 					disabled={disabled}
-					onChange={onChange}
 					defaultValue={defaultValue}
+					{...register}
 				/>
 				{helperText && <p className={clsx({ 'text-status-error': error })}>{helperText}</p>}
 			</FormControl>
