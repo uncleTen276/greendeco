@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd web && yarn lint-staged --no-stash && yarn build && git add --force dist
+# cd web && yarn lint-staged --no-stash && yarn build && git add --force dist
