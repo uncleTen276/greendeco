@@ -93,9 +93,9 @@ export default function RegisterForm() {
 						type='email'
 						label='Email'
 						placeholder='Your Email'
-						register={register('lastName')}
-						error={Boolean(errors?.lastName)}
-						helperText={errors?.lastName?.message}
+						register={register('email')}
+						error={Boolean(errors?.email)}
+						helperText={errors?.email?.message}
 					/>
 				</div>
 				<div>
