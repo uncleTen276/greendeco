@@ -5,6 +5,7 @@ import { RegisterSchema, RegisterFormInputType } from '@/app/_configs/schemas/au
 import { useMutation } from '@tanstack/react-query'
 import { registerAccount } from '@/app/_api/axios/authentication'
 import { AxiosError } from 'axios'
+import { notifyRegisterFail, notifyRegisterSuccess } from '../Notification'
 
 export default function RegisterForm() {
 	const defaultInputValues: RegisterFormInputType = {
@@ -29,11 +30,15 @@ export default function RegisterForm() {
 
 	const registerMutation = useMutation({
 		mutationFn: registerAccount,
-		onSuccess: (data) => {
+		onSuccess: () => {
 			reset()
-			console.log('success', data)
+			notifyRegisterSuccess()
 		},
-		onError: (error: AxiosError) => console.log(error.response?.data),
+		onError: (e) => {
+			if (e instanceof AxiosError) {
+				notifyRegisterFail(e.response?.data.msg)
+			}
+		},
 	})
 
 	const onSubmitHandler: SubmitHandler<RegisterFormInputType> = (values) => {
@@ -51,7 +56,6 @@ export default function RegisterForm() {
 	return (
 		<>
 			<form
-				autoComplete='off'
 				onSubmit={handleSubmit(onSubmitHandler)}
 				className='flex w-full flex-col gap-cozy text-body-sm'
 			>
