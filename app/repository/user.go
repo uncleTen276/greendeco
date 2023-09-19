@@ -85,3 +85,11 @@ func (repo *UserRepo) UpdatePasswordById(password string, id string) error {
 
 	return nil
 }
+
+func (repo *UserRepo) UpdateUserInfor() error {
+	return nil
+}
+
+func (repo *UserRepo) UpdateRules() error {
+	return nil
+}
