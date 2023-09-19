@@ -9,12 +9,9 @@ export const metadata: Metadata = {
 export default function AuthenticationLayout({ children }: { children: ReactNode }) {
 	return (
 		<div className='flex-center h-screen w-screen bg-primary-5555-20'>
-			<div className='container my-auto grid  h-[95%] max-h-full grid-cols-2 overflow-hidden rounded-lg bg-white  p-cozy'>
-				<div className='flex-center relative h-full '>
-					<div className='mx-auto w-[60%] max-w-full'>{children}</div>
-					<div className='absolute bottom-cozy text-center text-body-sm text-primary-418-40'>
-						© 2023 ALL RIGHTS RESERVED
-					</div>
+			<div className='container grid h-full grid-cols-2 overflow-hidden  bg-white  p-cozy  shadow-30'>
+				<div className='relative flex h-full flex-col overflow-auto p-comfortable'>
+					<div className='mx-auto w-[70%] max-w-full'>{children}</div>
 				</div>
 				<div className='aspect-auto h-full overflow-hidden rounded-lg'>
 					<Image
