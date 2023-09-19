@@ -6,6 +6,8 @@ import { useMutation } from '@tanstack/react-query'
 import { registerAccount } from '@/app/_api/axios/authentication'
 import { AxiosError } from 'axios'
 import { notifyRegisterFail, notifyRegisterSuccess } from '../Notification'
+import TextField from '@/app/_components/form/TextField'
+import Button from '@/app/_components/Button'
 
 export default function RegisterForm() {
 	const defaultInputValues: RegisterFormInputType = {
@@ -16,6 +18,8 @@ export default function RegisterForm() {
 		password: '',
 		passwordConfirm: '',
 	}
+
+	//NOTE: Validation with useForm
 	const {
 		reset,
 		register,
@@ -29,11 +33,14 @@ export default function RegisterForm() {
 	})
 
 	const registerMutation = useMutation({
+		//NOTE: The callback used for the mutation
 		mutationFn: registerAccount,
+		//NOTE: Execuse after receiving suscess responses
 		onSuccess: () => {
 			reset()
 			notifyRegisterSuccess()
 		},
+		//NOTE: Execuse after receving failure responses
 		onError: (e) => {
 			if (e instanceof AxiosError) {
 				notifyRegisterFail(e.response?.data.msg)
@@ -42,7 +49,7 @@ export default function RegisterForm() {
 	})
 
 	const onSubmitHandler: SubmitHandler<RegisterFormInputType> = (values) => {
-		// ? Execute the Mutation
+		//NOTE: Execute the Mutation
 		registerMutation.mutate({
 			identifier: values.email,
 			firstName: values.firstName,
@@ -61,55 +68,72 @@ export default function RegisterForm() {
 			>
 				<div className='flex-row-between gap-cozy'>
 					<div className='flex-1'>
-						<input
+						<TextField
 							type='text'
+							label='First Name'
 							placeholder='First Name'
-							{...register('firstName')}
+							register={register('firstName')}
+							error={Boolean(errors?.firstName)}
+							helperText={errors?.firstName?.message}
 						/>
-						{errors?.firstName?.message && <p>{errors.firstName.message}</p>}
 					</div>
 					<div className='flex-1'>
-						<input
+						<TextField
 							type='text'
+							label='Last Name'
 							placeholder='Last Name'
-							{...register('lastName')}
+							register={register('lastName')}
+							error={Boolean(errors?.lastName)}
+							helperText={errors?.lastName?.message}
 						/>
-						{errors?.lastName?.message && <p>{errors.lastName.message}</p>}
 					</div>
 				</div>
 				<div>
-					<input
+					<TextField
 						type='email'
-						placeholder='Email'
-						{...register('email')}
+						label='Email'
+						placeholder='Your Email'
+						register={register('lastName')}
+						error={Boolean(errors?.lastName)}
+						helperText={errors?.lastName?.message}
 					/>
-					{errors?.email?.message && <p>{errors.email.message}</p>}
 				</div>
 				<div>
-					<input
+					<TextField
 						type='tel'
+						label='Phone Number'
 						placeholder='Phone Number'
-						{...register('phoneNumber')}
+						register={register('phoneNumber')}
+						error={Boolean(errors?.phoneNumber)}
+						helperText={errors?.phoneNumber?.message}
 					/>
-					{errors?.phoneNumber?.message && <p>{errors.phoneNumber.message}</p>}
 				</div>
 				<div>
-					<input
+					<TextField
 						type='password'
+						label='Password'
 						placeholder='Password'
-						{...register('password')}
+						register={register('password')}
+						error={Boolean(errors?.password)}
+						helperText={errors?.password?.message}
 					/>
-					{errors?.password?.message && <p>{errors.password.message}</p>}
 				</div>
 				<div>
-					<input
+					<TextField
 						type='password'
+						label='Confirm Password'
 						placeholder='Confirm Password'
-						{...register('passwordConfirm')}
+						register={register('passwordConfirm')}
+						error={Boolean(errors?.passwordConfirm)}
+						helperText={errors?.passwordConfirm?.message}
 					/>
-					{errors?.passwordConfirm?.message && <p>{errors.passwordConfirm.message}</p>}
 				</div>
-				<button type='submit'>Sign Up</button>
+				<Button
+					type='submit'
+					disabled={registerMutation.isLoading}
+				>
+					{registerMutation.isLoading ? 'Sending...' : 'Sign Up'}
+				</Button>
 			</form>
 		</>
 	)
