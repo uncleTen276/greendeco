@@ -7,7 +7,7 @@ export const notifyRegisterSuccess = () => {
 		position: 'top-center',
 	})
 }
-export const notifyRegisterFail = ({ errorMessage }: { errorMessage?: string }) => {
+export const notifyRegisterFail = (errorMessage?: string) => {
 	toast.error(<ErrorMessage message={errorMessage ? errorMessage : undefined} />, {
 		position: 'top-center',
 	})
