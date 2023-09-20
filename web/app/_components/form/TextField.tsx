@@ -30,6 +30,7 @@ export default function TextField(props: CustomFormControlProps<FormControlProps
 		<>
 			<FormControl
 				{...otherFormControlProps}
+				disabled={disabled}
 				className={clsx('flex flex-col gap-compact', className)}
 			>
 				{label && (

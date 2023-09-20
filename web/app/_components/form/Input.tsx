@@ -13,6 +13,8 @@ const Input = React.forwardRef(function Input(
 	return (
 		<BaseInput
 			{...otherInputProps}
+			disabled={disabled}
+			error={error}
 			ref={ref}
 			startAdornment={props.type && renderStartAndormentIcon(props.type)}
 			slotProps={{
