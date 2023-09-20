@@ -3,17 +3,17 @@ import { ToastContentProps, toast } from 'react-toastify'
 import Link from 'next/link'
 
 export const notifyRegisterSuccess = () => {
-	toast.success(<SuccessMessage />, {
+	toast.success(<RegisterSuccessMessage />, {
 		position: 'top-center',
 	})
 }
 export const notifyRegisterFail = (errorMessage?: string) => {
-	toast.error(<ErrorMessage message={errorMessage ? errorMessage : undefined} />, {
+	toast.error(<RegisterErrorMessage message={errorMessage ? errorMessage : undefined} />, {
 		position: 'top-center',
 	})
 }
 
-const SuccessMessage = () => (
+const RegisterSuccessMessage = () => (
 	<div className='flex flex-col gap-[4px] pl-compact pr-common text-body-sm'>
 		<h3 className='capitalize text-primary-625'>Registered Successfully</h3>
 		<p>
@@ -27,7 +27,7 @@ const SuccessMessage = () => (
 		</p>
 	</div>
 )
-const ErrorMessage = ({ message }: { message?: string }) => (
+const RegisterErrorMessage = ({ message }: { message?: string }) => (
 	<div className='flex flex-col gap-[4px] pl-compact pr-common text-body-sm'>
 		<h3 className='capitalize text-status-error'>{message ? message : 'Registered Failed'}</h3>
 	</div>
