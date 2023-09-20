@@ -9,6 +9,7 @@ type CustomFormControlProps<T> = Partial<T> & {
 	helperText?: string
 	type?: React.HTMLInputTypeAttribute
 	register?: UseFormRegisterReturn
+	readOnly?: true | false
 }
 
 export default function TextField(props: CustomFormControlProps<FormControlProps>) {
@@ -20,6 +21,7 @@ export default function TextField(props: CustomFormControlProps<FormControlProps
 		required,
 		value,
 		error,
+		readOnly = false,
 		disabled,
 		defaultValue,
 		register,
@@ -30,6 +32,7 @@ export default function TextField(props: CustomFormControlProps<FormControlProps
 		<>
 			<FormControl
 				{...otherFormControlProps}
+				disabled={disabled || readOnly}
 				className={clsx('flex flex-col gap-compact', className)}
 			>
 				{label && (
@@ -42,6 +45,7 @@ export default function TextField(props: CustomFormControlProps<FormControlProps
 					className='w-full'
 					value={value}
 					error={error}
+					readOnly={readOnly}
 					disabled={disabled}
 					defaultValue={defaultValue}
 					{...register}
