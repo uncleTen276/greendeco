@@ -18,8 +18,7 @@ export const RegisterSchema = z
 			.min(1, 'Last name is required')
 			.max(32, 'Name must be less than 32 characters'),
 		email: z.string().min(1, 'Email is required').email('Email is invalid'),
-		phoneNumber: z.string().min(1, 'Phone number is required'),
-
+		phoneNumber: z.string().min(1, 'Phone number is required').max(12, 'Invalid phone number'),
 		password: z
 			.string()
 			.min(MIN_PASSWORD, `Password must be more than ${MIN_PASSWORD} characters`)
