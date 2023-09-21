@@ -8,6 +8,16 @@ module.exports = {
 	important: '#__next',
 	theme: {
 		extend: {
+			container: {
+				center: true,
+			},
+			screens: {
+				'2xl': '1440px',
+			},
+			boxShadow: {
+				30: ' 0px 14px 28px rgba(0, 0, 0, 0.25),0px 10px 10px rgba(0, 0, 0, 0.22) ',
+				38: ' 0px 10px 15px -3px rgba(0, 0, 0, 0.1),0px 4px 6px -2px rgba(0, 0, 0, 0.05) ',
+			},
 			fontSize: {
 				heading: '2.8rem',
 				'heading-1': '2.4rem',

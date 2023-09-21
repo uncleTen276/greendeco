@@ -17,6 +17,9 @@
 	a {
 		@apply text-action-link;
 	}
+	img {
+		@apply h-full w-full;
+	}
 
 	h1,
 	h2,
@@ -79,5 +82,8 @@
 	}
 	.helperTextSuccess {
 		@apply text-status-success;
+	}
+	.flex-center {
+		@apply flex items-center justify-center;
 	}
 }
