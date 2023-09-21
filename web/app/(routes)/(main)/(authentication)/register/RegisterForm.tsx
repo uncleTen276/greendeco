@@ -48,7 +48,8 @@ export default function RegisterForm() {
 		},
 	})
 
-	const onSubmitHandler: SubmitHandler<RegisterFormInputType> = (values) => {
+	const onSubmitHandler: SubmitHandler<RegisterFormInputType> = (values, e) => {
+		e?.preventDefault()
 		//NOTE: Execute the Mutation
 		registerMutation.mutate({
 			identifier: values.email,
