@@ -270,6 +270,41 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/update": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "update user information",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "description": "Updated UserInformation",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -344,9 +379,41 @@ const docTemplate = `{
                 }
             }
         },
+        "models.UpdateUser": {
+            "type": "object",
+            "required": [
+                "email",
+                "firstName",
+                "lastName",
+                "phoneNumber"
+            ],
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "maxLength": 150
+                },
+                "firstName": {
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "lastName": {
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "phoneNumber": {
+                    "type": "string"
+                }
+            }
+        },
         "models.User": {
             "type": "object",
             "properties": {
+                "avatar": {
+                    "type": "string"
+                },
                 "createdAt": {
                     "type": "string"
                 },
@@ -361,9 +428,6 @@ const docTemplate = `{
                 },
                 "identifier": {
                     "type": "string"
-                },
-                "isAdmin": {
-                    "type": "boolean"
                 },
                 "lastName": {
                     "type": "string"

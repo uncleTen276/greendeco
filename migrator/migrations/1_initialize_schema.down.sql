@@ -1,2 +1,3 @@
 DROP TABLE users;
-DROP TABLE admin;
+DROP TABLE roles;
+DROP TABLE user_role;

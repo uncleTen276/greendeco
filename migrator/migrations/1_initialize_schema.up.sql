@@ -8,8 +8,8 @@ identifier VARCHAR(50) UNIQUE NOT NULL,
 password VARCHAR(200) NOT NULL,
 first_name VARCHAR(50),
 last_name VARCHAR(50),
-phone_number VARCHAR(12) NULL,
-avartar VARCHAR(200) NULL,
+phone_number VARCHAR(12),
+avatar VARCHAR(200),
 admin BOOLEAN DEFAULT FALSE NOT NULL,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP WITH TIME ZONE  DEFAULT NOW ()
@@ -28,9 +28,7 @@ role_id UUID  NOT NULL,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP WITH TIME ZONE  DEFAULT NOW (),
 PRIMARY KEY (user_id, role_id),
-FOREIGN KEY(role_id)
-    REFERENCES roles (role_id),
-FOREIGN KEY(user_id)
-    REFERENCES users (user_id)
+FOREIGN KEY(role_id) REFERENCES roles (id),
+FOREIGN KEY(user_id) REFERENCES users (id)
 );
 

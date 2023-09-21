@@ -14,7 +14,8 @@ type User struct {
 	FirstName   string    `db:"first_name"`
 	LastName    string    `db:"last_name"`
 	PhoneNumber string    `db:"phone_number"`
-	IsAdmin     bool      `db:"admin"`
+	Avatar      *string   `db:"avatar"`
+	IsAdmin     bool      `db:"admin" json:"-"`
 }
 
 func NewUser() *User {
@@ -42,4 +43,12 @@ type UserToken struct {
 type EmailResponse struct {
 	Link     string
 	Username string
+}
+
+type UpdateUser struct {
+	FirstName   string  `json:"firstName" validate:"required,lte=50"`
+	LastName    string  `json:"lastName" validate:"required,lte=50"`
+	PhoneNumber string  `json:"phoneNumber" validate:"required,e164"`
+	Email       string  `json:"email" validate:"required,email,lte=150"`
+	Avatar      *string `json:"avatar" validate:"url"`
 }

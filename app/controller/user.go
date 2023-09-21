@@ -312,3 +312,77 @@ func UpdatePassword(c *fiber.Ctx) error {
 
 	return c.SendStatus(fiber.StatusNoContent)
 }
+
+// UpdateUserInformation
+// @Update godoc
+// @Description update user information
+// @Tags User
+// @Accept json
+// @Param todo body models.UpdateUser true "Updated UserInformation"
+// @Success 200 {object} models.User
+// @Security Bearer
+// @Router /user/update [put]
+func UpdateUserInformation(c *fiber.Ctx) error {
+	token, ok := c.Locals("user").(*jwt.Token)
+	if !ok {
+		return c.Status(fiber.ErrInternalServerError.Code).JSON(models.ErrorResponse{
+			Message: "can not parse token",
+		})
+	}
+
+	userId, err := middlewares.GetUserIdFromToken(token)
+	if err != nil {
+		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	userUpdate := &models.UpdateUser{}
+	if err := c.BodyParser(userUpdate); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(&models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	userRepo := repository.NewUserRepo(database.GetDB())
+
+	userExist, err := userRepo.GetUserById(userId)
+	if err != nil && err != models.ErrNotFound {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "fail to create user",
+		})
+	}
+
+	if userExist != nil {
+		return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
+			Message: "this user identifier already exists",
+		})
+	}
+
+	userEmail, err := userRepo.GetUserByEmail(userUpdate.Email)
+	if err != nil && err != models.ErrNotFound {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "fail to create user",
+		})
+	}
+
+	if userEmail != nil {
+		return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
+			Message: "this user email already exists",
+		})
+	}
+	if err := userRepo.UpdateUserInfor(userId, userUpdate); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(&models.ErrorResponse{
+			Message: "fail to update user",
+		})
+	}
+
+	userRes, err := userRepo.GetUserById(userId)
+	if err != nil {
+		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
+			Message: "user not found",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(userRes)
+}

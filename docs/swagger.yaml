@@ -51,8 +51,31 @@ definitions:
       msg:
         type: string
     type: object
+  models.UpdateUser:
+    properties:
+      avatar:
+        type: string
+      email:
+        maxLength: 150
+        type: string
+      firstName:
+        maxLength: 50
+        type: string
+      lastName:
+        maxLength: 50
+        type: string
+      phoneNumber:
+        type: string
+    required:
+    - email
+    - firstName
+    - lastName
+    - phoneNumber
+    type: object
   models.User:
     properties:
+      avatar:
+        type: string
       createdAt:
         type: string
       email:
@@ -63,8 +86,6 @@ definitions:
         type: string
       identifier:
         type: string
-      isAdmin:
-        type: boolean
       lastName:
         type: string
       phoneNumber:
@@ -258,6 +279,27 @@ paths:
       security:
       - Bearer: []
       summary: get user information by Id
+      tags:
+      - User
+  /user/update:
+    put:
+      consumes:
+      - application/json
+      description: update user information
+      parameters:
+      - description: Updated UserInformation
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUser'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - Bearer: []
       tags:
       - User
 securityDefinitions:
