@@ -353,9 +353,9 @@ func UpdateUserInformation(c *fiber.Ctx) error {
 		})
 	}
 
-	if userExist != nil {
+	if userExist == nil {
 		return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
-			Message: "this user identifier already exists",
+			Message: "user not found",
 		})
 	}
 
@@ -366,11 +366,20 @@ func UpdateUserInformation(c *fiber.Ctx) error {
 		})
 	}
 
-	if userEmail != nil {
+	if userEmail.ID != userExist.ID {
 		return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
 			Message: "this user email already exists",
 		})
 	}
+
+	validate := validators.NewValidator()
+	if err := validate.Struct(userUpdate); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+			Errors:  validators.ValidatorErrors(err),
+		})
+	}
+
 	if err := userRepo.UpdateUserInfor(userId, userUpdate); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&models.ErrorResponse{
 			Message: "fail to update user",
