@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/sekke276/greendeco.git/pkg/configs"
 	"github.com/sekke276/greendeco.git/pkg/routes"
 	"github.com/sekke276/greendeco.git/platform/database"
@@ -43,6 +44,8 @@ func handler() http.HandlerFunc {
 	}
 
 	app := fiber.New()
+
+	app.Use(cors.ConfigDefault)
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
 	})
