@@ -123,6 +123,39 @@ info:
   title: Fiber Go API
   version: "1.0"
 paths:
+  /admin/cusotmers:
+    get:
+      consumes:
+      - application/json
+      description: route get customer for admin
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: get customers
+      tags:
+      - Admin
   /auth/forgot-password:
     post:
       consumes:

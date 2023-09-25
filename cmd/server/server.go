@@ -40,6 +40,7 @@ func Serve() {
 	routes.UserRoutes(api)
 	routes.AuthRoutes(api)
 	routes.MediaRoutes(api)
+	routes.AdminRoute(api)
 	web.Routes(app)
 	if err := app.Listen(":8080"); err != nil {
 		log.Fatal("not response")

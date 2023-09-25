@@ -3,7 +3,6 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/platform/database"
@@ -59,7 +58,6 @@ func (repo *UserRepo) GetUserByIdentifier(identifier string) (*models.User, erro
 	if err == sql.ErrNoRows {
 		return nil, models.ErrNotFound
 	} else if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 	return user, nil

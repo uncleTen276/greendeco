@@ -349,7 +349,7 @@ func UpdateUserInformation(c *fiber.Ctx) error {
 	userExist, err := userRepo.GetUserById(userId)
 	if err != nil && err != models.ErrNotFound {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
-			Message: "fail to create user",
+			Message: "something bad happend :(",
 		})
 	}
 
