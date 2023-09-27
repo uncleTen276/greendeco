@@ -218,6 +218,11 @@ func ForgotPassword(c *fiber.Ctx) error {
 		})
 	}
 
+	if err == models.ErrNotFound {
+		println("email not found")
+		return c.SendString("Please check your email")
+	}
+
 	config := configs.AppConfig().Auth
 	token, err := generateToken(user, time.Duration(config.ShortTokenExpire*int(time.Minute)))
 	if err != nil {
