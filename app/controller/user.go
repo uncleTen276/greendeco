@@ -251,10 +251,11 @@ func sendEmail(email string, token string) {
 
 	newMessage.SetBody("text/html", buff.String())
 
-	dialer := gomail.NewDialer("smtp.gmail.com", 465, cfg.Email, cfg.Password)
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, cfg.Email, cfg.Password)
 	if err := dialer.DialAndSend(newMessage); err != nil {
 		fmt.Println("Failed to send email! Err: ", err)
 	}
+	println("send email to", email)
 }
 
 // UpdatePassword
