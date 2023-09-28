@@ -219,7 +219,6 @@ func ForgotPassword(c *fiber.Ctx) error {
 	}
 
 	if err == models.ErrNotFound {
-		println("email not found")
 		return c.SendString("Please check your email")
 	}
 
@@ -230,10 +229,12 @@ func ForgotPassword(c *fiber.Ctx) error {
 	}
 
 	if err := sendEmail(reqEmail.Email, token); err != nil {
+		println(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
-			Message: err.Error(),
+			Message: "some thing bad happenned :(",
 		})
 	}
+
 	return c.SendString("Please check your email")
 }
 
