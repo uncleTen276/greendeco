@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"time"
 
@@ -220,7 +219,6 @@ func ForgotPassword(c *fiber.Ctx) error {
 	}
 
 	if err == models.ErrNotFound {
-		println("email not found")
 		return c.SendString("Please check your email")
 	}
 
@@ -230,12 +228,18 @@ func ForgotPassword(c *fiber.Ctx) error {
 		print(err)
 	}
 
-	go sendEmail(reqEmail.Email, token)
+	if err := sendEmail(reqEmail.Email, token); err != nil {
+		println(err)
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "some thing bad happenned :(",
+		})
+	}
+
 	return c.SendString("Please check your email")
 }
 
 // sendEmail use for send uemail to reset password
-func sendEmail(email string, token string) {
+func sendEmail(email string, token string) error {
 	cfg := configs.AppConfig().SMTP
 	newMessage := gomail.NewMessage()
 	newMessage.SetHeader("From", "greendeco@gmail.com")
@@ -254,10 +258,12 @@ func sendEmail(email string, token string) {
 
 	dialer := gomail.NewDialer("smtp.gmail.com", 465, cfg.Email, cfg.Password)
 	if err := dialer.DialAndSend(newMessage); err != nil {
-		log.Fatal(err)
 		fmt.Println("Failed to send email! Err: ", err)
+		return err
 	}
+
 	println("send email to", email)
+	return nil
 }
 
 // UpdatePassword
