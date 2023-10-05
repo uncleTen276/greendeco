@@ -17,6 +17,14 @@ definitions:
     required:
     - password
     type: object
+  models.CreateCategory:
+    properties:
+      name:
+        maxLength: 100
+        type: string
+    required:
+    - name
+    type: object
   models.CreateUser:
     properties:
       email:
@@ -50,6 +58,14 @@ definitions:
       errors: {}
       msg:
         type: string
+    type: object
+  models.UpdateCategory:
+    properties:
+      name:
+        maxLength: 100
+        type: string
+    required:
+    - name
     type: object
   models.UpdateUser:
     properties:
@@ -264,6 +280,121 @@ paths:
       summary: Create new user
       tags:
       - Auth
+  /category/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New category
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Create new category require admin permission
+      tags:
+      - Category
+  /category/{id}/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id category update
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: delete category by id require admin permission
+      tags:
+      - Category
+  /category/{id}/update:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id category update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: category
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update category by id require admin permission
+      tags:
+      - Category
   /media/upload:
     post:
       consumes:

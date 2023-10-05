@@ -2,8 +2,10 @@ package database
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
+	"github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4/stdlib" // load pgx driver for PostgreSQL
 	"github.com/jmoiron/sqlx"
 	"github.com/sekke276/greendeco.git/pkg/configs"
@@ -38,4 +40,8 @@ func GetDB() *DB {
 
 func ConnectDB() error {
 	return defaultDB.connectPostgresql()
+}
+
+func DetectDuplicateError(err error) bool {
+	return strings.Contains(err.(*pgconn.PgError).Message, "duplicate key value violates unique constraint")
 }
