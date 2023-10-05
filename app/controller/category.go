@@ -33,7 +33,7 @@ func CreateCategories(c *fiber.Ctx) error {
 	newCategory := &models.CreateCategory{}
 	if !middlewares.GetAdminFromToken(token) {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
-			Message: "invalid input found",
+			Message: "you don't have permission",
 		})
 	}
 
@@ -51,9 +51,9 @@ func CreateCategories(c *fiber.Ctx) error {
 		})
 	}
 
-	productRepo := repository.NewProductRepository(database.GetDB())
+	productRepo := repository.NewCategoryRepository(database.GetDB())
 
-	if err := productRepo.CreateCategory(newCategory); err != nil {
+	if err := productRepo.Create(newCategory); err != nil {
 		if database.DetectDuplicateError(err) {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 				Message: "record already exists",
@@ -95,8 +95,8 @@ func UpdateCategories(c *fiber.Ctx) error {
 	}
 
 	id := c.Params("id")
-	repo := repository.NewProductRepository(database.GetDB())
-	category, err := repo.FindCategoryById(id)
+	repo := repository.NewCategoryRepository(database.GetDB())
+	category, err := repo.FindById(id)
 	if err != nil && err != models.ErrNotFound {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend :(",
@@ -126,7 +126,7 @@ func UpdateCategories(c *fiber.Ctx) error {
 
 	newCategory.ID = category.ID
 
-	if err := repo.UpdateCategoryById(newCategory); err != nil {
+	if err := repo.UpdateById(newCategory); err != nil {
 		if database.DetectDuplicateError(err) {
 			return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
 				Message: "record already exists",
@@ -166,8 +166,8 @@ func DeleteCategories(c *fiber.Ctx) error {
 	}
 
 	id := c.Params("id")
-	repo := repository.NewProductRepository(database.GetDB())
-	category, err := repo.FindCategoryById(id)
+	repo := repository.NewCategoryRepository(database.GetDB())
+	category, err := repo.FindById(id)
 	if err != nil && err != models.ErrNotFound {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend :(",
@@ -180,7 +180,7 @@ func DeleteCategories(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := repo.DeleteCategory(id); err != nil {
+	if err := repo.Delete(id); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend :(",
 		})
@@ -189,4 +189,37 @@ func DeleteCategories(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
-// func GetAllCategory()
+// GetAllCategory()
+// @GetAllCategory godoc
+// @Summary get category
+// @Tags Category
+// @Param limit query int false "default: limit = 10"
+// @Param offset query int false "default: offset = 1"
+// @Accept json
+// @Success 200 {array} models.BasePaginationResponse
+// @Failure 400,500 {object} models.ErrorResponse "Error"
+// @Router /category/ [get]
+func GetAllCategory(c *fiber.Ctx) error {
+	baseQuery := models.DefaultQuery()
+	if err := c.QueryParser(baseQuery); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid filter",
+		})
+	}
+
+	repo := repository.NewCategoryRepository(database.GetDB())
+	pageOffset := baseQuery.Limit * (baseQuery.OffSet - 1)
+	categories, err := repo.All(baseQuery.Limit, pageOffset)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "something bad happend :(",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
+		Items:    categories,
+		Page:     baseQuery.OffSet,
+		PageSize: baseQuery.Limit,
+		Total:    len(categories),
+	})
+}

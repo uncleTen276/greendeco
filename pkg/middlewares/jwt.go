@@ -56,3 +56,14 @@ func GetUserIdFromToken(token *jwt.Token) (string, error) {
 	}
 	return userId, nil
 }
+
+func GetAdminFromToken(token *jwt.Token) bool {
+	claims := token.Claims.(jwt.MapClaims)
+	isAdmin := false
+	isAdmin, ok := claims["admin"].(bool)
+	if !ok {
+		return isAdmin
+	}
+
+	return isAdmin
+}

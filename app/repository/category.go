@@ -7,11 +7,12 @@ import (
 	"github.com/sekke276/greendeco.git/platform/database"
 )
 
-type ProductRepository interface {
-	CreateCategory(m *models.CreateCategory) error
-	UpdateCategoryById(m *models.UpdateCategory) error
-	FindCategoryById(id string) (*models.Category, error)
-	DeleteCategory(id string) error
+type CategoryRepository interface {
+	Create(m *models.CreateCategory) error
+	UpdateById(m *models.UpdateCategory) error
+	FindById(id string) (*models.Category, error)
+	Delete(id string) error
+	All(limit, offset int) ([]*models.Category, error)
 }
 
 type ProductRepo struct {
@@ -24,19 +25,19 @@ const (
 	CategoryParentField = "parent"
 )
 
-var _ ProductRepository = (*ProductRepo)(nil)
+var _ CategoryRepository = (*ProductRepo)(nil)
 
-func NewProductRepository(db *database.DB) ProductRepository {
+func NewCategoryRepository(db *database.DB) CategoryRepository {
 	return &ProductRepo{db}
 }
 
-func (repo *ProductRepo) CreateCategory(m *models.CreateCategory) error {
+func (repo *ProductRepo) Create(m *models.CreateCategory) error {
 	query := fmt.Sprintf(`INSERT INTO "%s" (name) VALUES ($1)`, CategoryTable)
 	_, err := repo.db.Exec(query, m.Name)
 	return err
 }
 
-func (repo *ProductRepo) UpdateCategoryById(m *models.UpdateCategory) error {
+func (repo *ProductRepo) UpdateById(m *models.UpdateCategory) error {
 	query := fmt.Sprintf(`UPDATE "%s" SET name = $2 WHERE id = $1`, CategoryTable)
 	_, err := repo.db.Exec(query, m.ID, m.Name)
 	if err != nil {
@@ -46,7 +47,7 @@ func (repo *ProductRepo) UpdateCategoryById(m *models.UpdateCategory) error {
 	return nil
 }
 
-func (repo *ProductRepo) FindCategoryById(id string) (*models.Category, error) {
+func (repo *ProductRepo) FindById(id string) (*models.Category, error) {
 	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, CategoryTable)
 	category := models.NewCategory()
 	err := repo.db.Get(category, query, id)
@@ -56,12 +57,18 @@ func (repo *ProductRepo) FindCategoryById(id string) (*models.Category, error) {
 	return category, nil
 }
 
-func (repo *ProductRepo) DeleteCategory(id string) error {
+func (repo *ProductRepo) Delete(id string) error {
 	query := fmt.Sprintf(`DELETE FROM %s WHERE id = $1`, CategoryTable)
 	_, err := repo.db.Exec(query, id)
 	return err
 }
 
-func (repo *ProductRepo) GetCategories() ([]models.Category, error) {
-	return nil, nil
+func (repo *ProductRepo) All(limit, offset int) ([]*models.Category, error) {
+	categories := []*models.Category{}
+	query := `SELECT * FROM "categories" LIMIT $1 OFFSET $2`
+	if err := repo.db.Select(&categories, query, limit, offset); err != nil {
+		return nil, err
+	}
+
+	return categories, nil
 }

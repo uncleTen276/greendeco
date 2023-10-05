@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
 
@@ -10,7 +9,7 @@ import (
 )
 
 type UserRepository interface {
-	Create(u *models.CreateUser, ctx context.Context) error
+	Create(u *models.CreateUser) error
 	GetUserByIdentifier(identifier string) (*models.User, error)
 	GetUserByEmail(email string) (*models.User, error)
 	GetUserByPhoneNumber(phoneNumber string) (*models.User, error)
@@ -33,9 +32,9 @@ func NewUserRepo(db *database.DB) UserRepository {
 	return &UserRepo{db}
 }
 
-func (repo *UserRepo) Create(u *models.CreateUser, ctx context.Context) error {
+func (repo *UserRepo) Create(u *models.CreateUser) error {
 	query := fmt.Sprintf(`INSERT INTO "%s" (email,identifier,password,first_name,last_name, phone_number) VALUES ($1,$2,$3,$4,$5,$6)`, UserTable)
-	_, err := repo.db.ExecContext(ctx, query, u.Email, u.Identifier, u.Password, u.FirstName, u.LastName, u.PhoneNumber)
+	_, err := repo.db.Exec(query, u.Email, u.Identifier, u.Password, u.FirstName, u.LastName, u.PhoneNumber)
 	return err
 }
 

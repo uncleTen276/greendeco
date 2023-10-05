@@ -2,7 +2,6 @@ package controller
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -81,12 +80,8 @@ func CreateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	ctx := context.Background()
-	ctx, cancel := context.WithTimeout(ctx, time.Duration(1*time.Second))
-	defer cancel()
-
 	user.Password = hashedPassword
-	err = userRepo.Create(user, ctx)
+	err = userRepo.Create(user)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "some thing bad happended",

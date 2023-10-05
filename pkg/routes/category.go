@@ -6,16 +6,17 @@ import (
 	"github.com/sekke276/greendeco.git/pkg/middlewares"
 )
 
-func ProductRouter(app fiber.Router) {
+func CategoryRouter(app fiber.Router) {
 	category := app.Group("/category")
-	privateProductRouter(category)
-	publicProductRouter(category)
+	publicCategoryRouter(category)
+	privateCategoryRouter(category)
 }
 
-func publicProductRouter(app fiber.Router) {
+func publicCategoryRouter(app fiber.Router) {
+	app.Get("/", controller.GetAllCategory)
 }
 
-func privateProductRouter(app fiber.Router) {
+func privateCategoryRouter(app fiber.Router) {
 	app.Use(middlewares.JWTProtected())
 	app.Post("/", controller.CreateCategories)
 	app.Post("/:id/update", controller.UpdateCategories)
