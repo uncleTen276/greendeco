@@ -5,16 +5,16 @@ import (
 )
 
 type User struct {
-	ID          string    `db:"id"`
-	CreatedAt   time.Time `db:"created_at"`
-	UpdatedAt   time.Time `db:"updated_at"`
-	Email       string    `db:"email"`
-	Identifier  string    `db:"identifier"`
+	ID          string    `db:"id" json:"id"`
+	CreatedAt   time.Time `db:"created_at" json:"-"`
+	UpdatedAt   time.Time `db:"updated_at" json:"-"`
+	Email       string    `db:"email" json:"email"`
+	Identifier  string    `db:"identifier" json:"identifier"`
 	Password    string    `db:"password" json:"-"`
-	FirstName   string    `db:"first_name"`
-	LastName    string    `db:"last_name"`
-	PhoneNumber string    `db:"phone_number"`
-	Avatar      *string   `db:"avatar"`
+	FirstName   string    `db:"first_name" json:"firstName"`
+	LastName    string    `db:"last_name" json:"lastName"`
+	PhoneNumber string    `db:"phone_number" json:"phoneNumber"`
+	Avatar      *string   `db:"avatar" json:"avatar"`
 	IsAdmin     bool      `db:"admin" json:"-"`
 }
 
