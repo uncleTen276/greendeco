@@ -38,6 +38,37 @@ name VARCHAR(200) UNIQUE NOT NULL,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP WITH TIME ZONE  DEFAULT NOW ()
 );
+
+CREATE TABLE IF NOT EXISTS "products"(
+id  UUID DEFAULT gen_random_uuid () PRIMARY KEY,
+category_id UUID NOT NULL,
+name VARCHAR(200) NOT NULL,
+is_publish BOOLEAN DEFAULT FALSE,
+size VARCHAR(50),
+type VARCHAR(10),
+images TEXT[],
+description TEXT,
+detail TEXT,
+light VARCHAR(50),
+difficulty VARCHAR(50),
+warter VARCHAR(200),
+qr_image TEXT,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP WITH TIME ZONE  DEFAULT NOW (),
+FOREIGN KEY(category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE IF NOT EXISTS "recommends"(
+product_id UUID NOT NULL,
+recommend_product UUID NOT NULL, 
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP WITH TIME ZONE  DEFAULT NOW (),
+PRIMARY KEY (product_id, recommend_product),
+FOREIGN KEY(product_id) REFERENCES products (id),
+FOREIGN KEY(recommend_product) REFERENCES products (id)
+);
+
+
 -- CREATE ADMIN Account
 INSERT INTO "users" (email,identifier,password,first_name,last_name, phone_number,admin) VALUES ('admin@gmail.com','admin@gmail.com','1234567890','','admin','+844785976','true');
 

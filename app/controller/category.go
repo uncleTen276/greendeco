@@ -51,9 +51,9 @@ func CreateCategories(c *fiber.Ctx) error {
 		})
 	}
 
-	productRepo := repository.NewCategoryRepository(database.GetDB())
+	categoryRepo := repository.NewCategoryRepository(database.GetDB())
 
-	if err := productRepo.Create(newCategory); err != nil {
+	if err := categoryRepo.Create(newCategory); err != nil {
 		if database.DetectDuplicateError(err) {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 				Message: "record already exists",

@@ -4,7 +4,7 @@ type BaseQuery struct {
 	OffSet int    `query:"offSet"`
 	Limit  int    `query:"limit"`
 	Sort   string `query:"sort"`
-	SortBy string `query:"sortBy"`
+	SortBy string `query:"sort_by"`
 }
 
 func DefaultQuery() *BaseQuery {
