@@ -2,12 +2,15 @@ package validators
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/google/uuid"
 )
 
 func NewValidator() *validator.Validate {
 	validate := validator.New()
+	validate.RegisterCustomTypeFunc(ValidateUUID, uuid.UUID{})
 	return validate
 }
 
@@ -26,4 +29,11 @@ func ValidatorErrors(err error) map[string]string {
 	}
 
 	return fields
+}
+
+func ValidateUUID(field reflect.Value) interface{} {
+	if valuer, ok := field.Interface().(uuid.UUID); ok {
+		return valuer.String()
+	}
+	return nil
 }

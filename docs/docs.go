@@ -484,6 +484,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Media"
+                ],
                 "summary": "Create new image return image",
                 "operationId": "image",
                 "parameters": [
@@ -527,6 +530,129 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/models.CreateProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{id}/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "delete product by id require admin permission",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id product",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{id}/update": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "update product require admin permission",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id product update",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "product",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateProduct"
                         }
                     }
                 ],
@@ -701,6 +827,17 @@ const docTemplate = `{
         },
         "models.CreateProduct": {
             "type": "object",
+            "required": [
+                "category_id",
+                "detail",
+                "difficulty",
+                "images",
+                "light",
+                "name",
+                "size",
+                "type",
+                "warter"
+            ],
             "properties": {
                 "category_id": {
                     "type": "string"
@@ -721,22 +858,23 @@ const docTemplate = `{
                     }
                 },
                 "light": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 50
                 },
                 "name": {
                     "type": "string"
                 },
-                "qr_image": {
-                    "type": "string"
-                },
                 "size": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 10
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 20
                 },
                 "warter": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 20
                 }
             }
         },
@@ -795,6 +933,55 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "maxLength": 100
+                }
+            }
+        },
+        "models.UpdateProduct": {
+            "type": "object",
+            "required": [
+                "detail",
+                "difficulty",
+                "images",
+                "is_publish",
+                "light",
+                "size",
+                "type",
+                "warter"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "detail": {
+                    "type": "string"
+                },
+                "difficulty": {
+                    "type": "string"
+                },
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_publish": {
+                    "type": "boolean"
+                },
+                "light": {
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "size": {
+                    "type": "string",
+                    "maxLength": 10
+                },
+                "type": {
+                    "type": "string",
+                    "maxLength": 20
+                },
+                "warter": {
+                    "type": "string",
+                    "maxLength": 20
                 }
             }
         },
