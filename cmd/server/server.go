@@ -38,11 +38,12 @@ func Serve() {
 	api := app.Group("/api/v1")
 	routes.UserRoutes(api)
 	routes.AuthRoutes(api)
-	routes.MediaRoutes(api)
+	routes.NewMediaRouter(api).RegisterRoutes()
 	routes.AdminRoute(api)
 	routes.CategoryRouter(api)
 
 	routes.NewProductRouter(api).RegisterRoutes()
+
 	// web.Routes(app)
 	if err := app.Listen(":8080"); err != nil {
 		log.Fatal("not response")

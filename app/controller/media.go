@@ -39,7 +39,7 @@ func UploadImage(ctx context.Context, fileInput []byte, fileName string, token s
 
 // @PostMedia() godoc
 // @Summary Create new image return image
-// @Tag Media
+// @Tags Media
 // @ID	image
 // @Produce		json
 // @Accept	multipart/form-data

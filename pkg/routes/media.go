@@ -5,7 +5,18 @@ import (
 	"github.com/sekke276/greendeco.git/app/controller"
 )
 
-func MediaRoutes(app fiber.Router) {
-	media := app.Group("/media")
-	media.Post("/upload", controller.PostMedia)
+type MediaRoutes struct {
+	app fiber.Router
+}
+
+func NewMediaRouter(app fiber.Router) *MediaRoutes {
+	return &MediaRoutes{app: app.Group("/media")}
+}
+
+func (r *MediaRoutes) RegisterRoutes() {
+	r.publicRouter()
+}
+
+func (r *MediaRoutes) publicRouter() {
+	r.app.Post("/upload", controller.PostMedia)
 }

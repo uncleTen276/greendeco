@@ -50,17 +50,29 @@ definitions:
           type: string
         type: array
       light:
+        maxLength: 50
         type: string
       name:
         type: string
-      qr_image:
-        type: string
       size:
+        maxLength: 10
         type: string
       type:
+        maxLength: 20
         type: string
       warter:
+        maxLength: 20
         type: string
+    required:
+    - category_id
+    - detail
+    - difficulty
+    - images
+    - light
+    - name
+    - size
+    - type
+    - warter
     type: object
   models.CreateUser:
     properties:
@@ -103,6 +115,42 @@ definitions:
         type: string
     required:
     - name
+    type: object
+  models.UpdateProduct:
+    properties:
+      description:
+        type: string
+      detail:
+        type: string
+      difficulty:
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      is_publish:
+        type: boolean
+      light:
+        maxLength: 50
+        type: string
+      size:
+        maxLength: 10
+        type: string
+      type:
+        maxLength: 20
+        type: string
+      warter:
+        maxLength: 20
+        type: string
+    required:
+    - detail
+    - difficulty
+    - images
+    - is_publish
+    - light
+    - size
+    - type
+    - warter
     type: object
   models.UpdateUser:
     properties:
@@ -477,6 +525,8 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create new image return image
+      tags:
+      - Media
   /product/:
     post:
       consumes:
@@ -512,6 +562,84 @@ paths:
       security:
       - Bearer: []
       summary: Create new product require admin permission
+      tags:
+      - Product
+  /product/{id}/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id product
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: delete product by id require admin permission
+      tags:
+      - Product
+  /product/{id}/update:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: id product update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update product require admin permission
       tags:
       - Product
   /user/me:
