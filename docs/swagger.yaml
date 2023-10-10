@@ -35,6 +35,33 @@ definitions:
     required:
     - name
     type: object
+  models.CreateProduct:
+    properties:
+      category_id:
+        type: string
+      description:
+        type: string
+      detail:
+        type: string
+      difficulty:
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      light:
+        type: string
+      name:
+        type: string
+      qr_image:
+        type: string
+      size:
+        type: string
+      type:
+        type: string
+      warter:
+        type: string
+    type: object
   models.CreateUser:
     properties:
       email:
@@ -102,8 +129,6 @@ definitions:
     properties:
       avatar:
         type: string
-      createdAt:
-        type: string
       email:
         type: string
       firstName:
@@ -115,8 +140,6 @@ definitions:
       lastName:
         type: string
       phoneNumber:
-        type: string
-      updatedAt:
         type: string
     type: object
   models.UserLogin:
@@ -454,6 +477,43 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create new image return image
+  /product/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Create new product require admin permission
+      tags:
+      - Product
   /user/me:
     get:
       consumes:

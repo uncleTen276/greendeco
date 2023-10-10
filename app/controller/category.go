@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"net/http"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/sekke276/greendeco.git/app/models"
@@ -65,7 +63,7 @@ func CreateCategories(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(http.StatusCreated).SendString("create success")
+	return c.Status(fiber.StatusCreated).SendString("create success")
 }
 
 // @UpdateCategories() godoc

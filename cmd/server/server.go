@@ -11,7 +11,6 @@ import (
 	"github.com/sekke276/greendeco.git/pkg/routes"
 	"github.com/sekke276/greendeco.git/platform/database"
 	"github.com/sekke276/greendeco.git/platform/storage"
-	"github.com/sekke276/greendeco.git/web"
 )
 
 func Serve() {
@@ -42,7 +41,9 @@ func Serve() {
 	routes.MediaRoutes(api)
 	routes.AdminRoute(api)
 	routes.CategoryRouter(api)
-	web.Routes(app)
+
+	routes.NewProductRouter(api).RegisterRoutes()
+	// web.Routes(app)
 	if err := app.Listen(":8080"); err != nil {
 		log.Fatal("not response")
 	}

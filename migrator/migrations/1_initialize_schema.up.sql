@@ -42,7 +42,7 @@ updated_at TIMESTAMP WITH TIME ZONE  DEFAULT NOW ()
 CREATE TABLE IF NOT EXISTS "products"(
 id  UUID DEFAULT gen_random_uuid () PRIMARY KEY,
 category_id UUID NOT NULL,
-name VARCHAR(200) NOT NULL,
+name VARCHAR(200) UNIQUE NOT NULL,
 is_publish BOOLEAN DEFAULT FALSE,
 size VARCHAR(50),
 type VARCHAR(10),
@@ -70,5 +70,6 @@ FOREIGN KEY(recommend_product) REFERENCES products (id)
 
 
 -- CREATE ADMIN Account
-INSERT INTO "users" (email,identifier,password,first_name,last_name, phone_number,admin) VALUES ('admin@gmail.com','admin@gmail.com','1234567890','','admin','+844785976','true');
+-- password 1234567890
+INSERT INTO "users" (email,identifier,password,first_name,last_name, phone_number,admin) VALUES ('admin@gmail.com','admin@gmail.com','$2a$10$xIgiGxp0THwDy1R8uxko..t3O8s9aeikqk9olnJCLLI/92FUbtFey','','admin','+844785976','true');
 
