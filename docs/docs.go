@@ -770,6 +770,65 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/variant/": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Variant"
+                ],
+                "summary": "Create new variant require admin permission",
+                "parameters": [
+                    {
+                        "description": "New variant",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateVariant"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -911,6 +970,48 @@ const docTemplate = `{
                     "minLength": 8
                 },
                 "phoneNumber": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateVariant": {
+            "type": "object",
+            "required": [
+                "color",
+                "currency",
+                "image",
+                "is_default",
+                "name",
+                "price",
+                "product_id"
+            ],
+            "properties": {
+                "color": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 3
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "is_default": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 3
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "product_id": {
                     "type": "string"
                 }
             }

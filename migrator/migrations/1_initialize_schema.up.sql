@@ -68,6 +68,29 @@ FOREIGN KEY(product_id) REFERENCES products (id),
 FOREIGN KEY(recommend_product) REFERENCES products (id)
 );
 
+CREATE TABLE IF NOT EXISTS "variants"(
+id  UUID DEFAULT gen_random_uuid () PRIMARY KEY,
+is_default BOOLEAN,
+product UUID NOT NULL,
+name VARCHAR(200) UNIQUE NOT NULL,
+color VARCHAR(50), 
+price DECIMAL NOT NULL,
+currency VARCHAR(10) NOT NULL,
+image TEXT NOT NULL,
+description TEXT NOT NULL,   
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP DEFAULT current_timestamp,
+FOREIGN KEY(product) REFERENCES products (id)
+);
+
+CREATE VIEW "product_variant" AS 
+SELECT products.id, products.category_id, products.name,
+    products.is_publish, products.size, products.type,
+    products.images, products.description, products.detail,
+    products.light, products.difficulty, products.warter, products.qr_image, variants.price 
+FROM products, variants
+WHERE variants.is_default = true AND products.id = variants.product;
+
 
 -- CREATE ADMIN Account
 -- password 1234567890

@@ -102,6 +102,37 @@ definitions:
     - password
     - phoneNumber
     type: object
+  models.CreateVariant:
+    properties:
+      color:
+        maxLength: 50
+        minLength: 3
+        type: string
+      currency:
+        type: string
+      description:
+        type: string
+      image:
+        type: string
+      is_default:
+        type: boolean
+      name:
+        maxLength: 50
+        minLength: 3
+        type: string
+      price:
+        type: integer
+      product_id:
+        type: string
+    required:
+    - color
+    - currency
+    - image
+    - is_default
+    - name
+    - price
+    - product_id
+    type: object
   models.ErrorResponse:
     properties:
       errors: {}
@@ -694,6 +725,43 @@ paths:
       - Bearer: []
       tags:
       - User
+  /variant/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New variant
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateVariant'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Create new variant require admin permission
+      tags:
+      - Variant
 securityDefinitions:
   Bearer:
     description: Type "Bearer" followed by a space and JWT token.
