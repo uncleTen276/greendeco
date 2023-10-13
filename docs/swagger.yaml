@@ -167,6 +167,13 @@ definitions:
     required:
     - name
     type: object
+  models.UpdateDefaultVariant:
+    properties:
+      variant:
+        type: string
+    required:
+    - variant
+    type: object
   models.UpdateProduct:
     properties:
       available:
@@ -702,7 +709,7 @@ paths:
       tags:
       - Product
   /product/{id}/update:
-    post:
+    put:
       consumes:
       - application/json
       parameters:
@@ -741,6 +748,49 @@ paths:
       security:
       - Bearer: []
       summary: update product require admin permission
+      tags:
+      - Product
+  /product/{id}/variant:
+    put:
+      consumes:
+      - application/json
+      description: sort value can only asc or desc
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateDefaultVariant'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update default variant of product
       tags:
       - Product
   /user/me:

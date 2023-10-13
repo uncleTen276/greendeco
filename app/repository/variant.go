@@ -87,7 +87,7 @@ func (repo *VariantRepo) createDefaultVariant(m *models.CreateVariant) error {
 
 func (repo *VariantRepo) GetVariantsByProductId(id uuid.UUID) ([]models.Variant, error) {
 	result := []models.Variant{}
-	query := fmt.Sprintf(`SELECT * FROM %s WHERE product = $1`, VariantTable)
+	query := fmt.Sprintf(`SELECT  FROM %s WHERE product = $1`, VariantTable)
 	if err := repo.db.Select(&result, query, id); err != nil {
 		return nil, err
 	}

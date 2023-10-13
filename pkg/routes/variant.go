@@ -25,5 +25,7 @@ func (r *VariantRoutes) publicProductRouter() {
 
 func (r *VariantRoutes) privateProductRouter() {
 	r.app.Use(middlewares.JWTProtected())
+	r.app.Use(middlewares.AdminProtected)
+
 	r.app.Post("/", controller.CreateVariant)
 }

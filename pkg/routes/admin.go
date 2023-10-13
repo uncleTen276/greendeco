@@ -13,5 +13,6 @@ func AdminRoute(app fiber.Router) {
 
 func privateAdminRoute(app fiber.Router) {
 	app.Use(middlewares.JWTProtected())
+	app.Use(middlewares.AdminProtected)
 	app.Get("/customers", controller.GetAllCustomers)
 }

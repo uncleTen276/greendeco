@@ -46,7 +46,7 @@ type CreateProduct struct {
 type UpdateProduct struct {
 	ID          string   `json:"-" validate:"uuid4"`
 	IsPublish   bool     `json:"is_publish" validate:"required"`
-	Available   bool     `json:"available" validate:"available"`
+	Available   bool     `json:"available"`
 	Size        string   `json:"size" validate:"required,lte=10"`
 	Type        string   `json:"type" validate:"required,lte=20"`
 	Images      []string `json:"images" validate:"required"`
@@ -88,4 +88,8 @@ type ActivedProduct struct {
 	Warter         string         `db:"warter" json:"warter"`
 	CreatedAt      time.Time      `db:"created_at" json:"created_at"`
 	DefaultVariant string         `db:"variant_id" json:"default_variant"`
+}
+type UpdateDefaultVariant struct {
+	VariantId uuid.UUID `json:"variant" validate:"required,uuid4"`
+	ProductId uuid.UUID `json:"-" validate:"required,uuid4"`
 }

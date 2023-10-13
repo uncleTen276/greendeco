@@ -25,7 +25,9 @@ func (r *ProductRouters) publicProductRouter() {
 
 func (r *ProductRouters) privateProductRouter() {
 	r.app.Use(middlewares.JWTProtected())
+	r.app.Use(middlewares.AdminProtected)
 	r.app.Post("/", controller.CreateProduct)
-	r.app.Post("/:id/update", controller.UpdateProduct)
+	r.app.Put("/:id/update", controller.UpdateProduct)
 	r.app.Delete("/:id/delete", controller.DeleteProduct)
+	r.app.Put("/:id/variant", controller.UpdateDefaultVariant)
 }

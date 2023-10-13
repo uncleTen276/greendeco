@@ -14,6 +14,7 @@ type ProductRepository interface {
 	// FindById(id string) (*models.Category, error)
 	Delete(id uuid.UUID) error
 	All(q models.ProductQuery) ([]models.ActivedProduct, error)
+	UpdateDefaultVariant(m *models.UpdateDefaultVariant) error
 }
 
 type ProductRepo struct {
@@ -21,8 +22,9 @@ type ProductRepo struct {
 }
 
 const (
-	ProductTable       = "products"
-	ProductVariantView = "published_products"
+	ProductTable               = "products"
+	ProductVariantView         = "published_products"
+	ProductVariantDefaultTable = "default_product_variant"
 )
 
 var _ ProductRepository = (*ProductRepo)(nil)
@@ -86,4 +88,13 @@ func (repo *ProductRepo) All(q models.ProductQuery) ([]models.ActivedProduct, er
 	}
 
 	return results, nil
+}
+
+func (repo *ProductRepo) UpdateDefaultVariant(m *models.UpdateDefaultVariant) error {
+	query := fmt.Sprintf(`UPDATE %s SET variant_id = $1 WHERE product_id = $2`, ProductVariantDefaultTable)
+	if _, err := repo.db.Exec(query, m.VariantId, m.ProductId); err != nil {
+		return err
+	}
+
+	return nil
 }
