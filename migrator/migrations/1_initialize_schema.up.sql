@@ -88,8 +88,8 @@ FOREIGN KEY(product) REFERENCES products (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "default_product_variant"(
-product_id UUID NOT NULL, 
-variant_id UUID NOT NULL,
+product_id UUID NOT NULL UNIQUE, 
+variant_id UUID NOT NULL UNIQUE,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp,
 PRIMARY KEY (product_id, variant_id),
