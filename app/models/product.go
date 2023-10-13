@@ -73,17 +73,19 @@ type ProductQueryField struct {
 }
 
 type ActivedProduct struct {
-	ID          string         `db:"id" json:"id"`
-	Category    string         `db:"category_id" json:"category"`
-	Name        string         `db:"name" json:"name"`
-	Price       string         `db:"price" json:"price"`
-	Size        string         `db:"size" json:"size"`
-	Available   bool           `db:"available" json:"available"`
-	Type        string         `db:"type" json:"type"`
-	Images      pq.StringArray `db:"images" json:"images"`
-	Detail      string         `db:"detail" json:"detail"`
-	Description *string        `db:"description" json:"description"`
-	Light       string         `db:"light" json:"light"`
-	Difficulty  string         `db:"difficulty" json:"difficulty"`
-	Warter      string         `db:"warter" json:"warter"`
+	ID             string         `db:"id" json:"id"`
+	Category       string         `db:"category_id" json:"category"`
+	Name           string         `db:"name" json:"name"`
+	Price          string         `db:"price" json:"price"`
+	Size           string         `db:"size" json:"size"`
+	Available      bool           `db:"available" json:"available"`
+	Type           string         `db:"type" json:"type"`
+	Images         pq.StringArray `db:"images" json:"images"`
+	Detail         string         `db:"detail" json:"detail"`
+	Description    *string        `db:"description" json:"description"`
+	Light          string         `db:"light" json:"light"`
+	Difficulty     string         `db:"difficulty" json:"difficulty"`
+	Warter         string         `db:"warter" json:"warter"`
+	CreatedAt      time.Time      `db:"created_at" json:"created_at"`
+	DefaultVariant string         `db:"variant_id" json:"default_variant"`
 }

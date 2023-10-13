@@ -101,7 +101,7 @@ CREATE VIEW "published_products" AS
 SELECT products.id, products.category_id, products.name,
     products.available , products.size, products.type,
     products.images, products.description, products.detail,
-    products.light, products.difficulty, products.warter, variants.price ,   products.created_at
+    products.light, products.difficulty, products.warter, variants.price ,   products.created_at, default_product_variant.variant_id
 FROM products, variants,default_product_variant 
 WHERE default_product_variant.product_id = products.id 
     AND default_product_variant.variant_id = variants.id 

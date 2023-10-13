@@ -20,7 +20,7 @@ func (r *VariantRoutes) RegisterRoute() {
 }
 
 func (r *VariantRoutes) publicProductRouter() {
-	// app.Get("/",)
+	r.app.Get("/product/:id", controller.GetVariantsByProductId)
 }
 
 func (r *VariantRoutes) privateProductRouter() {

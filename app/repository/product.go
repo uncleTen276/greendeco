@@ -81,6 +81,7 @@ func (repo *ProductRepo) All(q models.ProductQuery) ([]models.ActivedProduct, er
 
 	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
 	if err := repo.db.Select(&results, query); err != nil {
+		println(err.Error())
 		return nil, err
 	}
 

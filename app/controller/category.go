@@ -216,9 +216,9 @@ func GetAllCategory(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
 		Items:    categories,
-		Page:     baseQuery.OffSet,
-		PageSize: baseQuery.Limit,
-		Next:     baseQuery.IsFirstPage(),
-		Prev:     false,
+		Page:     baseQuery.GetPageNumber(),
+		PageSize: len(categories),
+		Next:     baseQuery.HaveNextPage(categories),
+		Prev:     !baseQuery.IsFirstPage(),
 	})
 }

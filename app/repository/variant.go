@@ -3,12 +3,14 @@ package repository
 import (
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/platform/database"
 )
 
 type VariantRepository interface {
 	Create(m *models.CreateVariant) error
+	GetVariantsByProductId(id uuid.UUID) ([]models.Variant, error)
 }
 
 type VariantRepo struct {
@@ -81,4 +83,14 @@ func (repo *VariantRepo) createDefaultVariant(m *models.CreateVariant) error {
 	}
 
 	return nil
+}
+
+func (repo *VariantRepo) GetVariantsByProductId(id uuid.UUID) ([]models.Variant, error) {
+	result := []models.Variant{}
+	query := fmt.Sprintf(`SELECT * FROM %s WHERE product = $1`, VariantTable)
+	if err := repo.db.Select(&result, query, id); err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }

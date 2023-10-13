@@ -33,3 +33,7 @@ func (q *BaseQuery) HaveNextPage(arr ...any) bool {
 
 	return !(len(arr) <= q.Limit)
 }
+
+func (q *BaseQuery) GetPageNumber() int {
+	return (q.OffSet + q.Limit - 1) / q.Limit
+}
