@@ -14,7 +14,6 @@ func DetectDuplicateError(err error) bool {
 	if !ok {
 		return false
 	}
-	println(errs.Code)
 
 	return errs.Code == ErrorDBUnique
 }

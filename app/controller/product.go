@@ -168,6 +168,7 @@ func DeleteProduct(c *fiber.Ctx) error {
 // @DeleteProduct() godoc
 // @Summary query get products
 // @Description "field" not working on swagger you can read models.ProductQueryField for fields query
+// @Description sort value can only asc or desc
 // @Tags Product
 // @Param queries query models.ProductQuery false "default: limit = 10"
 // @Param fields query string false "fields query is json" example(field={"name":"hello"})

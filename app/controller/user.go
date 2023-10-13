@@ -225,7 +225,7 @@ func ForgotPassword(c *fiber.Ctx) error {
 	config := configs.AppConfig().Auth
 	token, err := generateToken(user, time.Duration(config.ShortTokenExpire*int(time.Minute)))
 	if err != nil {
-		print(err)
+		println(err)
 	}
 
 	if err := sendEmail(reqEmail.Email, token); err != nil {
