@@ -2,4 +2,6 @@
 tmp/
 postgres-data
 
+/node_modules
+
 
