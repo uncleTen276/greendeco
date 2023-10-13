@@ -9,7 +9,7 @@ import (
 type Variant struct {
 	ID          uuid.UUID `json:"id" db:"id"`
 	Available   bool      `json:"available" db:"available"`
-	Product     Product   `json:"product" db:"product"`
+	Product     uuid.UUID `json:"product" db:"product"`
 	Name        string    `json:"name" db:"name"`
 	Color       string    `json:"color" db:"color"`
 	Price       string    `json:"price" db:"price"`

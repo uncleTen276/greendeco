@@ -166,7 +166,7 @@ func DeleteProduct(c *fiber.Ctx) error {
 }
 
 // @GetProducts() godoc
-// @Summary query get products
+// @Summary query get "published" products
 // @Description "field" not working on swagger you can read models.ProductQueryField for fields query
 // @Description sort value can only asc or desc
 // @Tags Product
@@ -203,7 +203,7 @@ func GetProducts(c *fiber.Ctx) error {
 
 	return c.JSON(models.BasePaginationResponse{
 		Items:    products,
-		Page:     (query.BaseQuery.OffSet + query.Limit - 1) / query.Limit,
+		Page:     query.GetPageNumber(),
 		PageSize: len(products),
 		Next:     query.HaveNextPage(products),
 		Prev:     !query.IsFirstPage(),

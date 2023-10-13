@@ -626,7 +626,7 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: query get products
+      summary: query get "published" products
       tags:
       - Product
     post:
@@ -830,6 +830,40 @@ paths:
       security:
       - Bearer: []
       summary: Create new variant require admin permission
+      tags:
+      - Variant
+  /variant/product/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: product id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get variants from product
       tags:
       - Variant
 securityDefinitions:
