@@ -79,7 +79,7 @@ func (repo *ProductRepo) All(q models.ProductQuery) ([]models.ActivedProduct, er
 		SortBy(q.SortBy, q.Sort).
 		Build()
 
-	println(q.SortBy)
+	println(q.Sort)
 	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
 	println(query)
 	if err := repo.db.Select(&results, query); err != nil {

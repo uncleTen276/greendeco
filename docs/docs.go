@@ -507,7 +507,7 @@ const docTemplate = `{
         },
         "/product/": {
             "get": {
-                "description": "\"field\" not working on swagger you can read models.ProductQueryField for fields query",
+                "description": "\"field\" not working on swagger you can read models.ProductQueryField for fields query\nsort value can only asc or desc",
                 "consumes": [
                     "application/json"
                 ],

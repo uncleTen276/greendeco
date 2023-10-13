@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -89,6 +90,7 @@ func (q *ProductQueryBuilder) SortBy(field string, sort string) *ProductQueryBui
 	if field != "" {
 		q.sortBy = field
 	}
+	sort = strings.ToUpper(sort)
 	if sort == "ASC" || sort == "DESC" {
 		q.sort = sort
 	}
