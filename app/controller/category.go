@@ -207,18 +207,23 @@ func GetAllCategory(c *fiber.Ctx) error {
 
 	repo := repository.NewCategoryRepository(database.GetDB())
 	pageOffset := baseQuery.Limit * (baseQuery.OffSet - 1)
-	categories, err := repo.All(baseQuery.Limit, pageOffset)
+	categories, err := repo.All(baseQuery.Limit+1, pageOffset)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend :(",
 		})
 	}
 
+	nextPage := baseQuery.HaveNextPage()
+	if nextPage {
+		categories = categories[:len(categories)-1]
+	}
+
 	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
 		Items:    categories,
 		Page:     baseQuery.GetPageNumber(),
 		PageSize: len(categories),
-		Next:     baseQuery.HaveNextPage(categories),
+		Next:     nextPage,
 		Prev:     !baseQuery.IsFirstPage(),
 	})
 }
