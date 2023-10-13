@@ -165,7 +165,7 @@ func DeleteProduct(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
-// @DeleteProduct() godoc
+// @GetProducts() godoc
 // @Summary query get products
 // @Description "field" not working on swagger you can read models.ProductQueryField for fields query
 // @Description sort value can only asc or desc
