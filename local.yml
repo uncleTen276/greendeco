@@ -8,6 +8,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=greendeco
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
     healthcheck:
