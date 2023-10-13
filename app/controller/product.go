@@ -197,7 +197,8 @@ func GetProducts(c *fiber.Ctx) error {
 		})
 	}
 
-	if query.HaveNextPage() {
+	nextPage := query.HaveNextPage()
+	if nextPage {
 		products = products[:len(products)-1]
 	}
 
@@ -205,7 +206,7 @@ func GetProducts(c *fiber.Ctx) error {
 		Items:    products,
 		Page:     query.GetPageNumber(),
 		PageSize: len(products),
-		Next:     query.HaveNextPage(products),
+		Next:     nextPage,
 		Prev:     !query.IsFirstPage(),
 	})
 }
