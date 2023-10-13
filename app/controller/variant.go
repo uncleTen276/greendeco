@@ -50,16 +50,17 @@ func CreateVariant(c *fiber.Ctx) error {
 	}
 
 	variantRepo := repository.NewVariantRepo(database.GetDB())
-	if err := variantRepo.Create(newVariant); err != nil {
-		if database.DetectNotFoundContrainError(err) {
-			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
-				Message: "invalid category",
-			})
-		}
 
+	if err := variantRepo.Create(newVariant); err != nil {
 		if database.DetectDuplicateError(err) {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 				Message: "record already exists",
+			})
+		}
+
+		if database.DetectNotFoundContrainError(err) {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid category",
 			})
 		}
 

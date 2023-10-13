@@ -20,12 +20,14 @@ definitions:
   models.BasePaginationResponse:
     properties:
       items: {}
+      next:
+        type: boolean
       page:
         type: integer
       page_size:
         type: integer
-      total:
-        type: integer
+      prev:
+        type: boolean
     type: object
   models.CreateCategory:
     properties:
@@ -104,6 +106,8 @@ definitions:
     type: object
   models.CreateVariant:
     properties:
+      available:
+        type: boolean
       color:
         maxLength: 50
         minLength: 3
@@ -128,7 +132,6 @@ definitions:
     - color
     - currency
     - image
-    - is_default
     - name
     - price
     - product_id
@@ -137,6 +140,23 @@ definitions:
     properties:
       errors: {}
       msg:
+        type: string
+    type: object
+  models.ProductQueryField:
+    properties:
+      available:
+        type: boolean
+      category_id:
+        type: string
+      difficulty:
+        type: string
+      name:
+        type: string
+      size:
+        type: string
+      type:
+        type: string
+      warter:
         type: string
     type: object
   models.UpdateCategory:
@@ -149,6 +169,8 @@ definitions:
     type: object
   models.UpdateProduct:
     properties:
+      available:
+        type: boolean
       description:
         type: string
       detail:
@@ -559,6 +581,53 @@ paths:
       tags:
       - Media
   /product/:
+    get:
+      consumes:
+      - application/json
+      description: '"field" not working on swagger you can read models.ProductQueryField
+        for fields query'
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offSet
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      - in: query
+        name: sortBy
+        type: string
+      - description: fields query is json
+        example: field={"name":"hello"}
+        in: query
+        name: fields
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: query get products
+      tags:
+      - Product
     post:
       consumes:
       - application/json

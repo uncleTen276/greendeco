@@ -13,7 +13,7 @@ type ProductRepository interface {
 	UpdateById(m *models.UpdateProduct) error
 	// FindById(id string) (*models.Category, error)
 	Delete(id uuid.UUID) error
-	// All(limit, offset int) ([]*models.Category, error)
+	All(q models.ProductQuery) ([]models.ActivedProduct, error)
 }
 
 type ProductRepo struct {
@@ -21,7 +21,8 @@ type ProductRepo struct {
 }
 
 const (
-	ProductTable = "products"
+	ProductTable       = "products"
+	ProductVariantView = "published_products"
 )
 
 var _ ProductRepository = (*ProductRepo)(nil)
@@ -41,8 +42,8 @@ func (repo *ProductRepo) Create(m *models.CreateProduct) error {
 }
 
 func (repo *ProductRepo) UpdateById(m *models.UpdateProduct) error {
-	query := fmt.Sprintf(`UPDATE "%s" SET is_publish = $2, size = $3, type=$4,images = $5, description = $6, detail = $7, light = $8, difficulty = $9, warter = $10  WHERE id = $1`, ProductTable)
-	if _, err := repo.db.Exec(query, m.ID, m.IsPublish, m.Size, m.Type, m.Images, m.Description, m.Detail, m.Light, m.Difficulty, m.Warter); err != nil {
+	query := fmt.Sprintf(`UPDATE "%s" SET is_publish = $2, size = $3, type=$4,images = $5, description = $6, detail = $7, light = $8, difficulty = $9, warter = $10, available = $11  WHERE id = $1`, ProductTable)
+	if _, err := repo.db.Exec(query, m.ID, m.IsPublish, m.Size, m.Type, m.Images, m.Description, m.Detail, m.Light, m.Difficulty, m.Warter, m.Available); err != nil {
 		return err
 	}
 
@@ -56,4 +57,34 @@ func (repo *ProductRepo) Delete(id uuid.UUID) error {
 	}
 
 	return nil
+}
+
+func (repo *ProductRepo) All(q models.ProductQuery) ([]models.ActivedProduct, error) {
+	limit := q.Limit
+	if !q.BaseQuery.IsFirstPage() {
+		limit += 1
+	}
+	pageOffset := q.BaseQuery.Limit * (q.BaseQuery.OffSet - 1)
+
+	results := []models.ActivedProduct{}
+	firstQuery := fmt.Sprintf(`SELECT * FROM "%s" `, ProductVariantView)
+	query := NewProductQueryBuilder(firstQuery).
+		SetName(q.Fields.Name).
+		SetAvailable(q.Fields.Available).
+		SetCategory(q.Fields.Category).
+		SetSize(q.Fields.Size).
+		SetType(q.Fields.Type).
+		SetDifficulty(q.Fields.Difficulty).
+		SetWarter(q.Fields.Warter).
+		SortBy(q.SortBy, q.Sort).
+		Build()
+
+	println(q.SortBy)
+	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
+	println(query)
+	if err := repo.db.Select(&results, query); err != nil {
+		return nil, err
+	}
+
+	return results, nil
 }

@@ -218,6 +218,7 @@ func GetAllCategory(c *fiber.Ctx) error {
 		Items:    categories,
 		Page:     baseQuery.OffSet,
 		PageSize: baseQuery.Limit,
-		Total:    len(categories),
+		Next:     baseQuery.IsFirstPage(),
+		Prev:     false,
 	})
 }

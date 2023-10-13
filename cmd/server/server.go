@@ -9,6 +9,7 @@ import (
 	_ "github.com/sekke276/greendeco.git/docs"
 	"github.com/sekke276/greendeco.git/pkg/configs"
 	"github.com/sekke276/greendeco.git/pkg/routes"
+	"github.com/sekke276/greendeco.git/pkg/validators"
 	"github.com/sekke276/greendeco.git/platform/database"
 	"github.com/sekke276/greendeco.git/platform/storage"
 )
@@ -26,6 +27,8 @@ func Serve() {
 	if err := storage.ConnectStorage(); err != nil {
 		log.Panic(err)
 	}
+
+	validators.AddProductQueryDecoder()
 
 	app := fiber.New()
 	app.Use(logger.New())

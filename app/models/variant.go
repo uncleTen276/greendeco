@@ -8,8 +8,8 @@ import (
 
 type Variant struct {
 	ID          uuid.UUID `json:"id" db:"id"`
-	IsDefault   bool      `json:"is_default" db:"is_default"`
-	Product     `json:"product" db:"product"`
+	Available   bool      `json:"available" db:"available"`
+	Product     Product   `json:"product" db:"product"`
 	Name        string    `json:"name" db:"name"`
 	Color       string    `json:"color" db:"color"`
 	Price       string    `json:"price" db:"price"`
@@ -21,7 +21,8 @@ type Variant struct {
 }
 
 type CreateVariant struct {
-	IsDefault   bool      `json:"is_default" validate:"required"`
+	IsDefault   bool      `json:"is_default"`
+	Available   bool      `json:"available" db:"available"`
 	ProductId   uuid.UUID `json:"product_id" validate:"required"`
 	Name        string    `json:"name" validate:"required,gte=3,lte=50"`
 	Color       string    `json:"color" validate:"required,gte=3,lte=50"`

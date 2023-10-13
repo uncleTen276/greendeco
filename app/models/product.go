@@ -4,14 +4,16 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 )
 
 type Product struct {
-	ID          string `db:"id"`
-	Category    `db:"category"`
+	ID          string    `db:"id"`
+	Category    Category  `db:"category_id"`
 	Name        string    `db:"name"`
 	IsPublish   bool      `db:"is_publish"`
 	Size        string    `db:"size"`
+	Available   bool      `db:"available"`
 	Type        string    `db:"type"`
 	Images      []string  `db:"images"`
 	Detail      string    `db:"detail"`
@@ -44,6 +46,7 @@ type CreateProduct struct {
 type UpdateProduct struct {
 	ID          string   `json:"-" validate:"uuid4"`
 	IsPublish   bool     `json:"is_publish" validate:"required"`
+	Available   bool     `json:"available" validate:"available"`
 	Size        string   `json:"size" validate:"required,lte=10"`
 	Type        string   `json:"type" validate:"required,lte=20"`
 	Images      []string `json:"images" validate:"required"`
@@ -52,4 +55,35 @@ type UpdateProduct struct {
 	Difficulty  string   `json:"difficulty" validate:"required"`
 	Warter      string   `json:"warter" validate:"required,lte=20"`
 	Description string   `json:"description"`
+}
+
+type ProductQuery struct {
+	BaseQuery
+	Fields ProductQueryField `query:"field"`
+}
+
+type ProductQueryField struct {
+	Name       string     `query:"name" json:"name"`
+	Available  *bool      `query:"available"`
+	Category   *uuid.UUID `query:"category_id" json:"category_id" validate:"uuid4"`
+	Size       string     `query:"size" json:"size"`
+	Type       string     `query:"type" json:"type"`
+	Difficulty string     `query:"difficulty" json:"difficulty"`
+	Warter     string     `query:"warter" json:"warter"`
+}
+
+type ActivedProduct struct {
+	ID          string         `db:"id" json:"id"`
+	Category    string         `db:"category_id" json:"category"`
+	Name        string         `db:"name" json:"name"`
+	Price       string         `db:"price" json:"price"`
+	Size        string         `db:"size" json:"size"`
+	Available   bool           `db:"available" json:"available"`
+	Type        string         `db:"type" json:"type"`
+	Images      pq.StringArray `db:"images" json:"images"`
+	Detail      string         `db:"detail" json:"detail"`
+	Description *string        `db:"description" json:"description"`
+	Light       string         `db:"light" json:"light"`
+	Difficulty  string         `db:"difficulty" json:"difficulty"`
+	Warter      string         `db:"warter" json:"warter"`
 }

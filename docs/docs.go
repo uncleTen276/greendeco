@@ -506,6 +506,77 @@ const docTemplate = `{
             }
         },
         "/product/": {
+            "get": {
+                "description": "\"field\" not working on swagger you can read models.ProductQueryField for fields query",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "query get products",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "offSet",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sortBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "field={\"name\":\"hello\"}",
+                        "description": "fields query is json",
+                        "name": "fields",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -861,14 +932,17 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "items": {},
+                "next": {
+                    "type": "boolean"
+                },
                 "page": {
                     "type": "integer"
                 },
                 "page_size": {
                     "type": "integer"
                 },
-                "total": {
-                    "type": "integer"
+                "prev": {
+                    "type": "boolean"
                 }
             }
         },
@@ -980,12 +1054,14 @@ const docTemplate = `{
                 "color",
                 "currency",
                 "image",
-                "is_default",
                 "name",
                 "price",
                 "product_id"
             ],
             "properties": {
+                "available": {
+                    "type": "boolean"
+                },
                 "color": {
                     "type": "string",
                     "maxLength": 50,
@@ -1025,6 +1101,32 @@ const docTemplate = `{
                 }
             }
         },
+        "models.ProductQueryField": {
+            "type": "object",
+            "properties": {
+                "available": {
+                    "type": "boolean"
+                },
+                "category_id": {
+                    "type": "string"
+                },
+                "difficulty": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "warter": {
+                    "type": "string"
+                }
+            }
+        },
         "models.UpdateCategory": {
             "type": "object",
             "required": [
@@ -1050,6 +1152,9 @@ const docTemplate = `{
                 "warter"
             ],
             "properties": {
+                "available": {
+                    "type": "boolean"
+                },
                 "description": {
                     "type": "string"
                 },

@@ -15,6 +15,7 @@ func generatePasswordHash(password []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return string(hashedPassword), nil
 }
 
