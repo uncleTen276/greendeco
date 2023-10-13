@@ -20,7 +20,7 @@ func (r *ProductRouters) RegisterRoutes() {
 }
 
 func (r *ProductRouters) publicProductRouter() {
-	// app.Get("/",)
+	r.app.Get("/", controller.GetProducts)
 }
 
 func (r *ProductRouters) privateProductRouter() {

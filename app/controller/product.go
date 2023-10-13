@@ -164,3 +164,47 @@ func DeleteProduct(c *fiber.Ctx) error {
 
 	return c.SendStatus(fiber.StatusOK)
 }
+
+// @DeleteProduct() godoc
+// @Summary query get products
+// @Description "field" not working on swagger you can read models.ProductQueryField for fields query
+// @Tags Product
+// @Param queries query models.ProductQuery false "default: limit = 10"
+// @Param fields query string false "fields query is json" example(field={"name":"hello"})
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
+// @Router /product/ [Get]
+func GetProducts(c *fiber.Ctx) error {
+	query := &models.ProductQuery{
+		BaseQuery: *models.DefaultQuery(),
+	}
+
+	err := c.QueryParser(query)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+		})
+	}
+
+	productRepo := repository.NewProductRepo(database.GetDB())
+	products, err := productRepo.All(*query)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "record not found",
+		})
+	}
+
+	if query.HaveNextPage() {
+		products = products[:len(products)-1]
+	}
+
+	return c.JSON(models.BasePaginationResponse{
+		Items:    products,
+		Page:     (query.BaseQuery.OffSet + query.Limit - 1) / query.Limit,
+		PageSize: len(products),
+		Next:     query.HaveNextPage(products),
+		Prev:     !query.IsFirstPage(),
+	})
+}

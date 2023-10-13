@@ -66,7 +66,7 @@ func (repo *CategoryRepo) Delete(id string) error {
 func (repo *CategoryRepo) All(limit, offset int) ([]*models.Category, error) {
 	categories := []*models.Category{}
 	query := `SELECT * FROM "categories" LIMIT $1 OFFSET $2`
-	if err := repo.db.Select(&categories, query, limit, offset); err != nil {
+	if err := repo.db.Select(&categories, query, limit, 0); err != nil {
 		return nil, err
 	}
 

@@ -9,6 +9,7 @@ import (
 	_ "github.com/sekke276/greendeco.git/docs"
 	"github.com/sekke276/greendeco.git/pkg/configs"
 	"github.com/sekke276/greendeco.git/pkg/routes"
+	"github.com/sekke276/greendeco.git/pkg/validators"
 	"github.com/sekke276/greendeco.git/platform/database"
 	"github.com/sekke276/greendeco.git/platform/storage"
 )
@@ -27,6 +28,8 @@ func Serve() {
 		log.Panic(err)
 	}
 
+	validators.AddProductQueryDecoder()
+
 	app := fiber.New()
 	app.Use(logger.New())
 	app.Use(cors.New())
@@ -43,6 +46,7 @@ func Serve() {
 	routes.CategoryRouter(api)
 
 	routes.NewProductRouter(api).RegisterRoutes()
+	routes.NewVariantRouter(api).RegisterRoute()
 
 	// web.Routes(app)
 	if err := app.Listen(":8080"); err != nil {
