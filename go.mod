@@ -3,6 +3,7 @@ module github.com/sekke276/greendeco.git
 go 1.20
 
 require (
+	entgo.io/ent v0.12.4
 	firebase.google.com/go/v4 v4.12.0
 	github.com/go-playground/validator/v10 v10.15.0
 	github.com/gofiber/contrib/jwt v1.0.4
@@ -61,7 +62,6 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
-	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect

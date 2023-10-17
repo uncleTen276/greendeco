@@ -387,11 +387,20 @@ func UpdateUserInformation(c *fiber.Ctx) error {
 	}
 
 	validate := validators.NewValidator()
-	if err := validate.Struct(userUpdate); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
-			Message: "invalid input found",
-			Errors:  validators.ValidatorErrors(err),
-		})
+	if userUpdate.Avatar != nil {
+		if err := validate.Struct(userUpdate); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid input found",
+				Errors:  validators.ValidatorErrors(err),
+			})
+		}
+	} else {
+		if err := validate.StructExcept(userUpdate, "avatar"); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid input found",
+				Errors:  validators.ValidatorErrors(err),
+			})
+		}
 	}
 
 	if err := userRepo.UpdateUserInfor(userId, userUpdate); err != nil {
