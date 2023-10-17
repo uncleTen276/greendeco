@@ -81,7 +81,7 @@ func CreateProduct(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /product/{id}/update [post]
+// @Router /product/{id}/update [Put]
 // @Security Bearer
 func UpdateProduct(c *fiber.Ctx) error {
 	token, ok := c.Locals("user").(*jwt.Token)
@@ -156,6 +156,13 @@ func DeleteProduct(c *fiber.Ctx) error {
 	}
 
 	productRepo := repository.NewProductRepo(database.GetDB())
+
+	if _, err := productRepo.FindById(uuid); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "record not found",
+		})
+	}
+
 	if err := productRepo.Delete(uuid); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend :(",
@@ -209,4 +216,105 @@ func GetProducts(c *fiber.Ctx) error {
 		Next:     nextPage,
 		Prev:     !query.IsFirstPage(),
 	})
+}
+
+// @GetProductById() godoc
+// @Summary getproduct by id
+// @Tags Product
+// @Param id path string true "id"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,404,500 {object} models.ErrorResponse "Error"
+// @Router /product/{id} [Get]
+func GetProductById(c *fiber.Ctx) error {
+	id := c.Params("id")
+	uuid, err := uuid.Parse(id)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+		})
+	}
+
+	productRepo := repository.NewProductRepo(database.GetDB())
+	product, err := productRepo.FindById(uuid)
+	if err != nil && err != models.ErrNotFound {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "something bad happend :(",
+		})
+	}
+
+	if product == nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "record not found",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
+		Items:    product,
+		Page:     1,
+		PageSize: 1,
+		Next:     false,
+		Prev:     false,
+	})
+}
+
+// @UpdateDefaultVariant() godoc
+// @Summary update default variant of product
+// @Description sort value can only asc or desc
+// @Tags Product
+// @Param id path string true "id"
+// @Param todo body models.UpdateDefaultVariant true "New product"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
+// @Router /product/{id}/variant [Put]
+// @Security Bearer
+func UpdateDefaultVariant(c *fiber.Ctx) error {
+	id := c.Params("id")
+	uuid, err := uuid.Parse(id)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+		})
+	}
+
+	updateRequest := &models.UpdateDefaultVariant{}
+	if err := c.BodyParser(updateRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	updateRequest.ProductId = uuid
+	validator := validators.NewValidator()
+	if err := validator.Struct(updateRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+			Errors:  validators.ValidatorErrors(err),
+		})
+	}
+
+	variantRepo := repository.NewVariantRepo(database.GetDB())
+	if err := variantRepo.UpdateDefaultVariant(updateRequest); err != nil {
+		if database.DetectDuplicateError(err) {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "record already exists",
+			})
+		}
+
+		if database.DetectNotFoundContrainError(err) {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid product",
+			})
+		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "some thing bad happended",
+		})
+
+	}
+
+	return c.SendStatus(fiber.StatusCreated)
 }

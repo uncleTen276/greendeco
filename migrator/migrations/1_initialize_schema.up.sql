@@ -67,9 +67,14 @@ product_id UUID NOT NULL,
 recommend_product UUID NOT NULL, 
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp,
+CHECK (product_id != recommend_product),
 PRIMARY KEY (product_id, recommend_product),
 FOREIGN KEY(product_id) REFERENCES products (id) ON DELETE CASCADE,
 FOREIGN KEY(recommend_product) REFERENCES products (id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX ON "recommends"(
+product_id, recommend_product
 );
 
 CREATE TABLE IF NOT EXISTS "variants"(
@@ -88,8 +93,8 @@ FOREIGN KEY(product) REFERENCES products (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "default_product_variant"(
-product_id UUID NOT NULL, 
-variant_id UUID NOT NULL,
+product_id UUID NOT NULL UNIQUE, 
+variant_id UUID NOT NULL UNIQUE,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp,
 PRIMARY KEY (product_id, variant_id),

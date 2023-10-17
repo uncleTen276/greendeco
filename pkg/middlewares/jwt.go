@@ -67,3 +67,18 @@ func GetAdminFromToken(token *jwt.Token) bool {
 
 	return isAdmin
 }
+
+func AdminProtected(c *fiber.Ctx) error {
+	user := c.Locals("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	isAdmin, ok := claims["admin"].(bool)
+	if !ok {
+		return jwtError(c, errors.New("you don't have permission"))
+	}
+
+	if !isAdmin {
+		return jwtError(c, errors.New("you don't have permission"))
+	}
+
+	return c.Next()
+}

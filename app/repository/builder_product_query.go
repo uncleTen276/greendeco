@@ -14,7 +14,7 @@ type ProductQueryBuilder struct {
 	sort   string
 }
 
-func NewProductQueryBuilder(query string) *ProductQueryBuilder {
+func (*ProductRepo) newProductQueryBuilder(query string) *ProductQueryBuilder {
 	return &ProductQueryBuilder{
 		query:  query,
 		field:  make(map[string]bool),
@@ -77,7 +77,7 @@ func (q *ProductQueryBuilder) SetDifficulty(difficulty string) *ProductQueryBuil
 	return q
 }
 
-func (q *ProductQueryBuilder) SetWarter(warter string) *ProductQueryBuilder {
+func (q *ProductQueryBuilder) Setwater(warter string) *ProductQueryBuilder {
 	if warter != "" {
 		query := fmt.Sprintf("warter = '%s'", warter)
 		q.field[query] = true

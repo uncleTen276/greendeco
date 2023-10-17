@@ -10,7 +10,12 @@ import (
 
 type VariantRepository interface {
 	Create(m *models.CreateVariant) error
+	FindById(id uuid.UUID) (*models.Variant, error)
+	UpdateById(m *models.UpdateVariant) error
 	GetVariantsByProductId(id uuid.UUID) ([]models.Variant, error)
+	GetDefaultVariantOfProduct(id uuid.UUID) (*models.DefaultVariant, error)
+	UpdateDefaultVariant(m *models.UpdateDefaultVariant) error
+	Delete(id uuid.UUID) error
 }
 
 type VariantRepo struct {
@@ -87,10 +92,56 @@ func (repo *VariantRepo) createDefaultVariant(m *models.CreateVariant) error {
 
 func (repo *VariantRepo) GetVariantsByProductId(id uuid.UUID) ([]models.Variant, error) {
 	result := []models.Variant{}
-	query := fmt.Sprintf(`SELECT * FROM %s WHERE product = $1`, VariantTable)
+	query := fmt.Sprintf(`SELECT  FROM "%s" WHERE product = $1`, VariantTable)
 	if err := repo.db.Select(&result, query, id); err != nil {
 		return nil, err
 	}
 
 	return result, nil
+}
+
+func (repo *VariantRepo) FindById(id uuid.UUID) (*models.Variant, error) {
+	variant := &models.Variant{}
+	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, VariantTable)
+	if err := repo.db.Select(variant, query, id); err != nil {
+		return nil, err
+	}
+
+	return variant, nil
+}
+
+func (repo *VariantRepo) Delete(id uuid.UUID) error {
+	query := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1`, VariantTable)
+	if _, err := repo.db.Exec(query); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *VariantRepo) GetDefaultVariantOfProduct(id uuid.UUID) (*models.DefaultVariant, error) {
+	query := fmt.Sprintf(`SELECT product_id, variant_id FROM "%s" WHERE product_id  = $1`, DefaultProductVariantTable)
+	defaultVariant := &models.DefaultVariant{}
+	if err := repo.db.Select(defaultVariant, query, id); err != nil {
+		return nil, err
+	}
+
+	return defaultVariant, nil
+}
+
+func (repo *VariantRepo) UpdateDefaultVariant(m *models.UpdateDefaultVariant) error {
+	query := fmt.Sprintf(`UPDATE %s SET variant_id = $1 WHERE product_id = $2`, ProductVariantDefaultTable)
+	if _, err := repo.db.Exec(query, m.VariantId, m.ProductId); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *VariantRepo) UpdateById(m *models.UpdateVariant) error {
+	query := fmt.Sprintf(`UPDATE "%s" SET available = $2, name = $3, color = $4, price = $5, currency = $6, image = $7, description = $8  WHERE id = $1`, VariantTable)
+	if _, err := repo.db.Exec(query, m.ID, m.Available, m.Name, m.Name, m.Color, m.Price, m.Currency, m.Image, m.Description); err != nil {
+		return err
+	}
+	return nil
 }

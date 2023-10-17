@@ -21,19 +21,7 @@ import (
 // @Router /category/ [post]
 // @Security Bearer
 func CreateCategories(c *fiber.Ctx) error {
-	token, ok := c.Locals("user").(*jwt.Token)
-	if !ok {
-		return c.Status(fiber.ErrInternalServerError.Code).JSON(models.ErrorResponse{
-			Message: "can not parse token",
-		})
-	}
-
 	newCategory := &models.CreateCategory{}
-	if !middlewares.GetAdminFromToken(token) {
-		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
-			Message: "you don't have permission",
-		})
-	}
 
 	if err := c.BodyParser(newCategory); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
