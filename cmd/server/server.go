@@ -23,6 +23,7 @@ func Serve() {
 	if err := database.ConnectDB(); err != nil {
 		log.Panic(err)
 	}
+	database.GetDB().Migrate()
 
 	if err := storage.ConnectStorage(); err != nil {
 		log.Panic(err)
