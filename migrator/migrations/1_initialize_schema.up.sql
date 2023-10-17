@@ -102,7 +102,7 @@ FOREIGN KEY(product_id) REFERENCES products (id) ON DELETE CASCADE,
 FOREIGN KEY(variant_id) REFERENCES variants (id) ON DELETE CASCADE
 );
 
-CREATE VIEW "published_products" AS 
+CREATE OR REPLACE VIEW "published_products" AS 
 SELECT products.id, products.category_id, products.name,
     products.available , products.size, products.type,
     products.images, products.description, products.detail,
@@ -111,7 +111,6 @@ FROM products, variants,default_product_variant
 WHERE default_product_variant.product_id = products.id 
     AND default_product_variant.variant_id = variants.id 
     AND products.is_publish = true;
-
 
 
 -- CREATE ADMIN Account

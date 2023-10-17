@@ -2,6 +2,8 @@ package database
 
 import (
 	"fmt"
+	"os"
+	"strings"
 	"time"
 
 	_ "github.com/jackc/pgx/v4/stdlib" // load pgx driver for PostgreSQL
@@ -38,4 +40,40 @@ func GetDB() *DB {
 
 func ConnectDB() error {
 	return defaultDB.connectPostgresql()
+}
+
+func (db *DB) loadSQLFile(sqlFile string) error {
+	file, err := os.ReadFile(sqlFile)
+	if err != nil {
+		return err
+	}
+
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		tx.Rollback()
+	}()
+
+	for _, q := range strings.Split(string(file), ";") {
+		q := strings.TrimSpace(q)
+		if q == "" {
+			continue
+		}
+		if _, err := tx.Exec(q); err != nil {
+			return err
+		}
+	}
+	return tx.Commit()
+}
+
+func (db *DB) Migrate() error {
+	if err := db.loadSQLFile("migrator/migrations/1_initialize_schema.up.sql"); err != nil {
+		println(err.Error())
+		return err
+	}
+
+	return nil
 }
