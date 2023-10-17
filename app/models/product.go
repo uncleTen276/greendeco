@@ -8,22 +8,22 @@ import (
 )
 
 type Product struct {
-	ID          string    `db:"id"`
-	Category    Category  `db:"category_id"`
-	Name        string    `db:"name"`
-	IsPublish   bool      `db:"is_publish"`
-	Size        string    `db:"size"`
-	Available   bool      `db:"available"`
-	Type        string    `db:"type"`
-	Images      []string  `db:"images"`
-	Detail      string    `db:"detail"`
-	Description string    `db:"description"`
-	Light       string    `db:"light"`
-	Difficulty  string    `db:"difficulty"`
-	Warter      string    `db:"warter"`
-	QrImage     string    `db:"qr_image"`
-	CreatedAt   time.Time `db:"created_at"`
-	UpdatedAt   time.Time `db:"updated_at"`
+	ID          string    `db:"id" json:"id"`
+	Category    Category  `db:"category_id" json:"category"`
+	Name        string    `db:"name" json:"name"`
+	IsPublish   bool      `db:"is_publish" json:"is_publish"`
+	Size        string    `db:"size" json:"size"`
+	Available   bool      `db:"available" json:"available"`
+	Type        string    `db:"type" json:"type"`
+	Images      []string  `db:"images" json:"images"`
+	Detail      string    `db:"detail" json:"detail"`
+	Description string    `db:"description" json:"description"`
+	Light       string    `db:"light" json:"light"`
+	Difficulty  string    `db:"difficulty" json:"difficulty"`
+	Water       string    `db:"water" json:"water"`
+	QrImage     string    `db:"qr_image" json:"qr_image"`
+	CreatedAt   time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt   time.Time `db:"updated_at" json:"updated_at"`
 }
 
 func NewProduct() *Product {
@@ -39,7 +39,7 @@ type CreateProduct struct {
 	Detail      string    `json:"detail" validate:"required"`
 	Light       string    `json:"light" validate:"required,lte=50"`
 	Difficulty  string    `json:"difficulty" validate:"required"`
-	Warter      string    `json:"warter" validate:"required,lte=20"`
+	Water       string    `json:"water" validate:"required,lte=20"`
 	Description string    `json:"description"`
 }
 
@@ -53,7 +53,7 @@ type UpdateProduct struct {
 	Detail      string   `json:"detail" validate:"required"`
 	Light       string   `json:"light" validate:"required,lte=50"`
 	Difficulty  string   `json:"difficulty" validate:"required"`
-	Warter      string   `json:"warter" validate:"required,lte=20"`
+	Water       string   `json:"water" validate:"required,lte=20"`
 	Description string   `json:"description"`
 }
 
@@ -69,7 +69,7 @@ type ProductQueryField struct {
 	Size       string     `query:"size" json:"size"`
 	Type       string     `query:"type" json:"type"`
 	Difficulty string     `query:"difficulty" json:"difficulty"`
-	Warter     string     `query:"warter" json:"warter"`
+	Water      string     `query:"water" json:"water"`
 }
 
 type ActivedProduct struct {
@@ -85,11 +85,17 @@ type ActivedProduct struct {
 	Description    *string        `db:"description" json:"description"`
 	Light          string         `db:"light" json:"light"`
 	Difficulty     string         `db:"difficulty" json:"difficulty"`
-	Warter         string         `db:"warter" json:"warter"`
+	Water          string         `db:"water" json:"water"`
 	CreatedAt      time.Time      `db:"created_at" json:"created_at"`
 	DefaultVariant string         `db:"variant_id" json:"default_variant"`
 }
+
 type UpdateDefaultVariant struct {
 	VariantId uuid.UUID `json:"variant" validate:"required,uuid4"`
 	ProductId uuid.UUID `json:"-" validate:"required,uuid4"`
+}
+
+type DefaultVariant struct {
+	VariantId uuid.UUID `json:"variant" db:"variant_id" `
+	ProductId uuid.UUID `json:"-" db:"product_id"`
 }

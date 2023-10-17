@@ -21,13 +21,18 @@ func (r *ProductRouters) RegisterRoutes() {
 
 func (r *ProductRouters) publicProductRouter() {
 	r.app.Get("/", controller.GetProducts)
+	r.app.Get("/:id", controller.GetProductById)
+	r.app.Get("/:id/recommend", controller.GetRecommendProductsById)
 }
 
 func (r *ProductRouters) privateProductRouter() {
 	r.app.Use(middlewares.JWTProtected())
 	r.app.Use(middlewares.AdminProtected)
+	// product router
 	r.app.Post("/", controller.CreateProduct)
 	r.app.Put("/:id/update", controller.UpdateProduct)
 	r.app.Delete("/:id/delete", controller.DeleteProduct)
 	r.app.Put("/:id/variant", controller.UpdateDefaultVariant)
+	// recommend router
+	r.app.Post("/recommend/", controller.CreateRecommendProduct)
 }

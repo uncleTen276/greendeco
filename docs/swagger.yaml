@@ -62,7 +62,7 @@ definitions:
       type:
         maxLength: 20
         type: string
-      warter:
+      water:
         maxLength: 20
         type: string
     required:
@@ -74,7 +74,17 @@ definitions:
     - name
     - size
     - type
-    - warter
+    - water
+    type: object
+  models.CreateRecommend:
+    properties:
+      product:
+        type: string
+      recommend:
+        type: string
+    required:
+    - product
+    - recommend
     type: object
   models.CreateUser:
     properties:
@@ -156,7 +166,7 @@ definitions:
         type: string
       type:
         type: string
-      warter:
+      water:
         type: string
     type: object
   models.UpdateCategory:
@@ -199,7 +209,7 @@ definitions:
       type:
         maxLength: 20
         type: string
-      warter:
+      water:
         maxLength: 20
         type: string
     required:
@@ -210,7 +220,7 @@ definitions:
     - light
     - size
     - type
-    - warter
+    - water
     type: object
   models.UpdateUser:
     properties:
@@ -232,6 +242,38 @@ definitions:
     - firstName
     - lastName
     - phoneNumber
+    type: object
+  models.UpdateVariant:
+    properties:
+      available:
+        type: boolean
+      color:
+        maxLength: 50
+        minLength: 3
+        type: string
+      currency:
+        type: string
+      description:
+        type: string
+      image:
+        type: string
+      is_default:
+        type: boolean
+      name:
+        maxLength: 50
+        minLength: 3
+        type: string
+      price:
+        type: integer
+      product_id:
+        type: string
+    required:
+    - color
+    - currency
+    - image
+    - name
+    - price
+    - product_id
     type: object
   models.User:
     properties:
@@ -672,6 +714,36 @@ paths:
       summary: Create new product require admin permission
       tags:
       - Product
+  /product/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: getproduct by id
+      tags:
+      - Product
   /product/{id}/delete:
     delete:
       consumes:
@@ -706,6 +778,40 @@ paths:
       security:
       - Bearer: []
       summary: delete product by id require admin permission
+      tags:
+      - Product
+  /product/{id}/recommend/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id product
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get recomend products by Id
       tags:
       - Product
   /product/{id}/update:
@@ -791,6 +897,43 @@ paths:
       security:
       - Bearer: []
       summary: update default variant of product
+      tags:
+      - Product
+  /product/recommend/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New recommend for product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateRecommend'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Create new product recommend require admin permission
       tags:
       - Product
   /user/me:
@@ -880,6 +1023,115 @@ paths:
       security:
       - Bearer: []
       summary: Create new variant require admin permission
+      tags:
+      - Variant
+  /variant/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: variant id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get variant by id
+      tags:
+      - Variant
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateVariant'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update variant of product
+      tags:
+      - Variant
+  /variant/{id}/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: variant id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: delete variant by id
       tags:
       - Variant
   /variant/product/{id}:
