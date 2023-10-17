@@ -43,7 +43,7 @@ func (repo *UserRepo) GetUserByEmail(email string) (*models.User, error) {
 	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE email = $1`, UserTable)
 	err := repo.db.Get(user, query, email)
 	if err == sql.ErrNoRows {
-		return nil, models.ErrNotFound
+		return nil, err
 	} else if err != nil {
 		return nil, err
 	}

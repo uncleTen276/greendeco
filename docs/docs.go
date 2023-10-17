@@ -1295,6 +1295,11 @@ const docTemplate = `{
         },
         "/variant/{id}/delete": {
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],

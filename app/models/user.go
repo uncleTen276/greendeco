@@ -50,5 +50,5 @@ type UpdateUser struct {
 	LastName    string  `json:"lastName" validate:"required,lte=50"`
 	PhoneNumber string  `json:"phoneNumber" validate:"required,e164"`
 	Email       string  `json:"email" validate:"required,email,lte=150"`
-	Avatar      *string `json:"avatar" validate:"url"`
+	Avatar      *string `json:"avatar" validate:"omitempty,url"`
 }
