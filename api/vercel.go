@@ -60,5 +60,6 @@ func handler() http.HandlerFunc {
 	routes.AdminRoute(api)
 	routes.CategoryRouter(api)
 	web.Routes(app)
+
 	return adaptor.FiberApp(app)
 }

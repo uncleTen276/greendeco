@@ -20,7 +20,7 @@ import (
 )
 
 // @CreateUser() godoc
-// @Summary Create new user
+// @Summary create new user
 // @Tags Auth
 // @Param todo body models.CreateUser true "New User"
 // @Accept json
@@ -94,7 +94,7 @@ func CreateUser(c *fiber.Ctx) error {
 // Login
 // @Login godoc
 // @Summary User Login
-// @Description Use for login response the access_Token
+// @Description use for login response the access_Token
 // @Tags Auth
 // @Accept json
 // @Param todo body models.UserLogin true "Login"

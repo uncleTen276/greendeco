@@ -112,8 +112,19 @@ WHERE default_product_variant.product_id = products.id
     AND default_product_variant.variant_id = variants.id 
     AND products.is_publish = true;
 
+CREATE TABLE IF NOT EXISTS "reviews"(
+id  UUID DEFAULT gen_random_uuid () PRIMARY KEY,
+product_id UUID NOT NULL,
+user_id UUID NOT NULL,
+content TEXT,
+star NUMERIC ,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP DEFAULT current_timestamp,
+FOREIGN KEY(product_id) REFERENCES products (id) ON DELETE CASCADE,
+FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
+)
 
 -- CREATE ADMIN Account
 -- password 1234567890
-INSERT INTO "users" (email,identifier,password,first_name,last_name, phone_number,admin) VALUES ('admin@gmail.com','admin@gmail.com','$2a$10$xIgiGxp0THwDy1R8uxko..t3O8s9aeikqk9olnJCLLI/92FUbtFey','','admin','+844785976','true');
+-- INSERT INTO "users" (email,identifier,password,first_name,last_name, phone_number,admin) VALUES ('admin@gmail.com','admin@gmail.com','$2a$10$xIgiGxp0THwDy1R8uxko..t3O8s9aeikqk9olnJCLLI/92FUbtFey','','admin','+844785976','true');
 

@@ -86,6 +86,20 @@ definitions:
     - product
     - recommend
     type: object
+  models.CreateReview:
+    properties:
+      content:
+        type: string
+      product_id:
+        type: string
+      star:
+        type: integer
+      user_id:
+        type: string
+    required:
+    - product_id
+    - user_id
+    type: object
   models.CreateUser:
     properties:
       email:
@@ -377,7 +391,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Use for login response the access_Token
+      description: use for login response the access_Token
       parameters:
       - description: Login
         in: body
@@ -460,7 +474,7 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: Create new user
+      summary: create new user
       tags:
       - Auth
   /category/:
@@ -491,7 +505,7 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: get category
+      summary: get categories
       tags:
       - Category
     post:
@@ -527,7 +541,7 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: Create new category require admin permission
+      summary: create new category require admin permission
       tags:
       - Category
   /category/{id}/delete:
@@ -563,7 +577,7 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: delete category by id require admin permission
+      summary: delete category by id
       tags:
       - Category
   /category/{id}/update:
@@ -605,7 +619,7 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: update category by id require admin permission
+      summary: update category by id
       tags:
       - Category
   /media/upload:
@@ -626,7 +640,7 @@ paths:
           description: OK
       security:
       - ApiKeyAuth: []
-      summary: Create new image return image
+      summary: create new image return image
       tags:
       - Media
   /product/:
@@ -711,7 +725,7 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: Create new product require admin permission
+      summary: create new product require admin permission
       tags:
       - Product
   /product/{id}:
@@ -777,7 +791,7 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: delete product by id require admin permission
+      summary: delete product by id
       tags:
       - Product
   /product/{id}/recommend/:
@@ -853,7 +867,7 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: update product require admin permission
+      summary: update product
       tags:
       - Product
   /product/{id}/variant:
@@ -933,9 +947,132 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: Create new product recommend require admin permission
+      summary: create new product recommend require admin permission
       tags:
       - Product
+  /review/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New review
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateReview'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create new review for product
+      tags:
+      - Review
+  /review/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: review id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get review by id
+      tags:
+      - Review
+  /review/product/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offSet
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      - in: query
+        name: sortBy
+        type: string
+      - in: query
+        name: star
+        type: integer
+      - in: query
+        name: user_id
+        type: string
+      - description: product id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get review by product id
+      tags:
+      - Review
   /user/me:
     get:
       consumes:
@@ -1022,7 +1159,7 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: Create new variant require admin permission
+      summary: create new variant require admin permission
       tags:
       - Variant
   /variant/{id}:

@@ -12,7 +12,7 @@ import (
 )
 
 // @CreateProduct() godoc
-// @Summary Create new product require admin permission
+// @Summary create new product require admin permission
 // @Tags Product
 // @Param todo body models.CreateProduct true "New product"
 // @Accept json
@@ -73,7 +73,7 @@ func CreateProduct(c *fiber.Ctx) error {
 }
 
 // @UpdateProduct() godoc
-// @Summary update product require admin permission
+// @Summary update product
 // @Tags Product
 // @Param id path string true "id product update"
 // @Param todo body models.UpdateProduct true "product"
@@ -124,7 +124,7 @@ func UpdateProduct(c *fiber.Ctx) error {
 }
 
 // @DeleteProduct() godoc
-// @Summary delete product by id require admin permission
+// @Summary delete product by id
 // @Tags Product
 // @Param id path string true "id product"
 // @Accept json

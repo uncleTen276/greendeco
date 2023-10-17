@@ -41,7 +41,7 @@ func GetRecommendProductsById(c *fiber.Ctx) error {
 }
 
 // @CreateRecommendProduct() godoc
-// @Summary Create new product recommend require admin permission
+// @Summary create new product recommend require admin permission
 // @Tags Product
 // @Param todo body models.CreateRecommend true "New recommend for product"
 // @Accept json

@@ -104,7 +104,7 @@ const docTemplate = `{
         },
         "/auth/login": {
             "post": {
-                "description": "Use for login response the access_Token",
+                "description": "use for login response the access_Token",
                 "consumes": [
                     "application/json"
                 ],
@@ -200,7 +200,7 @@ const docTemplate = `{
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Create new user",
+                "summary": "create new user",
                 "parameters": [
                     {
                         "description": "New User",
@@ -251,7 +251,7 @@ const docTemplate = `{
                 "tags": [
                     "Category"
                 ],
-                "summary": "get category",
+                "summary": "get categories",
                 "parameters": [
                     {
                         "type": "integer",
@@ -305,7 +305,7 @@ const docTemplate = `{
                 "tags": [
                     "Category"
                 ],
-                "summary": "Create new category require admin permission",
+                "summary": "create new category require admin permission",
                 "parameters": [
                     {
                         "description": "New category",
@@ -364,7 +364,7 @@ const docTemplate = `{
                 "tags": [
                     "Category"
                 ],
-                "summary": "delete category by id require admin permission",
+                "summary": "delete category by id",
                 "parameters": [
                     {
                         "type": "string",
@@ -421,7 +421,7 @@ const docTemplate = `{
                 "tags": [
                     "Category"
                 ],
-                "summary": "update category by id require admin permission",
+                "summary": "update category by id",
                 "parameters": [
                     {
                         "type": "string",
@@ -487,7 +487,7 @@ const docTemplate = `{
                 "tags": [
                     "Media"
                 ],
-                "summary": "Create new image return image",
+                "summary": "create new image return image",
                 "operationId": "image",
                 "parameters": [
                     {
@@ -592,7 +592,7 @@ const docTemplate = `{
                 "tags": [
                     "Product"
                 ],
-                "summary": "Create new product require admin permission",
+                "summary": "create new product require admin permission",
                 "parameters": [
                     {
                         "description": "New product",
@@ -651,7 +651,7 @@ const docTemplate = `{
                 "tags": [
                     "Product"
                 ],
-                "summary": "Create new product recommend require admin permission",
+                "summary": "create new product recommend require admin permission",
                 "parameters": [
                     {
                         "description": "New recommend for product",
@@ -756,7 +756,7 @@ const docTemplate = `{
                 "tags": [
                     "Product"
                 ],
-                "summary": "delete product by id require admin permission",
+                "summary": "delete product by id",
                 "parameters": [
                     {
                         "type": "string",
@@ -865,7 +865,7 @@ const docTemplate = `{
                 "tags": [
                     "Product"
                 ],
-                "summary": "update product require admin permission",
+                "summary": "update product",
                 "parameters": [
                     {
                         "type": "string",
@@ -949,6 +949,199 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.UpdateDefaultVariant"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Review"
+                ],
+                "summary": "create new review for product",
+                "parameters": [
+                    {
+                        "description": "New review",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateReview"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/product/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Review"
+                ],
+                "summary": "get review by product id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "offSet",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sortBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "star",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "user_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "product id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Review"
+                ],
+                "summary": "get review by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "review id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1082,7 +1275,7 @@ const docTemplate = `{
                 "tags": [
                     "Variant"
                 ],
-                "summary": "Create new variant require admin permission",
+                "summary": "create new variant require admin permission",
                 "parameters": [
                     {
                         "description": "New variant",
@@ -1471,6 +1664,27 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "recommend": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateReview": {
+            "type": "object",
+            "required": [
+                "product_id",
+                "user_id"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "star": {
+                    "type": "integer"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }

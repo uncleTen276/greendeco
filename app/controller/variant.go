@@ -13,7 +13,7 @@ import (
 )
 
 // @CreateVariant() godoc
-// @Summary Create new variant require admin permission
+// @Summary create new variant require admin permission
 // @Tags Variant
 // @Param todo body models.CreateVariant true "New variant"
 // @Accept json
