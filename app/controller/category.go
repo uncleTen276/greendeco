@@ -11,7 +11,7 @@ import (
 )
 
 // @CreateCategories() godoc
-// @Summary Create new category require admin permission
+// @Summary create new category require admin permission
 // @Tags Category
 // @Param todo body models.CreateCategory true "New category"
 // @Accept json
@@ -55,7 +55,7 @@ func CreateCategories(c *fiber.Ctx) error {
 }
 
 // @UpdateCategories() godoc
-// @Summary update category by id require admin permission
+// @Summary update category by id
 // @Tags Category
 // @Param id path string true "id category update"
 // @Param todo body models.UpdateCategory true "category"
@@ -128,7 +128,7 @@ func UpdateCategories(c *fiber.Ctx) error {
 }
 
 // @DeleteCategories() godoc
-// @Summary delete category by id require admin permission
+// @Summary delete category by id
 // @Tags Category
 // @Param id path string true "id category update"
 // @Accept json
@@ -177,7 +177,7 @@ func DeleteCategories(c *fiber.Ctx) error {
 
 // GetAllCategory()
 // @GetAllCategory godoc
-// @Summary get category
+// @Summary get categories
 // @Tags Category
 // @Param limit query int false "default: limit = 10"
 // @Param offset query int false "default: offset = 1"

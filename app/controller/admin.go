@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"log"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/sekke276/greendeco.git/app/models"
@@ -60,7 +58,6 @@ func GetAllCustomers(c *fiber.Ctx) error {
 	adminRepo := repository.NewAdminRepo(database.GetDB())
 	users, err := adminRepo.GetCustomer(0, 0)
 	if err != nil {
-		log.Fatal(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend",
 		})

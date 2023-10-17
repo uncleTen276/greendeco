@@ -23,7 +23,10 @@ func Serve() {
 	if err := database.ConnectDB(); err != nil {
 		log.Panic(err)
 	}
-	database.GetDB().Migrate()
+
+	if err := database.GetDB().Migrate(); err != nil {
+		log.Panic(err)
+	}
 
 	if err := storage.ConnectStorage(); err != nil {
 		log.Panic(err)
@@ -46,6 +49,7 @@ func Serve() {
 	routes.AdminRoute(api)
 	routes.CategoryRouter(api)
 
+	routes.NewReviewRoutes(api).RegisterRoutes()
 	routes.NewProductRouter(api).RegisterRoutes()
 	routes.NewVariantRouter(api).RegisterRoute()
 

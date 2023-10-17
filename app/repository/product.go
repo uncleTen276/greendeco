@@ -65,9 +65,7 @@ func (repo *ProductRepo) Delete(id uuid.UUID) error {
 
 func (repo *ProductRepo) All(q models.ProductQuery) ([]models.ActivedProduct, error) {
 	limit := q.Limit
-	if !q.BaseQuery.IsFirstPage() {
-		limit += 1
-	}
+	limit += 1
 	pageOffset := q.BaseQuery.Limit * (q.BaseQuery.OffSet - 1)
 
 	results := []models.ActivedProduct{}
