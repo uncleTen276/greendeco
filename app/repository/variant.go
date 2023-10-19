@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -50,8 +51,8 @@ func (repo *VariantRepo) Create(m *models.CreateVariant) error {
 }
 
 func (repo *VariantRepo) createVariant(m *models.CreateVariant) error {
-	query := fmt.Sprintf(`INSERT INTO "%s" (product, name, color, price,currency, image, description, available) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`, VariantTable)
-	_, err := repo.db.Exec(query, m.ProductId, m.Name, m.Color, m.Price, m.Currency, m.Image, m.Description, m.Available)
+	query := fmt.Sprintf(`INSERT INTO "%s" (product, name, color, color_name, price,currency, image, description, available) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`, VariantTable)
+	_, err := repo.db.Exec(query, m.ProductId, m.Name, m.Color, m.ColorName, m.Price, m.Currency, m.Image, m.Description, m.Available)
 	if err != nil {
 		return err
 	}
@@ -66,8 +67,8 @@ func (repo *VariantRepo) createDefaultVariant(m *models.CreateVariant) error {
 	}
 	defer tx.Rollback()
 
-	query := fmt.Sprintf(`INSERT INTO "%s" (product, name, color, price,currency, image, description, available) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id`, VariantTable)
-	newVariant := tx.QueryRow(query, m.ProductId, m.Name, m.Color, m.Price, m.Currency, m.Image, m.Description, m.Available)
+	query := fmt.Sprintf(`INSERT INTO "%s" (product, name, color,color_name, price,currency, image, description, available) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id`, VariantTable)
+	newVariant := tx.QueryRow(query, m.ProductId, m.Name, m.Color, m.ColorName, m.Price, m.Currency, m.Image, m.Description, m.Available)
 	if err != nil {
 		return err
 	}
@@ -92,7 +93,7 @@ func (repo *VariantRepo) createDefaultVariant(m *models.CreateVariant) error {
 
 func (repo *VariantRepo) GetVariantsByProductId(id uuid.UUID) ([]models.Variant, error) {
 	result := []models.Variant{}
-	query := fmt.Sprintf(`SELECT  FROM "%s" WHERE product = $1`, VariantTable)
+	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE product = $1`, VariantTable)
 	if err := repo.db.Select(&result, query, id); err != nil {
 		return nil, err
 	}
@@ -103,7 +104,10 @@ func (repo *VariantRepo) GetVariantsByProductId(id uuid.UUID) ([]models.Variant,
 func (repo *VariantRepo) FindById(id uuid.UUID) (*models.Variant, error) {
 	variant := &models.Variant{}
 	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, VariantTable)
-	if err := repo.db.Select(variant, query, id); err != nil {
+	err := repo.db.Get(variant, query, id)
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNotFound
+	} else if err != nil {
 		return nil, err
 	}
 
@@ -132,6 +136,7 @@ func (repo *VariantRepo) GetDefaultVariantOfProduct(id uuid.UUID) (*models.Defau
 func (repo *VariantRepo) UpdateDefaultVariant(m *models.UpdateDefaultVariant) error {
 	query := fmt.Sprintf(`UPDATE %s SET variant_id = $1 WHERE product_id = $2`, ProductVariantDefaultTable)
 	if _, err := repo.db.Exec(query, m.VariantId, m.ProductId); err != nil {
+		println(err.Error())
 		return err
 	}
 
@@ -139,8 +144,9 @@ func (repo *VariantRepo) UpdateDefaultVariant(m *models.UpdateDefaultVariant) er
 }
 
 func (repo *VariantRepo) UpdateById(m *models.UpdateVariant) error {
-	query := fmt.Sprintf(`UPDATE "%s" SET available = $2, name = $3, color = $4, price = $5, currency = $6, image = $7, description = $8  WHERE id = $1`, VariantTable)
-	if _, err := repo.db.Exec(query, m.ID, m.Available, m.Name, m.Name, m.Color, m.Price, m.Currency, m.Image, m.Description); err != nil {
+	query := fmt.Sprintf(`UPDATE "%s" SET available = $2, name = $3, color = $4, price = $5, currency = $6, image = $7, description = $8, color_name = $9  WHERE id = $1`, VariantTable)
+	if _, err := repo.db.Exec(query, m.ID, m.Available, m.Name, m.Color, m.Price, m.Currency, m.Image, m.Description, m.ColorName); err != nil {
+		println(err.Error())
 		return err
 	}
 	return nil

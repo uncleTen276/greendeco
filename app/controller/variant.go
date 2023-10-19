@@ -187,7 +187,7 @@ func GetVariantById(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /variant/{id} [Put]
+// @Router /variant/{id}/update [Put]
 // @Security Bearer
 func UpdateVariant(c *fiber.Ctx) error {
 	id := c.Params("id")

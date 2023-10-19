@@ -136,6 +136,8 @@ definitions:
         maxLength: 50
         minLength: 3
         type: string
+      color_name:
+        type: string
       currency:
         type: string
       description:
@@ -154,6 +156,7 @@ definitions:
         type: string
     required:
     - color
+    - color_name
     - currency
     - image
     - name
@@ -265,6 +268,8 @@ definitions:
         maxLength: 50
         minLength: 3
         type: string
+      color_name:
+        type: string
       currency:
         type: string
       description:
@@ -283,6 +288,7 @@ definitions:
         type: string
     required:
     - color
+    - color_name
     - currency
     - image
     - name
@@ -1196,6 +1202,43 @@ paths:
       summary: get variant by id
       tags:
       - Variant
+  /variant/{id}/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: variant id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: delete variant by id
+      tags:
+      - Variant
+  /variant/{id}/update:
     put:
       consumes:
       - application/json
@@ -1235,42 +1278,6 @@ paths:
       security:
       - Bearer: []
       summary: update variant of product
-      tags:
-      - Variant
-  /variant/{id}/delete:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: variant id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "403":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      security:
-      - Bearer: []
-      summary: delete variant by id
       tags:
       - Variant
   /variant/product/{id}:

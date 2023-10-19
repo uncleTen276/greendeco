@@ -55,7 +55,7 @@ description TEXT,
 detail TEXT NOT NULL,
 light VARCHAR(50) NOT NULL,
 difficulty VARCHAR(50) NOT NULL,
-warter VARCHAR(200) NOT NULL,
+water VARCHAR(200) NOT NULL,
 qr_image TEXT,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp,
@@ -82,7 +82,8 @@ id  UUID DEFAULT gen_random_uuid () PRIMARY KEY,
 available BOOLEAN,
 product UUID NOT NULL,
 name VARCHAR(200) UNIQUE NOT NULL,
-color VARCHAR(50), 
+color VARCHAR(50),
+color_name VARCHAR(50),
 price DECIMAL NOT NULL,
 currency VARCHAR(10) NOT NULL,
 image TEXT NOT NULL,
@@ -106,7 +107,7 @@ CREATE OR REPLACE VIEW "published_products" AS
 SELECT products.id, products.category_id, products.name,
     products.available , products.size, products.type,
     products.images, products.description, products.detail,
-    products.light, products.difficulty, products.warter, variants.price ,   products.created_at, default_product_variant.variant_id
+    products.light, products.difficulty, products.water, variants.price ,   products.created_at, default_product_variant.variant_id
 FROM products, variants,default_product_variant 
 WHERE default_product_variant.product_id = products.id 
     AND default_product_variant.variant_id = variants.id 
@@ -122,7 +123,75 @@ created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp,
 FOREIGN KEY(product_id) REFERENCES products (id) ON DELETE CASCADE,
 FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
-)
+);
+
+-- CREATE TABLE IF NOT EXISTS "carts" (
+-- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+-- owner_id UUID NOT NULL,
+-- description TEXT NOT ,
+-- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+-- updated_at TIMESTAMP DEFAULT current_timestamp,
+-- FOREIGN KEY(owner_id)REFERENCES users (id) ON DELETE CASCADE
+-- );
+
+-- CREATE TABLE IF NOT EXISTS "cart_variants"(
+-- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+-- cart_id UUID NOT NULL,
+-- variant_id UUID NOT NULL,
+-- quantity NUMBERIC,
+-- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+-- updated_at TIMESTAMP DEFAULT current_timestamp,
+-- FOREIGN KEY(owner_id)REFERENCES carts (id) ON DELETE CASCADE,
+-- FOREIGN KEY(variant_id)REFERENCES variants (id) ON DELETE CASCADE
+-- );
+
+-- CREATE TABLE IF NOT EXISTS "promotions"(
+-- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+-- name TEXT NOT NULL,
+-- close_at TIMESTAMP,
+-- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+-- updated_at TIMESTAMP DEFAULT current_timestamp
+-- );
+
+-- CREATE TABLE IF NOT EXISTS "promotion_variant"(
+-- id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
+-- promotion_id UUID NOT NULL,
+-- variant_id UUID NOT NULL,
+-- discount_percent INT NOT NULL,  
+-- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+-- updated_at TIMESTAMP DEFAULT current_timestamp,
+-- FOREIGN KEY(promotion_id) REFERENCES promotions (id),
+-- FOREIGN KEY(variant_id) REFERENCES variants (id) 
+-- );
+
+-- CREATE TABLE IF NOT EXISTS "orders"(
+-- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+-- owner_id UUID NOT NULL,
+-- state VARCHAR(50),
+-- paid_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+-- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+-- updated_at TIMESTAMP DEFAULT current_timestamp,
+-- user_name TEXT,
+-- user_email TEXT,
+-- user_phoneNumber TEXT,
+-- shipping_address TEXT,
+-- FOREIGN KEY(owner_id) REFERENCES users (id)
+-- );
+
+-- CREATE TABLE IF NOT EXISTS "order_variants"(
+-- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+-- order UUID NOT NULL,
+-- variant_id UUID NOT NULL,
+-- actual_price DECIMAL NOT NULL,
+-- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+-- updated_at TIMESTAMP DEFAULT current_timestamp,
+-- discord_id UUID ,
+-- discord_name TEXT,
+-- variant_name TEXT NOT NULL,
+-- variant_price DECIMAL NOT NULL,
+-- FOREIGN KEY(order)REFERENCES orders (id) ON DELETE CASCADE ,
+-- FOREIGN KEY(discord_id)REFERENCES promotions (id) ON DELETE CASCADE ,
+-- FOREIGN KEY(variant_id)REFERENCES variants (id) 
 
 -- CREATE ADMIN Account
 -- password 1234567890
