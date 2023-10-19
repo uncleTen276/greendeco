@@ -26,7 +26,7 @@ type CreateVariant struct {
 	Available   bool      `json:"available" db:"available"`
 	ProductId   uuid.UUID `json:"product_id" validate:"required"`
 	Name        string    `json:"name" validate:"required,gte=3,lte=50"`
-	Color       string    `json:"color" validate:"required,gte=3,lte=50"`
+	Color       string    `json:"color" validate:"required,gte=3,lte=50,iscolor"`
 	ColorName   string    `json:"color_name" validate:"required"`
 	Price       int       `json:"price" validate:"required"`
 	Currency    string    `json:"currency" validate:"required,iso4217"`
@@ -40,7 +40,7 @@ type UpdateVariant struct {
 	Available   bool      `json:"available" db:"available"`
 	ProductId   uuid.UUID `json:"product_id" validate:"required"`
 	Name        string    `json:"name" validate:"required,gte=3,lte=50"`
-	Color       string    `json:"color" validate:"required,gte=3,lte=50"`
+	Color       string    `json:"color" validate:"required,gte=3,lte=50,iscolor"`
 	ColorName   string    `json:"color_name" validate:"required"`
 	Price       int       `json:"price" validate:"required"`
 	Currency    string    `json:"currency" validate:"required,iso4217"`

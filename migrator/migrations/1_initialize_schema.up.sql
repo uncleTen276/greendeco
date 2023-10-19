@@ -125,44 +125,31 @@ FOREIGN KEY(product_id) REFERENCES products (id) ON DELETE CASCADE,
 FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
--- CREATE TABLE IF NOT EXISTS "carts" (
--- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
--- owner_id UUID NOT NULL,
--- description TEXT NOT ,
--- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
--- updated_at TIMESTAMP DEFAULT current_timestamp,
--- FOREIGN KEY(owner_id)REFERENCES users (id) ON DELETE CASCADE
--- );
+CREATE TABLE IF NOT EXISTS "colors" (
+id  UUID DEFAULT gen_random_uuid () PRIMARY KEY,
+name VARCHAR(50) UNIQUE NOT NULL,
+color VARCHAR(50) UNIQUE NOT NULL
+);
 
--- CREATE TABLE IF NOT EXISTS "cart_variants"(
--- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
--- cart_id UUID NOT NULL,
--- variant_id UUID NOT NULL,
--- quantity NUMBERIC,
--- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
--- updated_at TIMESTAMP DEFAULT current_timestamp,
--- FOREIGN KEY(owner_id)REFERENCES carts (id) ON DELETE CASCADE,
--- FOREIGN KEY(variant_id)REFERENCES variants (id) ON DELETE CASCADE
--- );
+CREATE TABLE IF NOT EXISTS "carts" (
+id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+owner_id UUID NOT NULL,
+description TEXT,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP DEFAULT current_timestamp,
+FOREIGN KEY(owner_id)REFERENCES users (id) ON DELETE CASCADE
+);
 
--- CREATE TABLE IF NOT EXISTS "promotions"(
--- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
--- name TEXT NOT NULL,
--- close_at TIMESTAMP,
--- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
--- updated_at TIMESTAMP DEFAULT current_timestamp
--- );
-
--- CREATE TABLE IF NOT EXISTS "promotion_variant"(
--- id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
--- promotion_id UUID NOT NULL,
--- variant_id UUID NOT NULL,
--- discount_percent INT NOT NULL,  
--- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
--- updated_at TIMESTAMP DEFAULT current_timestamp,
--- FOREIGN KEY(promotion_id) REFERENCES promotions (id),
--- FOREIGN KEY(variant_id) REFERENCES variants (id) 
--- );
+CREATE TABLE IF NOT EXISTS "cart_variants"(
+id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+cart_id UUID NOT NULL,
+variant_id UUID NOT NULL,
+quantity NUMERIC ,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP DEFAULT current_timestamp,
+FOREIGN KEY(cart_id)REFERENCES carts (id) ON DELETE CASCADE,
+FOREIGN KEY(variant_id)REFERENCES variants (id) ON DELETE CASCADE
+);
 
 -- CREATE TABLE IF NOT EXISTS "orders"(
 -- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
