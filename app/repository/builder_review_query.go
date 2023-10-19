@@ -19,13 +19,13 @@ func (*ReviewRepo) newReviewQueryBuilder(query string) *reviewQueryBuilder {
 		query:  query,
 		field:  make(map[string]bool),
 		sortBy: "created_at",
-		sort:   "ASC",
+		sort:   " ASC",
 	}
 }
 
 func (q *reviewQueryBuilder) SetProduct(productId *uuid.UUID) *reviewQueryBuilder {
 	if productId != nil {
-		query := fmt.Sprintf(` product_id = %s`, productId)
+		query := fmt.Sprintf(` product_id = '%s'`, productId)
 		q.field[query] = true
 	}
 
@@ -43,7 +43,7 @@ func (q *reviewQueryBuilder) SetStar(star int) *reviewQueryBuilder {
 
 func (q *reviewQueryBuilder) SetUser(userId *uuid.UUID) *reviewQueryBuilder {
 	if userId != nil {
-		query := fmt.Sprintf(` user_id = %s`, userId)
+		query := fmt.Sprintf(` user_id = '%s'`, userId)
 		q.field[query] = true
 	}
 
@@ -56,7 +56,7 @@ func (q *reviewQueryBuilder) SortBy(field string, sort string) *reviewQueryBuild
 	}
 	sort = strings.ToUpper(sort)
 	if sort == "ASC" || sort == "DESC" {
-		q.sort = sort
+		q.sort = " " + sort + " "
 	}
 
 	return q
@@ -68,7 +68,7 @@ func (q *reviewQueryBuilder) Build() string {
 		q.query += "WHERE "
 		for k := range q.field {
 			if count != 0 {
-				q.query += "AND "
+				q.query += " AND "
 			}
 			q.query += k
 
@@ -76,6 +76,6 @@ func (q *reviewQueryBuilder) Build() string {
 		}
 	}
 
-	q.query += fmt.Sprintf("ORDER BY %s %s", q.sortBy, q.sort)
+	q.query += fmt.Sprintf(" ORDER BY %s %s", q.sortBy, q.sort)
 	return q.query
 }

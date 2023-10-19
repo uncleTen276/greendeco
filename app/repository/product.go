@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -36,7 +37,7 @@ func NewProductRepo(db *database.DB) ProductRepository {
 }
 
 func (repo *ProductRepo) Create(m *models.CreateProduct) error {
-	query := fmt.Sprintf(`INSERT INTO "%s" (category_id ,name, images, size, type, detail, light, difficulty, warter ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`, ProductTable)
+	query := fmt.Sprintf(`INSERT INTO "%s" (category_id ,name, images, size, type, detail, light, difficulty, water ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`, ProductTable)
 	_, err := repo.db.Exec(query, m.CategoryId, m.Name, m.Images, m.Size, m.Type, m.Detail, m.Light, m.Difficulty, m.Water)
 	if err != nil {
 		return err
@@ -46,7 +47,7 @@ func (repo *ProductRepo) Create(m *models.CreateProduct) error {
 }
 
 func (repo *ProductRepo) UpdateById(m *models.UpdateProduct) error {
-	query := fmt.Sprintf(`UPDATE "%s" SET is_publish = $2, size = $3, type=$4,images = $5, description = $6, detail = $7, light = $8, difficulty = $9, warter = $10, available = $11  WHERE id = $1`, ProductTable)
+	query := fmt.Sprintf(`UPDATE "%s" SET is_publish = $2, size = $3, type=$4,images = $5, description = $6, detail = $7, light = $8, difficulty = $9, water = $10, available = $11  WHERE id = $1`, ProductTable)
 	if _, err := repo.db.Exec(query, m.ID, m.IsPublish, m.Size, m.Type, m.Images, m.Description, m.Detail, m.Light, m.Difficulty, m.Water, m.Available); err != nil {
 		return err
 	}
@@ -91,9 +92,12 @@ func (repo *ProductRepo) All(q models.ProductQuery) ([]models.ActivedProduct, er
 }
 
 func (repo *ProductRepo) FindById(id uuid.UUID) (*models.Product, error) {
-	query := fmt.Sprintf(`SELECT * FROM "%s WHERE id = $1"`, ProductTable)
+	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, ProductTable)
 	product := &models.Product{}
-	if err := repo.db.Select(product, query, id); err != nil {
+	err := repo.db.Get(product, query, id)
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNotFound
+	} else if err != nil {
 		return nil, err
 	}
 

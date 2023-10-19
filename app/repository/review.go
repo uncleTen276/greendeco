@@ -61,8 +61,9 @@ func (repo *ReviewRepo) FindReviewsByProductId(id *uuid.UUID, q *models.ReviewQu
 		SortBy(q.Sort, q.SortBy).
 		Build()
 
-	query = fmt.Sprintf(query+"LIMIT %d OFFSET %d", limit, pageOffset)
+	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
 	if err := repo.db.Select(&result, query); err != nil {
+		println(err.Error())
 		return nil, err
 	}
 

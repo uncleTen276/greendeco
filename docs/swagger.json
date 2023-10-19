@@ -1414,8 +1414,10 @@
                         }
                     }
                 }
-            },
-            "put": {
+            }
+        },
+        "/variant/{id}/delete": {
+            "delete": {
                 "security": [
                     {
                         "Bearer": []
@@ -1430,23 +1432,14 @@
                 "tags": [
                     "Variant"
                 ],
-                "summary": "update variant of product",
+                "summary": "delete variant by id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "id",
+                        "description": "variant id",
                         "name": "id",
                         "in": "path",
                         "required": true
-                    },
-                    {
-                        "description": "Update product",
-                        "name": "todo",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.UpdateVariant"
-                        }
                     }
                 ],
                 "responses": {
@@ -1480,8 +1473,8 @@
                 }
             }
         },
-        "/variant/{id}/delete": {
-            "delete": {
+        "/variant/{id}/update": {
+            "put": {
                 "security": [
                     {
                         "Bearer": []
@@ -1496,14 +1489,23 @@
                 "tags": [
                     "Variant"
                 ],
-                "summary": "delete variant by id",
+                "summary": "update variant of product",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "variant id",
+                        "description": "id",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Update product",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateVariant"
+                        }
                     }
                 ],
                 "responses": {
@@ -1724,6 +1726,7 @@
             "type": "object",
             "required": [
                 "color",
+                "color_name",
                 "currency",
                 "image",
                 "name",
@@ -1738,6 +1741,9 @@
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 3
+                },
+                "color_name": {
+                    "type": "string"
                 },
                 "currency": {
                     "type": "string"
@@ -1907,6 +1913,7 @@
             "type": "object",
             "required": [
                 "color",
+                "color_name",
                 "currency",
                 "image",
                 "name",
@@ -1921,6 +1928,9 @@
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 3
+                },
+                "color_name": {
+                    "type": "string"
                 },
                 "currency": {
                     "type": "string"

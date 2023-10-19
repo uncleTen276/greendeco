@@ -77,9 +77,9 @@ func (q *ProductQueryBuilder) SetDifficulty(difficulty string) *ProductQueryBuil
 	return q
 }
 
-func (q *ProductQueryBuilder) Setwater(warter string) *ProductQueryBuilder {
-	if warter != "" {
-		query := fmt.Sprintf("warter = '%s'", warter)
+func (q *ProductQueryBuilder) Setwater(water string) *ProductQueryBuilder {
+	if water != "" {
+		query := fmt.Sprintf("water = '%s'", water)
 		q.field[query] = true
 	}
 

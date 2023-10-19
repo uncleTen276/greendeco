@@ -1420,8 +1420,10 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "put": {
+            }
+        },
+        "/variant/{id}/delete": {
+            "delete": {
                 "security": [
                     {
                         "Bearer": []
@@ -1436,23 +1438,14 @@ const docTemplate = `{
                 "tags": [
                     "Variant"
                 ],
-                "summary": "update variant of product",
+                "summary": "delete variant by id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "id",
+                        "description": "variant id",
                         "name": "id",
                         "in": "path",
                         "required": true
-                    },
-                    {
-                        "description": "Update product",
-                        "name": "todo",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.UpdateVariant"
-                        }
                     }
                 ],
                 "responses": {
@@ -1486,8 +1479,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/variant/{id}/delete": {
-            "delete": {
+        "/variant/{id}/update": {
+            "put": {
                 "security": [
                     {
                         "Bearer": []
@@ -1502,14 +1495,23 @@ const docTemplate = `{
                 "tags": [
                     "Variant"
                 ],
-                "summary": "delete variant by id",
+                "summary": "update variant of product",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "variant id",
+                        "description": "id",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Update product",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateVariant"
+                        }
                     }
                 ],
                 "responses": {
@@ -1730,6 +1732,7 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "color",
+                "color_name",
                 "currency",
                 "image",
                 "name",
@@ -1744,6 +1747,9 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 3
+                },
+                "color_name": {
+                    "type": "string"
                 },
                 "currency": {
                     "type": "string"
@@ -1913,6 +1919,7 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "color",
+                "color_name",
                 "currency",
                 "image",
                 "name",
@@ -1927,6 +1934,9 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 3
+                },
+                "color_name": {
+                    "type": "string"
                 },
                 "currency": {
                     "type": "string"

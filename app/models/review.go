@@ -12,8 +12,8 @@ type Review struct {
 	ProductId uuid.UUID `db:"product_id" json:"product_id"`
 	Content   string    `db:"content" json:"content"`
 	Star      int       `db:"star" json:"star"`
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
+	CreatedAt time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
 }
 
 type CreateReview struct {

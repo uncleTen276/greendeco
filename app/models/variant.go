@@ -12,6 +12,7 @@ type Variant struct {
 	Product     uuid.UUID `json:"product" db:"product"`
 	Name        string    `json:"name" db:"name"`
 	Color       string    `json:"color" db:"color"`
+	ColorName   string    `json:"color_name" db:"color_name"`
 	Price       string    `json:"price" db:"price"`
 	Image       string    `json:"image" db:"image"`
 	Description string    `json:"description" db:"description"`
@@ -26,6 +27,7 @@ type CreateVariant struct {
 	ProductId   uuid.UUID `json:"product_id" validate:"required"`
 	Name        string    `json:"name" validate:"required,gte=3,lte=50"`
 	Color       string    `json:"color" validate:"required,gte=3,lte=50"`
+	ColorName   string    `json:"color_name" validate:"required"`
 	Price       int       `json:"price" validate:"required"`
 	Currency    string    `json:"currency" validate:"required,iso4217"`
 	Image       string    `json:"image" validate:"required,url"`
@@ -39,6 +41,7 @@ type UpdateVariant struct {
 	ProductId   uuid.UUID `json:"product_id" validate:"required"`
 	Name        string    `json:"name" validate:"required,gte=3,lte=50"`
 	Color       string    `json:"color" validate:"required,gte=3,lte=50"`
+	ColorName   string    `json:"color_name" validate:"required"`
 	Price       int       `json:"price" validate:"required"`
 	Currency    string    `json:"currency" validate:"required,iso4217"`
 	Image       string    `json:"image" validate:"required,url"`

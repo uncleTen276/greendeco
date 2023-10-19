@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/sekke276/greendeco.git/app/models"
@@ -51,9 +52,12 @@ func (repo *CategoryRepo) FindById(id string) (*models.Category, error) {
 	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, CategoryTable)
 	category := models.NewCategory()
 	err := repo.db.Get(category, query, id)
-	if err != nil {
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNotFound
+	} else if err != nil {
 		return nil, err
 	}
+
 	return category, nil
 }
 
