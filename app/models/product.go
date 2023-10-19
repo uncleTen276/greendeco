@@ -8,22 +8,22 @@ import (
 )
 
 type Product struct {
-	ID          string    `db:"id" json:"id"`
-	Category    Category  `db:"category_id" json:"category"`
-	Name        string    `db:"name" json:"name"`
-	IsPublish   bool      `db:"is_publish" json:"is_publish"`
-	Size        string    `db:"size" json:"size"`
-	Available   bool      `db:"available" json:"available"`
-	Type        string    `db:"type" json:"type"`
-	Images      []string  `db:"images" json:"images"`
-	Detail      string    `db:"detail" json:"detail"`
-	Description string    `db:"description" json:"description"`
-	Light       string    `db:"light" json:"light"`
-	Difficulty  string    `db:"difficulty" json:"difficulty"`
-	Water       string    `db:"water" json:"water"`
-	QrImage     string    `db:"qr_image" json:"qr_image"`
-	CreatedAt   time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt   time.Time `db:"updated_at" json:"updated_at"`
+	ID          string         `db:"id" json:"id"`
+	Category    string         `db:"category_id" json:"category"`
+	Name        string         `db:"name" json:"name"`
+	IsPublish   bool           `db:"is_publish" json:"is_publish"`
+	Size        string         `db:"size" json:"size"`
+	Available   bool           `db:"available" json:"available"`
+	Type        string         `db:"type" json:"type"`
+	Images      pq.StringArray `db:"images" json:"images"`
+	Detail      string         `db:"detail" json:"detail"`
+	Description *string        `db:"description" json:"description"`
+	Light       string         `db:"light" json:"light"`
+	Difficulty  string         `db:"difficulty" json:"difficulty"`
+	Water       string         `db:"water" json:"water"`
+	QrImage     *string        `db:"qr_image" json:"qr_image"`
+	CreatedAt   time.Time      `db:"created_at" json:"created_at"`
+	UpdatedAt   time.Time      `db:"updated_at" json:"updated_at"`
 }
 
 func NewProduct() *Product {
