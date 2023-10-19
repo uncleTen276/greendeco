@@ -51,7 +51,8 @@ func CreateProduct(c *fiber.Ctx) error {
 	}
 
 	productRepo := repository.NewProductRepo(database.GetDB())
-	if err := productRepo.Create(newProduct); err != nil {
+	productId, err := productRepo.Create(newProduct)
+	if err != nil {
 		if database.DetectNotFoundContrainError(err) {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 				Message: "invalid category",
@@ -69,7 +70,9 @@ func CreateProduct(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(fiber.StatusCreated).SendString("create success")
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
+		"id": productId,
+	})
 }
 
 // @UpdateProduct() godoc

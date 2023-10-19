@@ -10,7 +10,7 @@ import (
 )
 
 type ProductRepository interface {
-	Create(m *models.CreateProduct) error
+	Create(m *models.CreateProduct) (string, error)
 	UpdateById(m *models.UpdateProduct) error
 	FindById(id uuid.UUID) (*models.Product, error)
 	Delete(id uuid.UUID) error
@@ -36,14 +36,15 @@ func NewProductRepo(db *database.DB) ProductRepository {
 	return &ProductRepo{db: db}
 }
 
-func (repo *ProductRepo) Create(m *models.CreateProduct) error {
-	query := fmt.Sprintf(`INSERT INTO "%s" (category_id ,name, images, size, type, detail, light, difficulty, water ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`, ProductTable)
-	_, err := repo.db.Exec(query, m.CategoryId, m.Name, m.Images, m.Size, m.Type, m.Detail, m.Light, m.Difficulty, m.Water)
-	if err != nil {
-		return err
+func (repo *ProductRepo) Create(m *models.CreateProduct) (string, error) {
+	query := fmt.Sprintf(`INSERT INTO "%s" (category_id ,name, images, size, type, detail, light, difficulty, water ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id`, ProductTable)
+	newProduct := repo.db.QueryRow(query, m.CategoryId, m.Name, m.Images, m.Size, m.Type, m.Detail, m.Light, m.Difficulty, m.Water)
+	var productId string
+	if err := newProduct.Scan(&productId); err != nil {
+		return "", err
 	}
 
-	return nil
+	return productId, nil
 }
 
 func (repo *ProductRepo) UpdateById(m *models.UpdateProduct) error {
