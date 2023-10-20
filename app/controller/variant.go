@@ -217,10 +217,36 @@ func UpdateVariant(c *fiber.Ctx) error {
 	variantRepo := repository.NewVariantRepo(database.GetDB())
 	// check if default
 	if updateVariant.IsDefault {
-		if err := variantRepo.UpdateDefaultVariant(&models.UpdateDefaultVariant{
+		// check if existed
+		defaultVariant := &models.UpdateDefaultVariant{
 			ProductId: updateVariant.ProductId,
 			VariantId: updateVariant.ID,
-		}); err != nil {
+		}
+
+		// create if not existed
+		if oldDefaultVariant, err := variantRepo.GetDefaultVariantOfProduct(updateVariant.ProductId); err != nil && oldDefaultVariant == nil {
+			if err := variantRepo.CreateDefaultVariantProduct(defaultVariant); err != nil {
+				if database.DetectDuplicateError(err) {
+					return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+						Message: "record already exists",
+					})
+				}
+
+				if database.DetectNotFoundContrainError(err) {
+					return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+						Message: "invalid product",
+					})
+				}
+
+				return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+					Message: "some thing bad happended",
+				})
+
+			}
+		}
+
+		// update
+		if err := variantRepo.UpdateDefaultVariant(defaultVariant); err != nil {
 			if database.DetectDuplicateError(err) {
 				return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 					Message: "record already exists",

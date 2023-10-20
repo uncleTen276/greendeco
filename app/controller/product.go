@@ -263,7 +263,7 @@ func GetProductById(c *fiber.Ctx) error {
 }
 
 // @UpdateDefaultVariant() godoc
-// @Summary update default variant of product
+// @Summary update default variant of product (deprecated) only use for testing
 // @Description sort value can only asc or desc
 // @Tags Product
 // @Param id path string true "id"

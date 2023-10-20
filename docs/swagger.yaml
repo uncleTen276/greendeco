@@ -916,7 +916,7 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: update default variant of product
+      summary: update default variant of product (deprecated) only use for testing
       tags:
       - Product
   /product/recommend/:

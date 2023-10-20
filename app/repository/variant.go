@@ -17,6 +17,7 @@ type VariantRepository interface {
 	GetDefaultVariantOfProduct(id uuid.UUID) (*models.DefaultVariant, error)
 	UpdateDefaultVariant(m *models.UpdateDefaultVariant) error
 	Delete(id uuid.UUID) error
+	CreateDefaultVariantProduct(v *models.UpdateDefaultVariant) error
 }
 
 type VariantRepo struct {
@@ -85,6 +86,16 @@ func (repo *VariantRepo) createDefaultVariant(m *models.CreateVariant) error {
 	}
 
 	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *VariantRepo) CreateDefaultVariantProduct(v *models.UpdateDefaultVariant) error {
+	query := fmt.Sprintf(`INSERT INTO "%s" (product_id, variant_id) VALUES ($1,$2)`, DefaultProductVariantTable)
+
+	if _, err := repo.db.Exec(query, v.ProductId, v.VariantId); err != nil {
 		return err
 	}
 

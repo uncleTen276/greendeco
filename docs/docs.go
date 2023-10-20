@@ -932,7 +932,7 @@ const docTemplate = `{
                 "tags": [
                     "Product"
                 ],
-                "summary": "update default variant of product",
+                "summary": "update default variant of product (deprecated) only use for testing",
                 "parameters": [
                     {
                         "type": "string",
