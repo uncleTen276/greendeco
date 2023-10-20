@@ -29,6 +29,25 @@ definitions:
       prev:
         type: boolean
     type: object
+  models.CreateCart:
+    properties:
+      description:
+        type: string
+    type: object
+  models.CreateCartProduct:
+    properties:
+      cart_id:
+        type: string
+      quantity:
+        minimum: 1
+        type: integer
+      variant_id:
+        type: string
+    required:
+    - cart_id
+    - quantity
+    - variant_id
+    type: object
   models.CreateCategory:
     properties:
       name:
@@ -483,6 +502,80 @@ paths:
       summary: create new user
       tags:
       - Auth
+  /cart/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New cart
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCart'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create new cart
+      tags:
+      - Cart
+  /cart/product/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New cart
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCartProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create new cart item
+      tags:
+      - Cart
   /category/:
     get:
       consumes:

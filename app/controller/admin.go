@@ -36,7 +36,7 @@ func GetAllCustomers(c *fiber.Ctx) error {
 
 	userRepo := repository.NewUserRepo(database.GetDB())
 
-	userExist, err := userRepo.GetUserById(userId)
+	userExist, err := userRepo.GetUserById(*userId)
 	if err != nil && err != models.ErrNotFound {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend :(",
