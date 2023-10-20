@@ -47,15 +47,15 @@ func CreateUser(c *fiber.Ctx) error {
 	userRepo := repository.NewUserRepo(database.GetDB())
 	// find user by identifier
 	userExist, err := userRepo.GetUserByIdentifier(user.Identifier)
-	if err != nil && err != models.ErrNotFound {
-		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
-			Message: "fail to create user",
-		})
-	}
-
 	if userExist != nil {
 		return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
 			Message: "this user identifier already exists",
+		})
+	}
+
+	if err != nil && err != models.ErrNotFound {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "fail to create user",
 		})
 	}
 

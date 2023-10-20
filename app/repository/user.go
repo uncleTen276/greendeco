@@ -35,7 +35,10 @@ func NewUserRepo(db *database.DB) UserRepository {
 func (repo *UserRepo) Create(u *models.CreateUser) error {
 	query := fmt.Sprintf(`INSERT INTO "%s" (email,identifier,password,first_name,last_name, phone_number) VALUES ($1,$2,$3,$4,$5,$6)`, UserTable)
 	_, err := repo.db.Exec(query, u.Email, u.Identifier, u.Password, u.FirstName, u.LastName, u.PhoneNumber)
-	return err
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (repo *UserRepo) GetUserByEmail(email string) (*models.User, error) {
@@ -60,6 +63,7 @@ func (repo *UserRepo) GetUserByIdentifier(identifier string) (*models.User, erro
 	} else if err != nil {
 		return nil, err
 	}
+
 	return user, nil
 }
 
