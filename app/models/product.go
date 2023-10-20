@@ -88,6 +88,7 @@ type ActivedProduct struct {
 	Water          string         `db:"water" json:"water"`
 	CreatedAt      time.Time      `db:"created_at" json:"created_at"`
 	DefaultVariant string         `db:"variant_id" json:"default_variant"`
+	Currency       string         `db:"currency" json:"currency"`
 }
 
 type UpdateDefaultVariant struct {

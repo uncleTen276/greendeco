@@ -107,7 +107,7 @@ CREATE OR REPLACE VIEW "published_products" AS
 SELECT products.id, products.category_id, products.name,
     products.available , products.size, products.type,
     products.images, products.description, products.detail,
-    products.light, products.difficulty, products.water, variants.price ,   products.created_at, default_product_variant.variant_id
+    products.light, products.difficulty, products.water, variants.price ,   products.created_at, default_product_variant.variant_id, variants.currency
 FROM products, variants,default_product_variant 
 WHERE default_product_variant.product_id = products.id 
     AND default_product_variant.variant_id = variants.id 
@@ -195,5 +195,5 @@ FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
 
 -- CREATE ADMIN Account
 -- password 1234567890
--- INSERT INTO "users" (email,identifier,password,first_name,last_name, phone_number,admin) VALUES ('admin@gmail.com','admin@gmail.com','$2a$10$xIgiGxp0THwDy1R8uxko..t3O8s9aeikqk9olnJCLLI/92FUbtFey','','admin','+844785976','true');
+INSERT INTO "users" (email,identifier,password,first_name,last_name, phone_number,admin) VALUES ('admin@gmail.com','admin@gmail.com','$2a$10$xIgiGxp0THwDy1R8uxko..t3O8s9aeikqk9olnJCLLI/92FUbtFey','','admin','+844785976','true');
 
