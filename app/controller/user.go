@@ -171,7 +171,7 @@ func GetUserInfo(c *fiber.Ctx) error {
 	}
 
 	userRepo := repository.NewUserRepo(database.GetDB())
-	user, err := userRepo.GetUserById(userId)
+	user, err := userRepo.GetUserById(*userId)
 	if err != nil {
 		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
 			Message: "user not found",
@@ -318,7 +318,7 @@ func UpdatePassword(c *fiber.Ctx) error {
 	}
 
 	userRepo := repository.NewUserRepo(database.GetDB())
-	if err = userRepo.UpdatePasswordById(hashedPassword, userId); err != nil {
+	if err = userRepo.UpdatePasswordById(hashedPassword, *userId); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "some thing bad happended",
 		})
@@ -358,9 +358,25 @@ func UpdateUserInformation(c *fiber.Ctx) error {
 		})
 	}
 
-	userRepo := repository.NewUserRepo(database.GetDB())
+	validate := validators.NewValidator()
+	if userUpdate.Avatar != nil {
+		if err := validate.Struct(userUpdate); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid input found",
+				Errors:  validators.ValidatorErrors(err),
+			})
+		}
+	} else {
+		if err := validate.StructExcept(userUpdate, "avatar"); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid input found",
+				Errors:  validators.ValidatorErrors(err),
+			})
+		}
+	}
 
-	userExist, err := userRepo.GetUserById(userId)
+	userRepo := repository.NewUserRepo(database.GetDB())
+	userExist, err := userRepo.GetUserById(*userId)
 	if err != nil && err != models.ErrNotFound {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend :(",
@@ -380,36 +396,21 @@ func UpdateUserInformation(c *fiber.Ctx) error {
 		})
 	}
 
-	if userEmail.ID != userExist.ID {
-		return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
-			Message: "this user email already exists",
-		})
-	}
-
-	validate := validators.NewValidator()
-	if userUpdate.Avatar != nil {
-		if err := validate.Struct(userUpdate); err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
-				Message: "invalid input found",
-				Errors:  validators.ValidatorErrors(err),
-			})
-		}
-	} else {
-		if err := validate.StructExcept(userUpdate, "avatar"); err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
-				Message: "invalid input found",
-				Errors:  validators.ValidatorErrors(err),
+	if err != models.ErrNotFound {
+		if userEmail.ID != userExist.ID {
+			return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
+				Message: "this user email already exists",
 			})
 		}
 	}
 
-	if err := userRepo.UpdateUserInfor(userId, userUpdate); err != nil {
+	if err := userRepo.UpdateUserInfor(*userId, userUpdate); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&models.ErrorResponse{
 			Message: "fail to update user",
 		})
 	}
 
-	userRes, err := userRepo.GetUserById(userId)
+	userRes, err := userRepo.GetUserById(*userId)
 	if err != nil {
 		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
 			Message: "user not found",

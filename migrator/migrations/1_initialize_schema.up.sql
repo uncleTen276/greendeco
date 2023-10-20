@@ -133,7 +133,7 @@ color VARCHAR(50) UNIQUE NOT NULL
 
 CREATE TABLE IF NOT EXISTS "carts" (
 id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
-owner_id UUID NOT NULL,
+owner_id UUID UNIQUE NOT NULL,
 description TEXT,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp,
@@ -151,6 +151,9 @@ FOREIGN KEY(cart_id)REFERENCES carts (id) ON DELETE CASCADE,
 FOREIGN KEY(variant_id)REFERENCES variants (id) ON DELETE CASCADE
 );
 
+CREATE UNIQUE INDEX ON "cart_variants"(
+cart_id,variant_id 
+);
 -- CREATE TABLE IF NOT EXISTS "orders"(
 -- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
 -- owner_id UUID NOT NULL,

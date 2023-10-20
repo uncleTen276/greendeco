@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/golang-jwt/jwt/v5"
@@ -48,13 +49,19 @@ func jwtError(c *fiber.Ctx, err error) error {
 }
 
 // GetUserIdFromToken() return userId from token
-func GetUserIdFromToken(token *jwt.Token) (string, error) {
+func GetUserIdFromToken(token *jwt.Token) (*uuid.UUID, error) {
 	claims := token.Claims.(jwt.MapClaims)
 	userId, ok := claims["user_id"].(string)
 	if !ok {
-		return "", errors.New("can't extract user info from request")
+		return nil, errors.New("can't extract user info from request")
 	}
-	return userId, nil
+
+	uid, err := uuid.Parse(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &uid, nil
 }
 
 func GetAdminFromToken(token *jwt.Token) bool {

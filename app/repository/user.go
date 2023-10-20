@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/platform/database"
 )
@@ -13,9 +14,9 @@ type UserRepository interface {
 	GetUserByIdentifier(identifier string) (*models.User, error)
 	GetUserByEmail(email string) (*models.User, error)
 	GetUserByPhoneNumber(phoneNumber string) (*models.User, error)
-	GetUserById(uId string) (*models.User, error)
-	UpdatePasswordById(password string, id string) error
-	UpdateUserInfor(userId string, user *models.UpdateUser) error
+	GetUserById(uuid.UUID) (*models.User, error)
+	UpdatePasswordById(password string, id uuid.UUID) error
+	UpdateUserInfor(userId uuid.UUID, user *models.UpdateUser) error
 }
 
 type UserRepo struct {
@@ -79,14 +80,14 @@ func (repo *UserRepo) GetUserByPhoneNumber(phoneNumber string) (*models.User, er
 	return user, nil
 }
 
-func (repo *UserRepo) GetUserById(uId string) (*models.User, error) {
+func (repo *UserRepo) GetUserById(uId uuid.UUID) (*models.User, error) {
 	user := models.NewUser()
 	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, UserTable)
 	err := repo.db.Get(user, query, uId)
 	return user, err
 }
 
-func (repo *UserRepo) UpdatePasswordById(password string, id string) error {
+func (repo *UserRepo) UpdatePasswordById(password string, id uuid.UUID) error {
 	query := fmt.Sprintf(`UPDATE "%s" SET password = $1 WHERE id = $2`, UserTable)
 	_, err := repo.db.Exec(query, password, id)
 	if err != nil {
@@ -96,8 +97,8 @@ func (repo *UserRepo) UpdatePasswordById(password string, id string) error {
 	return nil
 }
 
-func (repo *UserRepo) UpdateUserInfor(userId string, user *models.UpdateUser) error {
-	query := fmt.Sprintf(`UPDATE "%s" SET first_name = $2, last_name = $3, avatar = $4, phone_number = $5   WHERE id = $1`, UserTable)
+func (repo *UserRepo) UpdateUserInfor(userId uuid.UUID, user *models.UpdateUser) error {
+	query := fmt.Sprintf(`UPDATE "%s" SET first_name = $2, last_name = $3, avatar = $4, phone_number = $5  WHERE id = $1`, UserTable)
 	_, err := repo.db.Exec(query, userId, user.FirstName, user.LastName, user.Avatar, user.PhoneNumber)
 	if err != nil {
 		return err
