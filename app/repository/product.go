@@ -37,8 +37,8 @@ func NewProductRepo(db *database.DB) ProductRepository {
 }
 
 func (repo *ProductRepo) Create(m *models.CreateProduct) (string, error) {
-	query := fmt.Sprintf(`INSERT INTO "%s" (category_id ,name, images, size, type, detail, light, difficulty, water ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id`, ProductTable)
-	newProduct := repo.db.QueryRow(query, m.CategoryId, m.Name, m.Images, m.Size, m.Type, m.Detail, m.Light, m.Difficulty, m.Water)
+	query := fmt.Sprintf(`INSERT INTO "%s" (category_id ,name, images, size, type, detail, light, difficulty, water, description ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9, $10) RETURNING id`, ProductTable)
+	newProduct := repo.db.QueryRow(query, m.CategoryId, m.Name, m.Images, m.Size, m.Type, m.Detail, m.Light, m.Difficulty, m.Water, m.Description)
 	var productId string
 	if err := newProduct.Scan(&productId); err != nil {
 		return "", err
