@@ -207,7 +207,7 @@ func GetProducts(c *fiber.Ctx) error {
 		})
 	}
 
-	nextPage := query.HaveNextPage()
+	nextPage := query.HaveNextPage(len(products))
 	if nextPage {
 		products = products[:len(products)-1]
 	}

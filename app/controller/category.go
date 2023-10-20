@@ -202,7 +202,7 @@ func GetAllCategory(c *fiber.Ctx) error {
 		})
 	}
 
-	nextPage := baseQuery.HaveNextPage()
+	nextPage := baseQuery.HaveNextPage(len(categories))
 	if nextPage {
 		categories = categories[:len(categories)-1]
 	}

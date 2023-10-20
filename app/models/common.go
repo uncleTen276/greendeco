@@ -26,12 +26,12 @@ func (q *BaseQuery) IsFirstPage() bool {
 	return q.OffSet < 2
 }
 
-func (q *BaseQuery) HaveNextPage(arr ...any) bool {
+func (q *BaseQuery) HaveNextPage(arrLen int) bool {
 	if q.Limit <= 0 {
 		return false
 	}
 
-	return !(len(arr) <= q.Limit)
+	return arrLen > q.Limit
 }
 
 func (q *BaseQuery) GetPageNumber() int {

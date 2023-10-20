@@ -124,7 +124,8 @@ func GetReviewByProductId(c *fiber.Ctx) error {
 		})
 	}
 
-	nextPage := query.HaveNextPage()
+	nextPage := query.HaveNextPage(len(reviews))
+
 	if nextPage {
 		reviews = reviews[:len(reviews)-1]
 	}
