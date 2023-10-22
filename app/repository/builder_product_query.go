@@ -7,15 +7,15 @@ import (
 	"github.com/google/uuid"
 )
 
-type ProductQueryBuilder struct {
+type productQueryBuilder struct {
 	query  string
 	field  map[string]bool
 	sortBy string
 	sort   string
 }
 
-func (*ProductRepo) newProductQueryBuilder(query string) *ProductQueryBuilder {
-	return &ProductQueryBuilder{
+func (*ProductRepo) newProductQueryBuilder(query string) *productQueryBuilder {
+	return &productQueryBuilder{
 		query:  query,
 		field:  make(map[string]bool),
 		sortBy: "id",
@@ -23,7 +23,7 @@ func (*ProductRepo) newProductQueryBuilder(query string) *ProductQueryBuilder {
 	}
 }
 
-func (q *ProductQueryBuilder) SetName(name string) *ProductQueryBuilder {
+func (q *productQueryBuilder) SetName(name string) *productQueryBuilder {
 	if name != "" {
 		query := fmt.Sprintf(` word_similarity(published_products."name",'%s') > 0 `, name)
 		q.field[query] = true
@@ -32,7 +32,7 @@ func (q *ProductQueryBuilder) SetName(name string) *ProductQueryBuilder {
 	return q
 }
 
-func (q *ProductQueryBuilder) SetAvailable(available *bool) *ProductQueryBuilder {
+func (q *productQueryBuilder) SetAvailable(available *bool) *productQueryBuilder {
 	if available != nil {
 		query := fmt.Sprintf(` available = '%v'`, available)
 		q.field[query] = true
@@ -41,7 +41,7 @@ func (q *ProductQueryBuilder) SetAvailable(available *bool) *ProductQueryBuilder
 	return q
 }
 
-func (q *ProductQueryBuilder) SetCategory(category *uuid.UUID) *ProductQueryBuilder {
+func (q *productQueryBuilder) SetCategory(category *uuid.UUID) *productQueryBuilder {
 	if category != nil {
 		query := fmt.Sprintf(` category_id = '%s'`, category)
 		q.field[query] = true
@@ -50,7 +50,7 @@ func (q *ProductQueryBuilder) SetCategory(category *uuid.UUID) *ProductQueryBuil
 	return q
 }
 
-func (q *ProductQueryBuilder) SetSize(size string) *ProductQueryBuilder {
+func (q *productQueryBuilder) SetSize(size string) *productQueryBuilder {
 	if size != "" {
 		query := fmt.Sprintf(`size='%s'`, size)
 		q.field[query] = true
@@ -59,7 +59,7 @@ func (q *ProductQueryBuilder) SetSize(size string) *ProductQueryBuilder {
 	return q
 }
 
-func (q *ProductQueryBuilder) SetType(types string) *ProductQueryBuilder {
+func (q *productQueryBuilder) SetType(types string) *productQueryBuilder {
 	if types != "" {
 		query := fmt.Sprintf("type= '%s'", types)
 		q.field[query] = true
@@ -68,7 +68,7 @@ func (q *ProductQueryBuilder) SetType(types string) *ProductQueryBuilder {
 	return q
 }
 
-func (q *ProductQueryBuilder) SetDifficulty(difficulty string) *ProductQueryBuilder {
+func (q *productQueryBuilder) SetDifficulty(difficulty string) *productQueryBuilder {
 	if difficulty != "" {
 		query := fmt.Sprintf("difficulty = '%s'", difficulty)
 		q.field[query] = true
@@ -77,7 +77,7 @@ func (q *ProductQueryBuilder) SetDifficulty(difficulty string) *ProductQueryBuil
 	return q
 }
 
-func (q *ProductQueryBuilder) Setwater(water string) *ProductQueryBuilder {
+func (q *productQueryBuilder) Setwater(water string) *productQueryBuilder {
 	if water != "" {
 		query := fmt.Sprintf("water = '%s'", water)
 		q.field[query] = true
@@ -86,7 +86,7 @@ func (q *ProductQueryBuilder) Setwater(water string) *ProductQueryBuilder {
 	return q
 }
 
-func (q *ProductQueryBuilder) SortBy(field string, sort string) *ProductQueryBuilder {
+func (q *productQueryBuilder) SortBy(field string, sort string) *productQueryBuilder {
 	if field != "" {
 		q.sortBy = field
 	}
@@ -98,7 +98,7 @@ func (q *ProductQueryBuilder) SortBy(field string, sort string) *ProductQueryBui
 	return q
 }
 
-func (q *ProductQueryBuilder) Build() string {
+func (q *productQueryBuilder) Build() string {
 	count := 0
 	if len(q.field) != 0 {
 		q.query += "WHERE "
