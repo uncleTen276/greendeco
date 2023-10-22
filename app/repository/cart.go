@@ -13,6 +13,13 @@ type CartRepository interface {
 	Create(*models.CreateCart) (string, error)
 	CreateCartProduct(*models.CreateCartProduct) (string, error)
 	GetCartByOwnerId(uuid.UUID) (*models.Cart, error)
+	GetCartProductById(cartId uuid.UUID) (*models.CartProduct, error)
+	UpdateCartProductById(updateCart *models.UpdateCartProduct) error
+	DeleteCartById(cartId uuid.UUID) error
+	DeleteCartItemByCartId(cartId uuid.UUID) error
+	DeleteCartItemById(itemId uuid.UUID) error
+	GetCartById(cartId uuid.UUID) (*models.Cart, error)
+	GetCartProductByCartId(cartId uuid.UUID, query *models.BaseQuery) ([]*models.CartProduct, error)
 }
 
 type CartRepo struct {
@@ -67,4 +74,87 @@ func (repo *CartRepo) GetCartByOwnerId(ownerId uuid.UUID) (*models.Cart, error) 
 	}
 
 	return cart, nil
+}
+
+func (repo *CartRepo) GetCartProductById(cartId uuid.UUID) (*models.CartProduct, error) {
+	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, CartProductTable)
+	cartItem := &models.CartProduct{}
+	err := repo.db.Get(cartItem, query, cartId)
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNotFound
+	} else if err != nil {
+		return nil, err
+	}
+
+	return cartItem, nil
+}
+
+func (repo *CartRepo) UpdateCartProductById(updateCart *models.UpdateCartProduct) error {
+	query := fmt.Sprintf(`UPDATE "%s" SET quantity=$2 WHERE id=$1`, CartProductTable)
+	if _, err := repo.db.Exec(query, updateCart.ID, updateCart.Quantity); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *CartRepo) DeleteCartById(cartId uuid.UUID) error {
+	query := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1`, CartTable)
+	if _, err := repo.db.Exec(query, cartId); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *CartRepo) DeleteCartItemByCartId(cartId uuid.UUID) error {
+	query := fmt.Sprintf(`DELETE FROM "%s" WHERE cart_id= $1`, CartProductTable)
+	if _, err := repo.db.Exec(query, cartId); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *CartRepo) DeleteCartItemById(itemId uuid.UUID) error {
+	query := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1`, CartProductTable)
+	if _, err := repo.db.Exec(query, itemId); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *CartRepo) GetCartById(cartId uuid.UUID) (*models.Cart, error) {
+	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, CartTable)
+	cart := &models.Cart{}
+	err := repo.db.Get(cart, query, cartId)
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNotFound
+	} else if err != nil {
+		return nil, err
+	}
+
+	return cart, nil
+}
+
+func (repo *CartRepo) GetCartProductByCartId(cartId uuid.UUID, q *models.BaseQuery) ([]*models.CartProduct, error) {
+	limit := q.Limit
+	limit += 1
+	pageOffset := q.Limit * (q.OffSet - 1)
+	firstQuery := fmt.Sprintf(`SELECT * FROM "%s" WHERE cart_id = $1 `, CartProductTable)
+	cartProductList := &[]*models.CartProduct{}
+	query := repo.newCartQueryBuilder(firstQuery).
+		SortBy(q.SortBy, q.Sort).
+		Build()
+
+	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
+	err := repo.db.Select(cartProductList, query, cartId)
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNotFound
+	} else if err != nil {
+		return nil, err
+	}
+
+	return *cartProductList, nil
 }
