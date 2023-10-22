@@ -16,8 +16,8 @@ type Cart struct {
 
 type CartProduct struct {
 	ID        uuid.UUID `json:"id" db:"id"`
-	Cart      Cart      `json:"cart" db:"cart_id"`
-	Variant   Variant   `json:"variant" db:"variant"`
+	Cart      uuid.UUID `json:"cart" db:"cart_id"`
+	Variant   uuid.UUID `json:"variant" db:"variant_id"`
 	Quantity  int       `json:"quantity" db:"quantity"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
@@ -31,5 +31,10 @@ type CreateCart struct {
 type CreateCartProduct struct {
 	Cart     uuid.UUID `json:"cart_id" validate:"required,uuid4"`
 	Variant  uuid.UUID `json:"variant_id" validate:"required,uuid4"`
+	Quantity int       `json:"quantity" validate:"required,numeric,gte=1"`
+}
+
+type UpdateCartProduct struct {
+	ID       uuid.UUID `json:"-" validate:"required,uuid4"`
 	Quantity int       `json:"quantity" validate:"required,numeric,gte=1"`
 }

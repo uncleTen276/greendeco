@@ -205,6 +205,14 @@ definitions:
       water:
         type: string
     type: object
+  models.UpdateCartProduct:
+    properties:
+      quantity:
+        minimum: 1
+        type: integer
+    required:
+    - quantity
+    type: object
   models.UpdateCategory:
     properties:
       name:
@@ -503,6 +511,37 @@ paths:
       tags:
       - Auth
   /cart/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: query cart by owner Id
+      tags:
+      - Cart
     post:
       consumes:
       - application/json
@@ -537,6 +576,125 @@ paths:
       security:
       - Bearer: []
       summary: create new cart
+      tags:
+      - Cart
+  /cart/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: get cart by id
+      tags:
+      - Cart
+  /cart/{id}/clear:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id cart
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: clear cart items
+      tags:
+      - Cart
+  /cart/{id}/product:
+    get:
+      consumes:
+      - application/json
+      description: sort value can only asc or desc
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offSet
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      - in: query
+        name: sortBy
+        type: string
+      - description: id of cart
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: query get cart products by cart Id
       tags:
       - Cart
   /cart/product/:
@@ -574,6 +732,116 @@ paths:
       security:
       - Bearer: []
       summary: create new cart item
+      tags:
+      - Cart
+  /cart/product/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id of cart product
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: get cart product by id
+      tags:
+      - Cart
+  /cart/product/{id}/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id cart
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: delete cart item
+      tags:
+      - Cart
+  /cart/product/{id}/update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id cart product
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: cart
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateCartProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: cart item
       tags:
       - Cart
   /category/:

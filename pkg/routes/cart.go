@@ -22,6 +22,13 @@ func (r *CartRouters) RegisterRoutes() {
 
 func (r *CartRouters) privateProductRouter() {
 	r.app.Use(middlewares.JWTProtected())
+	r.app.Get("/", controller.GetCartByOnwerId)
+	r.app.Get("/:id", controller.GetCartById)
+	r.app.Get("/product/:id", controller.GetCartProductById)
+	r.app.Get("/:id/product", controller.GetCartProductsByCartId)
 	r.app.Post("/", controller.CreateCart)
 	r.app.Post("/product/", controller.CreateCartProduct)
+	r.app.Put("/product/:id/update", controller.UpdateCartProduct)
+	r.app.Delete("/:id/clear", controller.DeleteCartItemByCartId)
+	r.app.Delete("/product/:id/delete", controller.DeleteCartItemById)
 }
