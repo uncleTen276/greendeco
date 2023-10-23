@@ -154,34 +154,47 @@ FOREIGN KEY(variant_id)REFERENCES variants (id) ON DELETE CASCADE
 CREATE UNIQUE INDEX ON "cart_variants"(
 cart_id,variant_id 
 );
--- CREATE TABLE IF NOT EXISTS "orders"(
--- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
--- owner_id UUID NOT NULL,
--- state VARCHAR(50),
--- paid_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
--- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
--- updated_at TIMESTAMP DEFAULT current_timestamp,
--- user_name TEXT,
--- user_email TEXT,
--- user_phoneNumber TEXT,
--- shipping_address TEXT,
--- FOREIGN KEY(owner_id) REFERENCES users (id)
--- );
 
--- CREATE TABLE IF NOT EXISTS "order_variants"(
--- id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
--- order UUID NOT NULL,
--- variant_id UUID NOT NULL,
--- actual_price DECIMAL NOT NULL,
--- created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
--- updated_at TIMESTAMP DEFAULT current_timestamp,
--- discord_id UUID ,
--- discord_name TEXT,
--- variant_name TEXT NOT NULL,
--- variant_price DECIMAL NOT NULL,
--- FOREIGN KEY(order)REFERENCES orders (id) ON DELETE CASCADE ,
--- FOREIGN KEY(discord_id)REFERENCES promotions (id) ON DELETE CASCADE ,
--- FOREIGN KEY(variant_id)REFERENCES variants (id) 
+CREATE TABLE IF NOT EXISTS "coupons"(
+id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+name TEXT NOT NULL,
+discount INT NOT NULL,
+code VARCHAR(50) UNIQUE NOT NULL,
+description TEXT,
+start_date DATE,
+end_date DATE,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP DEFAULT current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS "orders"(
+id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+owner_id UUID NOT NULL,
+state VARCHAR(50),
+paid_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP DEFAULT current_timestamp,
+user_name TEXT,
+user_email TEXT,
+user_phoneNumber TEXT,
+shipping_address TEXT,
+coupon_id UUID,
+FOREIGN KEY(owner_id) REFERENCES users (id),
+FOREIGN KEY(coupon_id) REFERENCES coupons(id)
+);
+
+CREATE TABLE IF NOT EXISTS "order_variants"(
+id UUID DEFAULT gen_random_uuid () PRIMARY KEY, 
+order_id UUID NOT NULL,
+variant_id UUID NOT NULL,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP DEFAULT current_timestamp,
+variant_name TEXT NOT NULL,
+variant_price DECIMAL NOT NULL,
+FOREIGN KEY(order_id)REFERENCES orders (id) ON DELETE CASCADE ,
+FOREIGN KEY(variant_id)REFERENCES variants (id) 
+);
+
 
 -- CREATE ADMIN Account
 -- password 1234567890

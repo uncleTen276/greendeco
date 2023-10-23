@@ -216,7 +216,7 @@ func UpdateCartProduct(c *fiber.Ctx) error {
 		}
 
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
-			Message: "soemthing bad happend :(",
+			Message: "something bad happend :(",
 		})
 	}
 

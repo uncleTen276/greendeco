@@ -67,6 +67,26 @@ definitions:
     - color
     - name
     type: object
+  models.CreateCoupon:
+    properties:
+      code:
+        maxLength: 5
+        type: string
+      description:
+        type: string
+      discount:
+        type: integer
+      end_date:
+        type: string
+      name:
+        type: string
+      start_date:
+        type: string
+    required:
+    - code
+    - discount
+    - name
+    type: object
   models.CreateProduct:
     properties:
       category_id:
@@ -241,6 +261,26 @@ definitions:
         type: string
     required:
     - color
+    - name
+    type: object
+  models.UpdateCoupon:
+    properties:
+      code:
+        maxLength: 5
+        type: string
+      description:
+        type: string
+      discount:
+        type: integer
+      end_date:
+        type: string
+      name:
+        type: string
+      start_date:
+        type: string
+    required:
+    - code
+    - discount
     - name
     type: object
   models.UpdateDefaultVariant:
@@ -1147,6 +1187,181 @@ paths:
       summary: update color
       tags:
       - Color
+  /coupon/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCoupon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create new coupon require admin permission
+      tags:
+      - Coupon
+  /coupon/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id of coupon
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get coupon by id
+      tags:
+      - Coupon
+  /coupon/{id}/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id of coupon
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: delete coupon by id
+      tags:
+      - Coupon
+  /coupon/{id}/update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateCoupon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update counpon
+      tags:
+      - Coupon
+  /coupon/code/{code}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: code of coupon
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get coupon by id
+      tags:
+      - Coupon
   /media/upload:
     post:
       consumes:
