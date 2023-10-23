@@ -56,6 +56,17 @@ definitions:
     required:
     - name
     type: object
+  models.CreateColor:
+    properties:
+      color:
+        maxLength: 50
+        type: string
+      name:
+        type: string
+    required:
+    - color
+    - name
+    type: object
   models.CreateProduct:
     properties:
       category_id:
@@ -219,6 +230,17 @@ definitions:
         maxLength: 100
         type: string
     required:
+    - name
+    type: object
+  models.UpdateColor:
+    properties:
+      color:
+        maxLength: 50
+        type: string
+      name:
+        type: string
+    required:
+    - color
     - name
     type: object
   models.UpdateDefaultVariant:
@@ -989,6 +1011,142 @@ paths:
       summary: update category by id
       tags:
       - Category
+  /color/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get colors
+      tags:
+      - Color
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New color
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateColor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create new color require admin permission
+      tags:
+      - Color
+  /color/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get color by id
+      tags:
+      - Color
+  /color/{id}/update:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id color
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: color
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateColor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update color
+      tags:
+      - Color
   /media/upload:
     post:
       consumes:

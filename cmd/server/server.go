@@ -53,6 +53,7 @@ func Serve() {
 	routes.NewProductRouter(api).RegisterRoutes()
 	routes.NewVariantRouter(api).RegisterRoute()
 	routes.NewCartRouter(api).RegisterRoutes()
+	routes.NewColorRouter(api).RegisterRoutes()
 
 	// web.Routes(app)
 	if err := app.Listen(":8080"); err != nil {
