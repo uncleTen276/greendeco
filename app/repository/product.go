@@ -134,3 +134,13 @@ func (repo *ProductRepo) DeleteRecommendProduct(m *models.CreateRecommend) error
 
 	return nil
 }
+
+func (repo *ProductRepo) DeleteCategory(id string) error {
+	query := fmt.Sprintf(`DELETE FROM %s WHERE id = $1`, CategoryTable)
+	_, err := repo.db.Exec(query, id)
+	return err
+}
+
+func (repo *ProductRepo) GetCategories() ([]models.Category, error) {
+	return nil, nil
+}

@@ -31,7 +31,7 @@ func CreateProduct(c *fiber.Ctx) error {
 
 	if !middlewares.GetAdminFromToken(token) {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
-			Message: "you do have permission",
+			Message: "invalid input found",
 		})
 	}
 
@@ -321,3 +321,5 @@ func UpdateDefaultVariant(c *fiber.Ctx) error {
 
 	return c.SendStatus(fiber.StatusCreated)
 }
+
+// func GetAllCategory()
