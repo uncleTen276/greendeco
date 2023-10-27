@@ -114,7 +114,7 @@ func GetVariantsByProductId(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /variant/{id}/delete [delete]
+// @Router /variant/{id} [delete]
 // @Security Bearer
 func DeleteVariant(c *fiber.Ctx) error {
 	id := c.Params("id")
@@ -187,7 +187,7 @@ func GetVariantById(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /variant/{id}/update [Put]
+// @Router /variant/{id} [Put]
 // @Security Bearer
 func UpdateVariant(c *fiber.Ctx) error {
 	id := c.Params("id")

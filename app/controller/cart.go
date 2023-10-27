@@ -164,7 +164,7 @@ func CreateCartProduct(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /cart/product/{id}/update [put]
+// @Router /cart/product/{id} [put]
 // @Security Bearer
 func UpdateCartProduct(c *fiber.Ctx) error {
 	token, ok := c.Locals("user").(*jwt.Token)
@@ -292,7 +292,7 @@ func DeleteCartItemByCartId(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /cart/product/{id}/delete [delete]
+// @Router /cart/product/{id} [delete]
 // @Security Bearer
 func DeleteCartItemById(c *fiber.Ctx) error {
 	pId, err := uuid.Parse(c.Params("id"))

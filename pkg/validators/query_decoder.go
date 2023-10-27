@@ -28,6 +28,3 @@ func AddProductQueryDecoder() {
 		ZeroEmpty:         true,
 	})
 }
-
-func AddTimeDecoder() {
-}

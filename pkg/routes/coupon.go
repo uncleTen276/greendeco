@@ -30,6 +30,6 @@ func (r *couponRoutes) privateCouponRoutes() {
 	r.app.Use(middlewares.JWTProtected())
 	r.app.Use(middlewares.AdminProtected)
 	r.app.Post("/", controller.CreateCoupon)
-	r.app.Put("/:id/update", controller.UpdateCouponById)
-	r.app.Delete("/:id/delete", controller.DeleteCouponById)
+	r.app.Put("/:id", controller.UpdateCouponById)
+	r.app.Delete("/:id", controller.DeleteCouponById)
 }

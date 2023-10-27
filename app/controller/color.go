@@ -144,7 +144,7 @@ func GetColors(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /color/{id}/update [put]
+// @Router /color/{id} [put]
 // @Security Bearer
 func UpdateColorById(c *fiber.Ctx) error {
 	cId, err := uuid.Parse(c.Params("id"))

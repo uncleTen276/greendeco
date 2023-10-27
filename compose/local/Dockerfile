@@ -21,7 +21,5 @@ COPY web/dist ./web/dist/
 RUN go mod download && \
     go install github.com/cosmtrek/air@latest && \
     go install github.com/swaggo/swag/cmd/swag@latest
- 
+
 ENTRYPOINT ["/entrypoint"]
-
-

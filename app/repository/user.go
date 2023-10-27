@@ -84,6 +84,13 @@ func (repo *UserRepo) GetUserById(uId uuid.UUID) (*models.User, error) {
 	user := models.NewUser()
 	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, UserTable)
 	err := repo.db.Get(user, query, uId)
+
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNotFound
+	} else if err != nil {
+		return nil, err
+	}
+
 	return user, err
 }
 

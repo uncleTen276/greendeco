@@ -84,7 +84,7 @@ func CreateProduct(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /product/{id}/update [Put]
+// @Router /product/{id} [Put]
 // @Security Bearer
 func UpdateProduct(c *fiber.Ctx) error {
 	token, ok := c.Locals("user").(*jwt.Token)
@@ -134,7 +134,7 @@ func UpdateProduct(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /product/{id}/delete [delete]
+// @Router /product/{id} [delete]
 // @Security Bearer
 func DeleteProduct(c *fiber.Ctx) error {
 	token, ok := c.Locals("user").(*jwt.Token)

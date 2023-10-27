@@ -28,7 +28,7 @@ func (r *CartRouters) privateProductRouter() {
 	r.app.Get("/:id/product", controller.GetCartProductsByCartId)
 	r.app.Post("/", controller.CreateCart)
 	r.app.Post("/product/", controller.CreateCartProduct)
-	r.app.Put("/product/:id/update", controller.UpdateCartProduct)
+	r.app.Put("/product/:id", controller.UpdateCartProduct)
 	r.app.Delete("/:id/clear", controller.DeleteCartItemByCartId)
-	r.app.Delete("/product/:id/delete", controller.DeleteCartItemById)
+	r.app.Delete("/product/:id", controller.DeleteCartItemById)
 }

@@ -3,7 +3,7 @@
  set -o errexit
  set -o pipefail
  set -o nounset
- 
+
 air --build.cmd "swag init && go build -buildvcs=false -o ./greendeco.bin ." \
   --build.bin "./greendeco.bin" \
   --build.exclude_dir "assets,tmp,vendor,testdata,docs" \

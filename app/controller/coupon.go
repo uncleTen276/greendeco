@@ -48,6 +48,7 @@ func CreateCoupon(c *fiber.Ctx) error {
 			Message: "some thing bad happended",
 		})
 	}
+
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"id": couponId,
 	})
@@ -62,7 +63,7 @@ func CreateCoupon(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /coupon/{id}/update [Put]
+// @Router /coupon/{id} [Put]
 // @Security Bearer
 func UpdateCouponById(c *fiber.Ctx) error {
 	cId, err := uuid.Parse(c.Params("id"))
@@ -143,7 +144,7 @@ func GetCouponById(c *fiber.Ctx) error {
 }
 
 // @GetCouponById() godoc
-// @Summary get coupon by id
+// @Summary get coupon by code
 // @Tags Coupon
 // @Param code path string true "code of coupon"
 // @Accept json
@@ -162,7 +163,6 @@ func GetCouponByCode(c *fiber.Ctx) error {
 	repo := repository.NewCouponRepo(database.GetDB())
 	coupon, err := repo.GetCouponByCode(code)
 	if err != nil {
-		println(err.Error())
 		if err == models.ErrNotFound {
 			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
 				Message: "record not found",
@@ -191,7 +191,7 @@ func GetCouponByCode(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200 {object} models.BasePaginationResponse
 // @Failure 400,404,500 {object} models.ErrorResponse "Error"
-// @Router /coupon/{id}/delete [delete]
+// @Router /coupon/{id} [delete]
 // @Security Bearer
 func DeleteCouponById(c *fiber.Ctx) error {
 	cId, err := uuid.Parse(c.Params("id"))
