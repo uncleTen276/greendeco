@@ -107,8 +107,11 @@ func (repo *ProductRepo) FindById(id uuid.UUID) (*models.Product, error) {
 
 func (repo *ProductRepo) GetRecommendProducts(id uuid.UUID) ([]string, error) {
 	results := []string{}
-	query := fmt.Sprintf("SELECT recommend_product FROM %s WHERE product_id = $1", RecommendTable)
-	if err := repo.db.Select(results, query, id); err != nil {
+	query := fmt.Sprintf(`SELECT recommend_product FROM "%s" WHERE product_id = $1`, RecommendTable)
+	err := repo.db.Select(&results, query, id)
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNotFound
+	} else if err != nil {
 		return nil, err
 	}
 
