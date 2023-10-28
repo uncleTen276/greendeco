@@ -280,3 +280,44 @@ func UpdateVariant(c *fiber.Ctx) error {
 
 	return c.SendStatus(fiber.StatusCreated)
 }
+
+// @GetDefaultVariant() godoc
+// @Summary get variant by id
+// @Tags Variant
+// @Param id path string true "product id"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
+// @Router /variant/default/{id} [get]
+func GetDefaultVariant(c *fiber.Ctx) error {
+	pId, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+		})
+	}
+
+	variantRepo := repository.NewVariantRepo(database.GetDB())
+	product, err := variantRepo.GetDefaultVariantOfProduct(pId)
+	if err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+				Message: "record not found",
+			})
+		}
+		println(err.Error())
+
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "something bad happend :(",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
+		Items:    product,
+		Page:     1,
+		PageSize: 1,
+		Next:     false,
+		Prev:     false,
+	})
+}

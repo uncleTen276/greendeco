@@ -137,7 +137,11 @@ func (repo *VariantRepo) Delete(id uuid.UUID) error {
 func (repo *VariantRepo) GetDefaultVariantOfProduct(id uuid.UUID) (*models.DefaultVariant, error) {
 	query := fmt.Sprintf(`SELECT product_id, variant_id FROM "%s" WHERE product_id  = $1`, DefaultProductVariantTable)
 	defaultVariant := &models.DefaultVariant{}
-	if err := repo.db.Select(defaultVariant, query, id); err != nil {
+	if err := repo.db.Get(defaultVariant, query, id); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, models.ErrNotFound
+		}
+
 		return nil, err
 	}
 
