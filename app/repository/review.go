@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -11,7 +12,7 @@ import (
 type ReviewRepository interface {
 	Create(m *models.CreateReview) error
 	FindById(id uuid.UUID) (*models.Review, error)
-	FindReviewsByProductId(id *uuid.UUID, q *models.ReviewQuery) ([]*models.Review, error)
+	FindReviewsByProductId(id *uuid.UUID, q *models.ReviewQuery) ([]*models.ResponseReview, error)
 }
 
 const (
@@ -42,18 +43,21 @@ func (repo *ReviewRepo) Create(m *models.CreateReview) error {
 func (repo *ReviewRepo) FindById(id uuid.UUID) (*models.Review, error) {
 	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, ReviewTable)
 	review := &models.Review{}
-	if err := repo.db.Select(review, query, id); err != nil {
+	if err := repo.db.Get(review, query, id); err != nil {
+		if err == models.ErrNotFound {
+			return nil, models.ErrNotFound
+		}
 		return nil, err
 	}
 	return review, nil
 }
 
-func (repo *ReviewRepo) FindReviewsByProductId(id *uuid.UUID, q *models.ReviewQuery) ([]*models.Review, error) {
-	result := []*models.Review{}
+func (repo *ReviewRepo) FindReviewsByProductId(id *uuid.UUID, q *models.ReviewQuery) ([]*models.ResponseReview, error) {
+	result := []*models.ResponseReview{}
 	limit := q.Limit
 	limit += 1
 	pageOffset := q.BaseQuery.Limit * (q.BaseQuery.OffSet - 1)
-	firstQuery := fmt.Sprintf(`SELECT * FROM "%s" `, ReviewTable)
+	firstQuery := fmt.Sprintf(`SELECT reviews.id, users.first_name, users.last_name, users.avatar, reviews.product_id, reviews.user_id, reviews.content, reviews.star, reviews.created_at FROM "%s" LEFT JOIN "users" ON users.id = reviews.user_id `, ReviewTable)
 	query := repo.newReviewQueryBuilder(firstQuery).
 		SetProduct(id).
 		SetStar(q.Star).
@@ -63,7 +67,10 @@ func (repo *ReviewRepo) FindReviewsByProductId(id *uuid.UUID, q *models.ReviewQu
 
 	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
 	if err := repo.db.Select(&result, query); err != nil {
-		println(err.Error())
+		if err == sql.ErrNoRows {
+			return nil, models.ErrNotFound
+		}
+
 		return nil, err
 	}
 

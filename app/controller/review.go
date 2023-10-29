@@ -106,6 +106,7 @@ func GetReviewByProductId(c *fiber.Ctx) error {
 			Message: "invalid id",
 		})
 	}
+
 	query := &models.ReviewQuery{
 		BaseQuery: *models.DefaultQuery(),
 	}

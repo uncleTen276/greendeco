@@ -28,3 +28,15 @@ type ReviewQuery struct {
 	Star   int        `db:"star" json:"star" query:"star"`
 	UserId *uuid.UUID `db:"user_id" json:"user_id" query:"user_id"`
 }
+
+type ResponseReview struct {
+	ID        uuid.UUID `db:"id" json:"id"`
+	UserId    uuid.UUID `db:"user_id" json:"user_id"`
+	ProductId uuid.UUID `db:"product_id" json:"product_id"`
+	Content   string    `db:"content" json:"content"`
+	Star      int       `db:"star" json:"star"`
+	FirstName string    `db:"first_name" json:"firstName"`
+	LastName  string    `db:"last_name" json:"lastName"`
+	Avatar    *string   `db:"avatar" json:"avatar"`
+	CreatedAt time.Time `db:"created_at" json:"created_at"`
+}
