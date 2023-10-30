@@ -62,7 +62,7 @@ func (repo *ReviewRepo) FindReviewsByProductId(id *uuid.UUID, q *models.ReviewQu
 		SetProduct(id).
 		SetStar(q.Star).
 		SetUser(q.UserId).
-		SortBy(q.Sort, q.SortBy).
+		SortBy(q.SortBy, q.Sort).
 		Build()
 
 	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)

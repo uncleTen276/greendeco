@@ -25,7 +25,7 @@ func (*ReviewRepo) newReviewQueryBuilder(query string) *reviewQueryBuilder {
 
 func (q *reviewQueryBuilder) SetProduct(productId *uuid.UUID) *reviewQueryBuilder {
 	if productId != nil {
-		query := fmt.Sprintf(` product_id = '%s'`, productId)
+		query := fmt.Sprintf(` reviews.product_id = '%s'`, productId)
 		q.field[query] = true
 	}
 
@@ -34,7 +34,7 @@ func (q *reviewQueryBuilder) SetProduct(productId *uuid.UUID) *reviewQueryBuilde
 
 func (q *reviewQueryBuilder) SetStar(star int) *reviewQueryBuilder {
 	if star > 0 {
-		query := fmt.Sprintf(` star = %d`, star)
+		query := fmt.Sprintf(` users.star = %d`, star)
 		q.field[query] = true
 	}
 
@@ -43,7 +43,7 @@ func (q *reviewQueryBuilder) SetStar(star int) *reviewQueryBuilder {
 
 func (q *reviewQueryBuilder) SetUser(userId *uuid.UUID) *reviewQueryBuilder {
 	if userId != nil {
-		query := fmt.Sprintf(` user_id = '%s'`, userId)
+		query := fmt.Sprintf(` reviews.user_id = '%s'`, userId)
 		q.field[query] = true
 	}
 
@@ -54,6 +54,7 @@ func (q *reviewQueryBuilder) SortBy(field string, sort string) *reviewQueryBuild
 	if field != "" {
 		q.sortBy = field
 	}
+
 	sort = strings.ToUpper(sort)
 	if sort == "ASC" || sort == "DESC" {
 		q.sort = " " + sort + " "
