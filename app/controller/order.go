@@ -64,12 +64,26 @@ func CreateOrderFromCart(c *fiber.Ctx) error {
 		})
 	}
 
-	couponRepo := repository.NewCouponRepo(database.GetDB())
-	coupon, err := couponRepo.GetCouponById(newOrderReq.CouponId)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
-			Message: "invalid input found",
-		})
+	newOrder := &models.Order{
+		OwnerId:         user.ID,
+		UserName:        user.FirstName + " " + user.LastName,
+		UserEmail:       user.Email,
+		UserPhoneNumber: user.PhoneNumber,
+		State:           "",
+		ShippingAddress: newOrderReq.ShippingAddress,
+	}
+
+	if newOrderReq.CouponId.ID() != 0 {
+		couponRepo := repository.NewCouponRepo(database.GetDB())
+		coupon, err := couponRepo.GetCouponById(newOrderReq.CouponId)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid input found",
+			})
+		}
+
+		newOrder.Coupon = coupon.ID
+		newOrder.CouponDiscount = coupon.Discount
 	}
 
 	cartRepo := repository.NewCartRepo(database.GetDB())
@@ -83,17 +97,6 @@ func CreateOrderFromCart(c *fiber.Ctx) error {
 	}
 
 	// TODO: remember create first state
-	newOrder := &models.Order{
-		OwnerId:         user.ID,
-		UserName:        user.FirstName + " " + user.LastName,
-		UserEmail:       user.Email,
-		UserPhoneNumber: user.PhoneNumber,
-		State:           "",
-		ShippingAddress: newOrderReq.ShippingAddress,
-		Coupon:          coupon.ID,
-		CouponDiscount:  coupon.Discount,
-	}
-
 	variantRepo := repository.NewVariantRepo(database.GetDB())
 	orderItem := []*models.OrderProduct{}
 	for _, item := range cartItem {
