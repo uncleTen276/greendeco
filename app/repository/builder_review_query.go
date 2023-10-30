@@ -34,7 +34,7 @@ func (q *reviewQueryBuilder) SetProduct(productId *uuid.UUID) *reviewQueryBuilde
 
 func (q *reviewQueryBuilder) SetStar(star int) *reviewQueryBuilder {
 	if star > 0 {
-		query := fmt.Sprintf(` users.star = %d`, star)
+		query := fmt.Sprintf(` reviews.star = %d`, star)
 		q.field[query] = true
 	}
 
