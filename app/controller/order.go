@@ -69,7 +69,7 @@ func CreateOrderFromCart(c *fiber.Ctx) error {
 		UserName:        user.FirstName + " " + user.LastName,
 		UserEmail:       user.Email,
 		UserPhoneNumber: user.PhoneNumber,
-		State:           "",
+		State:           models.StatusDraft,
 		ShippingAddress: newOrderReq.ShippingAddress,
 	}
 
@@ -82,7 +82,7 @@ func CreateOrderFromCart(c *fiber.Ctx) error {
 			})
 		}
 
-		newOrder.Coupon = coupon.ID
+		newOrder.Coupon = &coupon.ID
 		newOrder.CouponDiscount = coupon.Discount
 	}
 
@@ -91,12 +91,17 @@ func CreateOrderFromCart(c *fiber.Ctx) error {
 	if err != nil {
 		if err == models.ErrNotFound {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
-				Message: "empty cart",
+				Message: "invalid cart",
 			})
 		}
 	}
 
-	// TODO: remember create first state
+	if len(cartItem) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid cart",
+		})
+	}
+
 	variantRepo := repository.NewVariantRepo(database.GetDB())
 	orderItem := []*models.OrderProduct{}
 	for _, item := range cartItem {

@@ -41,11 +41,11 @@ func (repo *OrderRepo) CreateOrderFromCart(m *models.Order, orderItems []*models
 	}
 	defer tx.Rollback()
 
-	orderQuery := fmt.Sprintf(`INSERT INTO "%s" (owner_id, user_name, user_email, shipping_address, state, coupon_id, coupon_discount) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`, OrderTable)
+	orderQuery := fmt.Sprintf(`INSERT INTO "%s" (owner_id, user_name, user_email, user_phoneNumber, shipping_address, state, coupon_id, coupon_discount) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id`, OrderTable)
 	orderProductQuery := fmt.Sprintf(`INSERT INTO "%s" (order_id, variant_id, variant_name, variant_price, quantity) VALUES ($1,$2,$3,$4,$5)`, OrderProductTable)
 	cartQuery := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1`, CartTable)
 
-	newOrder := tx.QueryRow(orderQuery, m.OwnerId, m.UserName, m.UserEmail, m.ShippingAddress, m.State, m.Coupon, m.CouponDiscount)
+	newOrder := tx.QueryRow(orderQuery, m.OwnerId, m.UserName, m.UserEmail, m.UserPhoneNumber, m.ShippingAddress, m.State, m.Coupon, m.CouponDiscount)
 	var newOrderId string
 	err = newOrder.Scan(&newOrderId)
 	if err != nil {
