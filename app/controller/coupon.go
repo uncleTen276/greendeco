@@ -10,7 +10,7 @@ import (
 )
 
 // @CreateCoupon() godoc
-// @Summary create new coupon require admin permission
+// @Summary create new coupon require admin permission date must be formated yyyy-mm-dd
 // @Tags Coupon
 // @Param todo body models.CreateCoupon true "New product"
 // @Accept json
@@ -33,6 +33,18 @@ func CreateCoupon(c *fiber.Ctx) error {
 			Message: "invalid input found",
 			Errors:  validators.ValidatorErrors(err),
 		})
+	}
+
+	for _, v := range [...]string{
+		newCoupon.StartDate,
+		newCoupon.EndDate,
+	} {
+		if err := validators.ValidateDate(v); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid input found",
+				Errors:  "can not format date",
+			})
+		}
 	}
 
 	couponRepo := repository.NewCouponRepo(database.GetDB())

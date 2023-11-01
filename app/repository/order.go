@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -9,8 +10,12 @@ import (
 )
 
 type OrderRepository interface {
-	CreateOrderProduct(*models.CreateOrderProduct) error
 	CreateOrderFromCart(m *models.Order, orderItem []*models.OrderProduct, cartId uuid.UUID) (string, error)
+	GetOrderById(orderId uuid.UUID) (*models.Order, error)
+	GetOrderProductsByOrderId(orderId uuid.UUID, q *models.BaseQuery) ([]*models.OrderProduct, error)
+	GetOrderByOwnerId(ownerId uuid.UUID, q *models.BaseQuery) ([]*models.Order, error)
+	GetTotalPaymentForOrder(orderId uuid.UUID) (int, error)
+	UpdateOrder(m *models.UpdateOrder) error
 }
 
 type OrderRepo struct {
@@ -28,10 +33,6 @@ func NewOrderRepo(db *database.DB) OrderRepository {
 	return &OrderRepo{
 		db: db,
 	}
-}
-
-func (repo *OrderRepo) CreateOrderProduct(m *models.CreateOrderProduct) error {
-	return nil
 }
 
 func (repo *OrderRepo) CreateOrderFromCart(m *models.Order, orderItems []*models.OrderProduct, cartId uuid.UUID) (string, error) {
@@ -68,4 +69,90 @@ func (repo *OrderRepo) CreateOrderFromCart(m *models.Order, orderItems []*models
 	}
 
 	return newOrderId, nil
+}
+
+func (repo *OrderRepo) GetOrderById(orderId uuid.UUID) (*models.Order, error) {
+	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, OrderTable)
+	order := &models.Order{}
+	if err := repo.db.Get(order, query, orderId); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, models.ErrNotFound
+		}
+
+		return nil, err
+	}
+
+	return order, nil
+}
+
+func (repo *OrderRepo) GetOrderProductsByOrderId(orderId uuid.UUID, q *models.BaseQuery) ([]*models.OrderProduct, error) {
+	limit := q.Limit
+	limit += 1
+	pageOffset := q.Limit * (q.OffSet - 1)
+	firstQuery := fmt.Sprintf(`SELECT * FROM "%s" WHERE order_id = $1 `, OrderProductTable)
+	query := repo.newOrderQueryBuilder(firstQuery).
+		SortBy(q.SortBy, q.Sort).
+		Build()
+
+	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
+	products := []*models.OrderProduct{}
+	if err := repo.db.Select(&products, query, orderId); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, models.ErrNotFound
+		}
+
+		return nil, err
+	}
+
+	return products, nil
+}
+
+func (repo *OrderRepo) GetOrderByOwnerId(ownerId uuid.UUID, q *models.BaseQuery) ([]*models.Order, error) {
+	limit := q.Limit
+	limit += 1
+	pageOffset := q.Limit * (q.OffSet - 1)
+	firstQuery := fmt.Sprintf(`SELECT * FROM "%s" WHERE owner_id = $1 `, OrderTable)
+	query := repo.newOrderQueryBuilder(firstQuery).
+		SortBy(q.SortBy, q.Sort).
+		Build()
+
+	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
+
+	orders := []*models.Order{}
+	if err := repo.db.Select(&orders, query, ownerId); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, models.ErrNotFound
+		}
+
+		return nil, err
+	}
+
+	return orders, nil
+}
+
+func (repo *OrderRepo) UpdateOrder(m *models.UpdateOrder) error {
+	query := fmt.Sprintf(`UPDATE "%s" SET state = $2, paid_at = $3  WHERE id = $1`, OrderTable)
+	if _, err := repo.db.Exec(query, m.OrderId, m.State, m.PaidAt); err != nil {
+		if err == sql.ErrNoRows {
+			return models.ErrNotFound
+		}
+
+		return err
+	}
+
+	return nil
+}
+
+func (repo *OrderRepo) GetTotalPaymentForOrder(orderId uuid.UUID) (int, error) {
+	query := fmt.Sprintf(`SELECT SUM(variant_price * quantity) FROM "%s" WHERE order_id = $1`, OrderProductTable)
+	result := repo.db.QueryRow(query, orderId)
+	var total int
+	if err := result.Scan(&total); err != nil {
+		if err == sql.ErrNoRows {
+			return 0, models.ErrNotFound
+		}
+		return 0, err
+	}
+
+	return total, nil
 }

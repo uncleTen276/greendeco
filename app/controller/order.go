@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/app/repository"
 	"github.com/sekke276/greendeco.git/pkg/middlewares"
@@ -126,4 +127,344 @@ func CreateOrderFromCart(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"id": orderId,
 	})
+}
+
+// @GetOrderById() godoc
+// @Summary GetOrderById() require owner or admin request
+// @Tags Order
+// @Param id path string true "id"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,404,500 {object} models.ErrorResponse "Error"
+// @Router /order/{id} [get]
+// @Security Bearer
+func GetOrderById(c *fiber.Ctx) error {
+	oId, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid id",
+		})
+	}
+
+	token, ok := c.Locals("user").(*jwt.Token)
+	if !ok {
+		return c.Status(fiber.ErrInternalServerError.Code).JSON(models.ErrorResponse{
+			Message: "can not parse token",
+		})
+	}
+
+	uid, err := middlewares.GetUserIdFromToken(token)
+	if err != nil {
+		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	if !middlewares.GetAdminFromToken(token) {
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
+			Message: "record not found",
+		})
+	}
+
+	orderRepo := repository.NewOrderRepo(database.GetDB())
+	order, err := orderRepo.GetOrderById(oId)
+	if err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+				Message: "record not found",
+			})
+		}
+	}
+
+	// if not admin or if not owner
+	if order.OwnerId != *uid && !middlewares.GetAdminFromToken(token) {
+		return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+			Message: "record not found",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
+		Items:    order,
+		Page:     1,
+		PageSize: 1,
+		Prev:     false,
+		Next:     false,
+	})
+}
+
+// @GetOrderProductByOrderId() godoc
+// @Summary GetOrderProductByOrderId() require owner or admin request
+// @Tags Order
+// @Param id path string true "id"
+// @Param queries query models.BaseQuery false "default: limit = 10"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,404,500 {object} models.ErrorResponse "Error"
+// @Router /order/{id}/product/ [get]
+// @Security Bearer
+func GetOrderProductByOrderId(c *fiber.Ctx) error {
+	oId, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid id",
+		})
+	}
+
+	token, ok := c.Locals("user").(*jwt.Token)
+	if !ok {
+		return c.Status(fiber.ErrInternalServerError.Code).JSON(models.ErrorResponse{
+			Message: "can not parse token",
+		})
+	}
+
+	uid, err := middlewares.GetUserIdFromToken(token)
+	if err != nil {
+		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	// query
+	query := models.DefaultQuery()
+	if err := c.QueryParser(query); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid filter",
+		})
+	}
+
+	orderRepo := repository.NewOrderRepo(database.GetDB())
+	order, err := orderRepo.GetOrderById(oId)
+	if err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+				Message: "record not found",
+			})
+		}
+	}
+
+	if order.OwnerId != *uid && !middlewares.GetAdminFromToken(token) {
+		return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+			Message: "record not found",
+		})
+	}
+
+	products, err := orderRepo.GetOrderProductsByOrderId(oId, query)
+	if err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+				Message: "record not found",
+			})
+		}
+	}
+
+	nextPage := query.HaveNextPage(len(products))
+	if nextPage {
+		products = products[:len(products)-1]
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
+		Items:    products,
+		Page:     query.GetPageNumber(),
+		PageSize: len(products),
+		Next:     nextPage,
+		Prev:     query.IsFirstPage(),
+	})
+}
+
+// @GetOrderByToken() godoc
+// @Summary GetOrderByToken() require owner
+// @Tags Order
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,404,500 {object} models.ErrorResponse "Error"
+// @Router /order/ [get]
+// @Security Bearer
+func GetOrderByToken(c *fiber.Ctx) error {
+	token, ok := c.Locals("user").(*jwt.Token)
+	if !ok {
+		return c.Status(fiber.ErrInternalServerError.Code).JSON(models.ErrorResponse{
+			Message: "can not parse token",
+		})
+	}
+
+	uid, err := middlewares.GetUserIdFromToken(token)
+	query := models.DefaultQuery()
+	if err := c.QueryParser(query); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid filter",
+		})
+	}
+
+	if err != nil {
+		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	orderRepo := repository.NewOrderRepo(database.GetDB())
+	orders, err := orderRepo.GetOrderByOwnerId(*uid, query)
+	if err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+				Message: "record not found",
+			})
+		}
+	}
+
+	nextPage := query.HaveNextPage(len(orders))
+	if nextPage {
+		orders = orders[:len(orders)-1]
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
+		Items:    orders,
+		PageSize: len(orders),
+		Page:     query.GetPageNumber(),
+		Next:     nextPage,
+		Prev:     query.IsFirstPage(),
+	})
+}
+
+// @UpdateOrderStatus() godoc
+// @Summary UpdateOrderStatus() use to update order (status must follow the tree) draft -> processing -> completed -> cancelled
+// @Tags Order
+// @Param id path string true "order id"
+// @Param todo body models.UpdateOrder true "product"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,404,500 {object} models.ErrorResponse "Error"
+// @Router /order/{id} [put]
+// @Security Bearer
+func UpdateOrderStatus(c *fiber.Ctx) error {
+	oId, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid id",
+		})
+	}
+
+	updateOrder := &models.UpdateOrder{
+		OrderId: oId,
+	}
+
+	if err := c.BodyParser(updateOrder); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	validator := validators.NewValidator()
+	if err := validator.Struct(updateOrder); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+			Errors:  validators.ValidatorErrors(err),
+		})
+	}
+
+	if !validateOrderState(updateOrder) {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "order can not be updated",
+		})
+	}
+
+	orderRepo := repository.NewOrderRepo(database.GetDB())
+	if err := orderRepo.UpdateOrder(updateOrder); err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+				Message: "record not found",
+			})
+		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "something bad happend",
+		})
+	}
+
+	return c.SendStatus(fiber.StatusCreated)
+}
+
+// @GetTotalOrderById() godoc
+// @Summary GetTotalOrderById() use to get total for order
+// @Tags Order
+// @Param id path string true "order id"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,404,500 {object} models.ErrorResponse "Error"
+// @Router /order/{id}/total [get]
+// @Security Bearer
+func GetTotalOrderById(c *fiber.Ctx) error {
+	oId, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid id",
+		})
+	}
+
+	orderRepo := repository.NewOrderRepo(database.GetDB())
+	order, err := orderRepo.GetOrderById(oId)
+	if err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+				Message: "record not found",
+			})
+		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "something bad happend :(",
+		})
+	}
+
+	total, err := orderRepo.GetTotalPaymentForOrder(oId)
+	if err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid order",
+			})
+		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "something bad happend :(",
+		})
+	}
+
+	actualPrice := float64(total)
+	if order.CouponDiscount != 0 {
+		actualPrice *= float64(order.CouponDiscount) / 100
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"total":        total,
+		"actual_price": actualPrice,
+	})
+}
+
+// validateOrderState use to validate order before update
+func validateOrderState(m *models.UpdateOrder) bool {
+	orderRepo := repository.NewOrderRepo(database.GetDB())
+	order, err := orderRepo.GetOrderById(m.OrderId)
+	if err != nil {
+		return false
+	}
+
+	if order.State == m.State {
+		return true
+	}
+
+	childerState, ok := models.StatusTable[order.State]
+	if !ok {
+		return false
+	}
+
+	for _, state := range childerState {
+		if state == m.State {
+			return true
+		}
+	}
+
+	return false
 }
