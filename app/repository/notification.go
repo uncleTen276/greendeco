@@ -17,7 +17,8 @@ type NotificationRepo struct {
 }
 
 const (
-	NotificationTable = "notifications"
+	NotificationTable     = "notifications"
+	NotificationUserTable = "notifications_users"
 )
 
 var _ NotificationRepository = (*NotificationRepo)(nil)
@@ -38,10 +39,43 @@ func (repo *NotificationRepo) Create(m *models.CreateNotification) (string, erro
 }
 
 func (repo *NotificationRepo) CreateNotificationUser(m *models.CreateUserNotication) error {
-	query := fmt.Sprintf(`INSERT INTO "%s" (user_id, notification_id, state) VALUES($1,$2,$3)`)
+	query := fmt.Sprintf(`INSERT INTO "%s" (user_id, notification_id, state) VALUES($1,$2,$3)`, NotificationUserTable)
 	if _, err := repo.db.Exec(query, m.UserId, m.NotificationId, m.State); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (repo *NotificationRepo) SendUserNotification(notification *models.CreateNotification, user *models.CreateUserNotication) (string, error) {
+	createNotiQuery := fmt.Sprintf(`INSERT INTO "%s" (title,message) VALUES ($1,$2) RETURNING id`, NotificationTable)
+	tx, err := repo.db.Begin()
+	if err != nil {
+		return "", err
+	}
+
+	defer tx.Rollback()
+
+	createNotiUserQuery := fmt.Sprintf(`INSERT INTO "%s" (user_id, notification_id, state) VALUES($1,$2,$3)`, NotificationUserTable)
+
+	newNoti := tx.QueryRow(createNotiQuery, notification.Title, notification.Message)
+	var newNotiId string
+
+	err = newNoti.Scan(&newNotiId)
+	if err != nil {
+		return "", err
+	}
+
+	newUserNoti := tx.QueryRow(createNotiUserQuery, user.UserId, user.NotificationId, user.State)
+	var userNotiId string
+	err = newUserNoti.Scan(&userNotiId)
+	if err != nil {
+		return "", err
+	}
+
+	if err := tx.Commit(); err != nil {
+		return "", err
+	}
+
+	return userNotiId, nil
 }

@@ -51,3 +51,12 @@ func sendNotitication(userId uuid.UUID, notiId uuid.UUID) error {
 
 	return nil
 }
+
+func sendUserNotification(notification *models.CreateNotification, userId uuid.UUID) error {
+	notiRepo := repository.NewNotificationRepo(database.GetDB())
+	_, err := notiRepo.Create(notification)
+	if err != nil {
+		return err
+	}
+	return nil
+}

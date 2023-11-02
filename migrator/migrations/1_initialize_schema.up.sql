@@ -197,6 +197,24 @@ FOREIGN KEY(order_id)REFERENCES orders (id) ON DELETE CASCADE ,
 FOREIGN KEY(variant_id)REFERENCES variants (id)
 );
 
+CREATE TABLE IF NOT EXISTS "notifications"(
+id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
+title TEXT NOT NULL,
+message TEXT NOT NULL,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP DEFAULT current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS "notifications_users"(
+id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
+user_id UUID NOT NULL,
+notification_id  UUID NOT NULL , 
+state VARCHAR(50) NOT NULL,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
+updated_at TIMESTAMP DEFAULT current_timestamp,
+FOREIGN KEY(user_id)REFERENCES users(id) ON DELETE CASCADE ,
+FOREIGN KEY(notification_id)REFERENCES notifications(id) ON DELETE CASCADE
+);
 
 -- CREATE ADMIN Account
 -- password 1234567890
