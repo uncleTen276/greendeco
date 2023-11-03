@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 
@@ -10,7 +11,7 @@ import (
 )
 
 type UserRepository interface {
-	Create(u *models.CreateUser) error
+	Create(u *models.CreateUser, ctx context.Context) error
 	GetUserByIdentifier(identifier string) (*models.User, error)
 	GetUserByEmail(email string) (*models.User, error)
 	GetUserByPhoneNumber(phoneNumber string) (*models.User, error)
@@ -33,7 +34,7 @@ func NewUserRepo(db *database.DB) UserRepository {
 	return &UserRepo{db}
 }
 
-func (repo *UserRepo) Create(u *models.CreateUser) error {
+func (repo *UserRepo) Create(u *models.CreateUser, ctx context.Context) error {
 	query := fmt.Sprintf(`INSERT INTO "%s" (email,identifier,password,first_name,last_name, phone_number) VALUES ($1,$2,$3,$4,$5,$6)`, UserTable)
 	_, err := repo.db.Exec(query, u.Email, u.Identifier, u.Password, u.FirstName, u.LastName, u.PhoneNumber)
 	if err != nil {
@@ -84,6 +85,13 @@ func (repo *UserRepo) GetUserById(uId uuid.UUID) (*models.User, error) {
 	user := models.NewUser()
 	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE id = $1`, UserTable)
 	err := repo.db.Get(user, query, uId)
+
+	if err == sql.ErrNoRows {
+		return nil, models.ErrNotFound
+	} else if err != nil {
+		return nil, err
+	}
+
 	return user, err
 }
 

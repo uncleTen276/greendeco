@@ -34,6 +34,15 @@ definitions:
       description:
         type: string
     type: object
+  models.CreateCartOrder:
+    properties:
+      cart_id:
+        type: string
+      coupon_id:
+        type: string
+      shipping_address:
+        type: string
+    type: object
   models.CreateCartProduct:
     properties:
       cart_id:
@@ -66,6 +75,38 @@ definitions:
     required:
     - color
     - name
+    type: object
+  models.CreateCoupon:
+    properties:
+      code:
+        maxLength: 5
+        type: string
+      description:
+        type: string
+      discount:
+        type: integer
+      end_date:
+        type: string
+      name:
+        type: string
+      start_date:
+        type: string
+    required:
+    - code
+    - discount
+    - name
+    type: object
+  models.CreateNotification:
+    properties:
+      message:
+        maxLength: 3
+        type: string
+      title:
+        maxLength: 3
+        type: string
+    required:
+    - message
+    - title
     type: object
   models.CreateProduct:
     properties:
@@ -243,12 +284,51 @@ definitions:
     - color
     - name
     type: object
+  models.UpdateCoupon:
+    properties:
+      code:
+        maxLength: 5
+        type: string
+      description:
+        type: string
+      discount:
+        type: integer
+      end_date:
+        type: string
+      name:
+        type: string
+      start_date:
+        type: string
+    required:
+    - code
+    - discount
+    - name
+    type: object
   models.UpdateDefaultVariant:
     properties:
       variant:
         type: string
     required:
     - variant
+    type: object
+  models.UpdateNotification:
+    properties:
+      message:
+        minLength: 3
+        type: string
+      title:
+        minLength: 3
+        type: string
+    required:
+    - message
+    - title
+    type: object
+  models.UpdateOrder:
+    properties:
+      paid_at:
+        type: string
+      state:
+        type: string
     type: object
   models.UpdateProduct:
     properties:
@@ -360,6 +440,15 @@ definitions:
         type: string
       phoneNumber:
         type: string
+    type: object
+  models.UserListNotification:
+    properties:
+      notification_id:
+        type: string
+      users:
+        items:
+          type: string
+        type: array
     type: object
   models.UserLogin:
     properties:
@@ -757,38 +846,6 @@ paths:
       tags:
       - Cart
   /cart/product/{id}:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: id of cart product
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      security:
-      - Bearer: []
-      summary: get cart product by id
-      tags:
-      - Cart
-  /cart/product/{id}/delete:
     delete:
       consumes:
       - application/json
@@ -824,7 +881,37 @@ paths:
       summary: delete cart item
       tags:
       - Cart
-  /cart/product/{id}/update:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id of cart product
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: get cart product by id
+      tags:
+      - Cart
     put:
       consumes:
       - application/json
@@ -933,7 +1020,7 @@ paths:
       summary: create new category require admin permission
       tags:
       - Category
-  /category/{id}/delete:
+  /category/{id}:
     delete:
       consumes:
       - application/json
@@ -969,8 +1056,7 @@ paths:
       summary: delete category by id
       tags:
       - Category
-  /category/{id}/update:
-    post:
+    put:
       consumes:
       - application/json
       parameters:
@@ -1105,7 +1191,6 @@ paths:
       summary: get color by id
       tags:
       - Color
-  /color/{id}/update:
     put:
       consumes:
       - application/json
@@ -1147,6 +1232,179 @@ paths:
       summary: update color
       tags:
       - Color
+  /coupon/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCoupon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create new coupon require admin permission date must be formated yyyy-mm-dd
+      tags:
+      - Coupon
+  /coupon/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id of coupon
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: delete coupon by id
+      tags:
+      - Coupon
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id of coupon
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get coupon by id
+      tags:
+      - Coupon
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateCoupon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update counpon
+      tags:
+      - Coupon
+  /coupon/code/{code}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: code of coupon
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get coupon by code
+      tags:
+      - Coupon
   /media/upload:
     post:
       consumes:
@@ -1164,10 +1422,401 @@ paths:
         "200":
           description: OK
       security:
-      - ApiKeyAuth: []
+      - Bearer: []
       summary: create new image return image
       tags:
       - Media
+  /notification/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offSet
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      - in: query
+        name: sortBy
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - Bearer: []
+      summary: get notification by token
+      tags:
+      - Notification
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New notification
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateNotification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - Bearer: []
+      summary: create new notification return id
+      tags:
+      - Notification
+  /notification/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id notification
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: get notification by id
+      tags:
+      - Notification
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id notification
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: notification request
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateNotification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update notification info
+      tags:
+      - Notification
+  /notification/{id}/user:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id notification
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update state of notification (use for user => change unread to read)
+      tags:
+      - Notification
+  /notification/send:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: notification
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserListNotification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - Bearer: []
+      summary: send notification to users
+      tags:
+      - Notification
+  /order/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: GetOrderByToken() require owner
+      tags:
+      - Order
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: order request
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCartOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create new order from cart
+      tags:
+      - Order
+  /order/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: GetOrderById() require owner or admin request
+      tags:
+      - Order
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: order id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: product
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: UpdateOrderStatus() use to update order (status must follow the tree)
+        draft -> processing -> completed -> cancelled
+      tags:
+      - Order
+  /order/{id}/product/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offSet
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      - in: query
+        name: sortBy
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: GetOrderProductByOrderId() require owner or admin request
+      tags:
+      - Order
+  /order/{id}/total:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: order id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: GetTotalOrderById() use to get total for order
+      tags:
+      - Order
   /product/:
     get:
       consumes:
@@ -1254,36 +1903,6 @@ paths:
       tags:
       - Product
   /product/{id}:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: getproduct by id
-      tags:
-      - Product
-  /product/{id}/delete:
     delete:
       consumes:
       - application/json
@@ -1319,12 +1938,11 @@ paths:
       summary: delete product by id
       tags:
       - Product
-  /product/{id}/recommend/:
     get:
       consumes:
       - application/json
       parameters:
-      - description: id product
+      - description: id
         in: path
         name: id
         required: true
@@ -1338,10 +1956,6 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-        "403":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
         "404":
           description: Error
           schema:
@@ -1350,10 +1964,9 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: get recomend products by Id
+      summary: getproduct by id
       tags:
       - Product
-  /product/{id}/update:
     put:
       consumes:
       - application/json
@@ -1393,6 +2006,40 @@ paths:
       security:
       - Bearer: []
       summary: update product
+      tags:
+      - Product
+  /product/{id}/recommend/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id product
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get recomend products by Id
       tags:
       - Product
   /product/{id}/variant:
@@ -1688,40 +2335,6 @@ paths:
       tags:
       - Variant
   /variant/{id}:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: variant id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "403":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "404":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: get variant by id
-      tags:
-      - Variant
-  /variant/{id}/delete:
     delete:
       consumes:
       - application/json
@@ -1757,7 +2370,39 @@ paths:
       summary: delete variant by id
       tags:
       - Variant
-  /variant/{id}/update:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: variant id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: get variant by id
+      tags:
+      - Variant
     put:
       consumes:
       - application/json

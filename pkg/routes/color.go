@@ -30,5 +30,5 @@ func (r *ColorRoutes) privateColorRouter() {
 	r.app.Use(middlewares.JWTProtected())
 	r.app.Use(middlewares.AdminProtected)
 	r.app.Post("/", controller.CreateColor)
-	r.app.Put("/:id/update", controller.UpdateColorById)
+	r.app.Put("/:id", controller.UpdateColorById)
 }

@@ -63,7 +63,7 @@ func CreateCategories(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /category/{id}/update [post]
+// @Router /category/{id} [put]
 // @Security Bearer
 func UpdateCategories(c *fiber.Ctx) error {
 	token, ok := c.Locals("user").(*jwt.Token)
@@ -135,7 +135,7 @@ func UpdateCategories(c *fiber.Ctx) error {
 // @Produce json
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /category/{id}/delete [delete]
+// @Router /category/{id} [delete]
 // @Security Bearer
 func DeleteCategories(c *fiber.Ctx) error {
 	token, ok := c.Locals("user").(*jwt.Token)

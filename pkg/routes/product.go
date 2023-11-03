@@ -30,8 +30,8 @@ func (r *ProductRouters) privateProductRouter() {
 	r.app.Use(middlewares.AdminProtected)
 	// product router
 	r.app.Post("/", controller.CreateProduct)
-	r.app.Put("/:id/update", controller.UpdateProduct)
-	r.app.Delete("/:id/delete", controller.DeleteProduct)
+	r.app.Put("/:id", controller.UpdateProduct)
+	r.app.Delete("/:id", controller.DeleteProduct)
 	r.app.Put("/:id/variant", controller.UpdateDefaultVariant)
 	// recommend router
 	r.app.Post("/recommend/", controller.CreateRecommendProduct)

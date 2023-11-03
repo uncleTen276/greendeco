@@ -29,6 +29,6 @@ func (r *VariantRoutes) privateProductRouter() {
 	r.app.Use(middlewares.JWTProtected())
 	r.app.Use(middlewares.AdminProtected)
 	r.app.Post("/", controller.CreateVariant)
-	r.app.Delete("/:id/delete", controller.DeleteVariant)
-	r.app.Put("/:id/update", controller.UpdateVariant)
+	r.app.Delete("/:id", controller.DeleteVariant)
+	r.app.Put("/:id", controller.UpdateVariant)
 }

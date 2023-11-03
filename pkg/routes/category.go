@@ -20,6 +20,6 @@ func privateCategoryRouter(app fiber.Router) {
 	app.Use(middlewares.JWTProtected())
 	app.Use(middlewares.AdminProtected)
 	app.Post("/", controller.CreateCategories)
-	app.Post("/:id/update", controller.UpdateCategories)
-	app.Delete("/:id/delete", controller.DeleteCategories)
+	app.Put("/:id", controller.UpdateCategories)
+	app.Delete("/:id", controller.DeleteCategories)
 }

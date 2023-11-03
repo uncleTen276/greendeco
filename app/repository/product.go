@@ -85,7 +85,6 @@ func (repo *ProductRepo) All(q models.ProductQuery) ([]models.ActivedProduct, er
 
 	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
 	if err := repo.db.Select(&results, query); err != nil {
-		println(err.Error())
 		return nil, err
 	}
 
@@ -133,4 +132,14 @@ func (repo *ProductRepo) DeleteRecommendProduct(m *models.CreateRecommend) error
 	}
 
 	return nil
+}
+
+func (repo *ProductRepo) DeleteCategory(id string) error {
+	query := fmt.Sprintf(`DELETE FROM %s WHERE id = $1`, CategoryTable)
+	_, err := repo.db.Exec(query, id)
+	return err
+}
+
+func (repo *ProductRepo) GetCategories() ([]models.Category, error) {
+	return nil, nil
 }
