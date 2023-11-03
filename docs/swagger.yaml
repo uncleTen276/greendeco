@@ -96,6 +96,18 @@ definitions:
     - discount
     - name
     type: object
+  models.CreateNotification:
+    properties:
+      message:
+        maxLength: 3
+        type: string
+      title:
+        maxLength: 3
+        type: string
+    required:
+    - message
+    - title
+    type: object
   models.CreateProduct:
     properties:
       category_id:
@@ -299,6 +311,18 @@ definitions:
     required:
     - variant
     type: object
+  models.UpdateNotification:
+    properties:
+      message:
+        minLength: 3
+        type: string
+      title:
+        minLength: 3
+        type: string
+    required:
+    - message
+    - title
+    type: object
   models.UpdateOrder:
     properties:
       paid_at:
@@ -416,6 +440,15 @@ definitions:
         type: string
       phoneNumber:
         type: string
+    type: object
+  models.UserListNotification:
+    properties:
+      notification_id:
+        type: string
+      users:
+        items:
+          type: string
+        type: array
     type: object
   models.UserLogin:
     properties:
@@ -1389,10 +1422,193 @@ paths:
         "200":
           description: OK
       security:
-      - ApiKeyAuth: []
+      - Bearer: []
       summary: create new image return image
       tags:
       - Media
+  /notification/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offSet
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      - in: query
+        name: sortBy
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - Bearer: []
+      summary: get notification by token
+      tags:
+      - Notification
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New notification
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateNotification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - Bearer: []
+      summary: create new notification return id
+      tags:
+      - Notification
+  /notification/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id notification
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: get notification by id
+      tags:
+      - Notification
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id notification
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: notification request
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateNotification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update notification info
+      tags:
+      - Notification
+  /notification/{id}/user:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: id notification
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: update state of notification (use for user => change unread to read)
+      tags:
+      - Notification
+  /notification/send:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: notification
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserListNotification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - Bearer: []
+      summary: send notification to users
+      tags:
+      - Notification
   /order/:
     get:
       consumes:

@@ -18,23 +18,6 @@ created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp
 );
 
-CREATE TABLE IF NOT EXISTS "roles"(
-id  UUID DEFAULT gen_random_uuid () PRIMARY KEY,
-name  VARCHAR(50) UNIQUE NOT NULL,
-created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
-updated_at TIMESTAMP DEFAULT current_timestamp
-);
-
-CREATE TABLE IF NOT EXISTS "user_role"(
-user_id UUID  NOT NULL,
-role_id UUID  NOT NULL,
-created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
-updated_at TIMESTAMP DEFAULT current_timestamp,
-PRIMARY KEY (user_id, role_id),
-FOREIGN KEY(role_id) REFERENCES roles (id),
-FOREIGN KEY(user_id) REFERENCES users (id)
-);
-
 CREATE TABLE IF NOT EXISTS "categories"(
 id  UUID DEFAULT gen_random_uuid () PRIMARY KEY,
 name VARCHAR(200) UNIQUE NOT NULL,

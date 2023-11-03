@@ -43,10 +43,10 @@ func UploadImage(ctx context.Context, fileInput []byte, fileName string, token s
 // @ID	image
 // @Produce		json
 // @Accept	multipart/form-data
-// @Security ApiKeyAuth
 // @Param image formData file true "upfile"
 // @Success 200
 // @Router /media/upload [post]
+// @Security Bearer
 func PostMedia(c *fiber.Ctx) error {
 	ctx := context.Background()
 	file, err := c.FormFile("image")
