@@ -58,7 +58,7 @@ func handler() http.HandlerFunc {
 	routes.UserRoutes(api)
 	routes.NewMediaRouter(api).RegisterRoutes()
 	routes.NewProductRouter(api).RegisterRoutes()
-	routes.AdminRoute(api)
+	routes.NewAdminRouter(api).RegisterRoutes()
 	routes.CategoryRouter(api)
 
 	routes.NewReviewRoutes(api).RegisterRoutes()
