@@ -51,6 +51,7 @@ func handler() http.HandlerFunc {
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
 	})
+
 	routes.SwaggerRoute(app)
 	api := app.Group("/api/v1")
 	routes.AuthRoutes(api)
@@ -59,6 +60,15 @@ func handler() http.HandlerFunc {
 	routes.NewProductRouter(api).RegisterRoutes()
 	routes.AdminRoute(api)
 	routes.CategoryRouter(api)
+
+	routes.NewReviewRoutes(api).RegisterRoutes()
+	routes.NewProductRouter(api).RegisterRoutes()
+	routes.NewVariantRouter(api).RegisterRoute()
+	routes.NewCartRouter(api).RegisterRoutes()
+	routes.NewColorRouter(api).RegisterRoutes()
+	routes.NewCouponRouter(api).RegisterRoutes()
+	routes.NewOrderRouter(api).RegisterRoutes()
+	routes.NewNotificationRouter(api).RegisterRoutes()
 	web.Routes(app)
 
 	return adaptor.FiberApp(app)
