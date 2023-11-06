@@ -46,7 +46,7 @@ func Serve() {
 	routes.UserRoutes(api)
 	routes.AuthRoutes(api)
 	routes.NewMediaRouter(api).RegisterRoutes()
-	routes.AdminRoute(api)
+	routes.NewAdminRouter(api).RegisterRoutes()
 	routes.CategoryRouter(api)
 
 	routes.NewReviewRoutes(api).RegisterRoutes()

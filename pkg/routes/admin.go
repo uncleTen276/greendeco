@@ -6,13 +6,25 @@ import (
 	"github.com/sekke276/greendeco.git/pkg/middlewares"
 )
 
-func AdminRoute(app fiber.Router) {
-	admin := app.Group("/admin")
-	privateAdminRoute(admin)
+type AdminRouters struct {
+	app fiber.Router
 }
 
-func privateAdminRoute(app fiber.Router) {
-	app.Use(middlewares.JWTProtected())
-	app.Use(middlewares.AdminProtected)
-	app.Get("/customers", controller.GetAllCustomers)
+func NewAdminRouter(app fiber.Router) *AdminRouters {
+	return &AdminRouters{app: app.Group("/admin")}
+}
+
+func (r *AdminRouters) RegisterRoutes() {
+	r.privateAdminRoute()
+	r.publisAdminRoute()
+}
+
+func (r *AdminRouters) publisAdminRoute() {
+	r.app.Get("/login", controller.LoginForAdmin)
+}
+
+func (r *AdminRouters) privateAdminRoute() {
+	r.app.Use(middlewares.JWTProtected())
+	r.app.Use(middlewares.AdminProtected)
+	r.app.Get("/customers", controller.GetAllCustomers)
 }

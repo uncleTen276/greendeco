@@ -12,6 +12,7 @@ import (
 
 type UserRepository interface {
 	Create(u *models.CreateUser, ctx context.Context) error
+	CreateForStaff(*models.CreateUser) error
 	GetUserByIdentifier(identifier string) (*models.User, error)
 	GetUserByEmail(email string) (*models.User, error)
 	GetUserByPhoneNumber(phoneNumber string) (*models.User, error)
@@ -116,5 +117,14 @@ func (repo *UserRepo) UpdateUserInfor(userId uuid.UUID, user *models.UpdateUser)
 }
 
 func (repo *UserRepo) UpdateRules() error {
+	return nil
+}
+
+func (repo *UserRepo) CreateForStaff(u *models.CreateUser) error {
+	query := fmt.Sprintf(`INSERT INTO "%s" (email,identifier,password,first_name,last_name, phone_number, admin) VALUES ($1,$2,$3,$4,$5,$6,$7)`, UserTable)
+	_, err := repo.db.Exec(query, u.Email, u.Identifier, u.Password, u.FirstName, u.LastName, u.PhoneNumber, true)
+	if err != nil {
+		return err
+	}
 	return nil
 }
