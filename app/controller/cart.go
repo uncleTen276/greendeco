@@ -119,7 +119,7 @@ func CreateCartProduct(c *fiber.Ctx) error {
 	}
 
 	if !isCartOwner(newItem.Cart, *uid) {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})
 	}
@@ -221,7 +221,7 @@ func UpdateCartProduct(c *fiber.Ctx) error {
 	}
 
 	if !isCartOwner(cartItem.Cart, *uid) {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})
 	}
@@ -269,7 +269,7 @@ func DeleteCartItemByCartId(c *fiber.Ctx) error {
 	}
 
 	if !isCartOwner(cartId, *uid) {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})
 	}
@@ -326,7 +326,7 @@ func DeleteCartItemById(c *fiber.Ctx) error {
 	}
 
 	if !isCartOwner(cart.Cart, *uid) {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})
 	}
@@ -373,7 +373,7 @@ func GetCartById(c *fiber.Ctx) error {
 	}
 
 	if !isCartOwner(cId, *uid) {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})
 	}
@@ -448,7 +448,7 @@ func GetCartProductById(c *fiber.Ctx) error {
 	}
 
 	if !isCartOwner(cartProduct.Cart, *uid) {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})
 	}
@@ -504,7 +504,7 @@ func GetCartProductsByCartId(c *fiber.Ctx) error {
 	}
 
 	if !isCartOwner(cId, *uid) {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})
 	}
