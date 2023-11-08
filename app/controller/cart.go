@@ -140,7 +140,7 @@ func CreateCartProduct(c *fiber.Ctx) error {
 		}
 
 		if database.DetectDuplicateError(err) {
-			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
 				Message: "record already exists",
 			})
 		}

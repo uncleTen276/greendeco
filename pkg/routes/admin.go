@@ -15,8 +15,8 @@ func NewAdminRouter(app fiber.Router) *AdminRouters {
 }
 
 func (r *AdminRouters) RegisterRoutes() {
-	r.privateAdminRoute()
 	r.publisAdminRoute()
+	r.privateAdminRoute()
 }
 
 func (r *AdminRouters) publisAdminRoute() {
