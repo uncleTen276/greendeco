@@ -79,7 +79,7 @@ func CreateCart(c *fiber.Ctx) error {
 }
 
 // @CreateCartProduct() godoc
-// @Summary create new cart item
+// @Summary create new cart item if cart have already existed update it's quantity by one
 // @Tags Cart
 // @Param todo body models.CreateCartProduct true "New cart"
 // @Accept json
@@ -136,12 +136,6 @@ func CreateCartProduct(c *fiber.Ctx) error {
 		if database.DetectNotFoundContrainError(err) {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 				Message: "invalid input",
-			})
-		}
-
-		if database.DetectDuplicateError(err) {
-			return c.Status(fiber.StatusConflict).JSON(models.ErrorResponse{
-				Message: "record already exists",
 			})
 		}
 

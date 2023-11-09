@@ -15,12 +15,12 @@ func NewAdminRouter(app fiber.Router) *AdminRouters {
 }
 
 func (r *AdminRouters) RegisterRoutes() {
-	r.publisAdminRoute()
+	r.publicAdminRoute()
 	r.privateAdminRoute()
 }
 
-func (r *AdminRouters) publisAdminRoute() {
-	r.app.Get("/login", controller.LoginForAdmin)
+func (r *AdminRouters) publicAdminRoute() {
+	r.app.Post("/login", controller.LoginForAdmin)
 }
 
 func (r *AdminRouters) privateAdminRoute() {
