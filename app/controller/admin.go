@@ -80,7 +80,7 @@ func GetAllCustomers(c *fiber.Ctx) error {
 // @Param todo body models.UserLogin true "Login"
 // @Success 200 {object} models.UserToken
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
-// @Router /admin/login/ [post]
+// @Router /admin/login [post]
 func LoginForAdmin(c *fiber.Ctx) error {
 	user := &models.UserLogin{}
 	if err := c.BodyParser(user); err != nil {
