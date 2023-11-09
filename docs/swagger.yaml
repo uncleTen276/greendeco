@@ -513,7 +513,7 @@ paths:
       summary: get customers
       tags:
       - Admin
-  /admin/login:
+  /admin/login/:
     post:
       consumes:
       - application/json
@@ -913,7 +913,8 @@ paths:
             $ref: '#/definitions/models.ErrorResponse'
       security:
       - Bearer: []
-      summary: create new cart item
+      summary: create new cart item if cart have already existed update it's quantity
+        by one
       tags:
       - Cart
   /cart/product/{id}:

@@ -50,7 +50,8 @@ func (repo *CartRepo) Create(m *models.CreateCart) (string, error) {
 }
 
 func (repo *CartRepo) CreateCartProduct(m *models.CreateCartProduct) (string, error) {
-	query := fmt.Sprintf(`INSERT INTO "%s" (cart_id, variant_id, quantity) VALUES ($1,$2, $3) RETURNING id`, CartProductTable)
+	query := fmt.Sprintf(`
+INSERT INTO "%s" (cart_id, variant_id, quantity) VALUES ($1,$2, $3) ON CONFLICT (cart_id,variant_id) DO UPDATE SET quantity=%s.quantity+1  RETURNING id`, CartProductTable, CartProductTable)
 	newCartItem := repo.db.QueryRow(query, m.Cart, m.Variant, m.Quantity)
 	var cartItemId string
 	if err := newCartItem.Scan(&cartItemId); err != nil {

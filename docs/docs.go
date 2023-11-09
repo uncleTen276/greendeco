@@ -74,7 +74,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/login": {
+        "/admin/login/": {
             "post": {
                 "description": "use for login response the access_Token",
                 "consumes": [
@@ -476,7 +476,7 @@ const docTemplate = `{
                 "tags": [
                     "Cart"
                 ],
-                "summary": "create new cart item",
+                "summary": "create new cart item if cart have already existed update it's quantity by one",
                 "parameters": [
                     {
                         "description": "New cart",
