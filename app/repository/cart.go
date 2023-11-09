@@ -164,7 +164,7 @@ func (repo *CartRepo) GetCartProductByCartId(cartId uuid.UUID, q *models.BaseQue
 func (repo *CartRepo) GetAllCartProductByCartId(cartId uuid.UUID) ([]*models.CartProduct, error) {
 	cartProductList := []*models.CartProduct{}
 	query := fmt.Sprintf(`SELECT * FROM "%s" WHERE cart_id = $1`, CartProductTable)
-	err := repo.db.Select(&cartProductList, query)
+	err := repo.db.Select(&cartProductList, query, cartId)
 	if err == sql.ErrNoRows {
 		return nil, models.ErrNotFound
 	} else if err != nil {
