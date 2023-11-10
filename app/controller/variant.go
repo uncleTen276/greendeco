@@ -306,7 +306,6 @@ func GetDefaultVariant(c *fiber.Ctx) error {
 				Message: "record not found",
 			})
 		}
-		println(err.Error())
 
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend :(",

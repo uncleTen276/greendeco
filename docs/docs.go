@@ -74,7 +74,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/login/": {
+        "/admin/login": {
             "post": {
                 "description": "use for login response the access_Token",
                 "consumes": [
@@ -2373,6 +2373,84 @@ const docTemplate = `{
                 }
             }
         },
+        "/product/all/": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "\"field\" not working on swagger you can read models.ProductQueryField for fields query\nsort value can only asc or desc",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "query get all products",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "offSet",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sortBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "field={\"name\":\"hello\"}",
+                        "description": "fields query is json",
+                        "name": "fields",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/product/recommend/": {
             "post": {
                 "security": [
@@ -3682,6 +3760,9 @@ const docTemplate = `{
                 },
                 "difficulty": {
                     "type": "string"
+                },
+                "is_publish": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"

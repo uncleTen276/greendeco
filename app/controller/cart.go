@@ -291,7 +291,6 @@ func DeleteCartItemByCartId(c *fiber.Ctx) error {
 func DeleteCartItemById(c *fiber.Ctx) error {
 	pId, err := uuid.Parse(c.Params("id"))
 	if err != nil {
-		println(err.Error())
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})

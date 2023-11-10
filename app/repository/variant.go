@@ -151,7 +151,6 @@ func (repo *VariantRepo) GetDefaultVariantOfProduct(id uuid.UUID) (*models.Defau
 func (repo *VariantRepo) UpdateDefaultVariant(m *models.UpdateDefaultVariant) error {
 	query := fmt.Sprintf(`UPDATE %s SET variant_id = $1 WHERE product_id = $2`, ProductVariantDefaultTable)
 	if _, err := repo.db.Exec(query, m.VariantId, m.ProductId); err != nil {
-		println(err.Error())
 		return err
 	}
 
@@ -161,7 +160,6 @@ func (repo *VariantRepo) UpdateDefaultVariant(m *models.UpdateDefaultVariant) er
 func (repo *VariantRepo) UpdateById(m *models.UpdateVariant) error {
 	query := fmt.Sprintf(`UPDATE "%s" SET available = $2, name = $3, color = $4, price = $5, currency = $6, image = $7, description = $8, color_name = $9  WHERE id = $1`, VariantTable)
 	if _, err := repo.db.Exec(query, m.ID, m.Available, m.Name, m.Color, m.Price, m.Currency, m.Image, m.Description, m.ColorName); err != nil {
-		println(err.Error())
 		return err
 	}
 	return nil

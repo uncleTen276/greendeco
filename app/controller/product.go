@@ -322,4 +322,49 @@ func UpdateDefaultVariant(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusCreated)
 }
 
-// func GetAllCategory()
+// @GetAllProducts() godoc
+// @Summary query get all products
+// @Description "field" not working on swagger you can read models.ProductQueryField for fields query
+// @Description sort value can only asc or desc
+// @Tags Product
+// @Param queries query models.ProductQuery false "default: limit = 10"
+// @Param fields query string false "fields query is json" example(field={"name":"hello"})
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
+// @Router /product/all/ [Get]
+// @Security Bearer
+func GetAllProducts(c *fiber.Ctx) error {
+	query := &models.ProductQuery{
+		BaseQuery: *models.DefaultQuery(),
+	}
+
+	err := c.QueryParser(query)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+		})
+	}
+
+	productRepo := repository.NewProductRepo(database.GetDB())
+	products, err := productRepo.GetAllProducts(query)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "record not found",
+		})
+	}
+
+	nextPage := query.HaveNextPage(len(products))
+	if nextPage {
+		products = products[:len(products)-1]
+	}
+
+	return c.JSON(models.BasePaginationResponse{
+		Items:    products,
+		Page:     query.GetPageNumber(),
+		PageSize: len(products),
+		Next:     nextPage,
+		Prev:     !query.IsFirstPage(),
+	})
+}

@@ -109,7 +109,6 @@ func GetNotificationByToken(c *fiber.Ctx) error {
 
 	query := models.DefaultQuery()
 	if err := c.QueryParser(query); err != nil {
-		println(err.Error())
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})
@@ -258,7 +257,6 @@ func UpdateNotification(c *fiber.Ctx) error {
 				Message: "record not found",
 			})
 		}
-		println(err.Error())
 
 		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
 			Message: "something bad happend :(",
