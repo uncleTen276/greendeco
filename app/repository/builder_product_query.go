@@ -25,7 +25,7 @@ func (*ProductRepo) newProductQueryBuilder(query string) *productQueryBuilder {
 
 func (q *productQueryBuilder) SetName(name string) *productQueryBuilder {
 	if name != "" {
-		query := fmt.Sprintf(` word_similarity(published_products."name",'%s') > 0 `, name)
+		query := fmt.Sprintf(` word_similarity(name,'%s') > 0 `, name)
 		q.field[query] = true
 	}
 
@@ -34,7 +34,7 @@ func (q *productQueryBuilder) SetName(name string) *productQueryBuilder {
 
 func (q *productQueryBuilder) SetAvailable(available *bool) *productQueryBuilder {
 	if available != nil {
-		query := fmt.Sprintf(` available = '%v'`, available)
+		query := fmt.Sprintf(` available = '%t' `, *available)
 		q.field[query] = true
 	}
 
@@ -77,9 +77,18 @@ func (q *productQueryBuilder) SetDifficulty(difficulty string) *productQueryBuil
 	return q
 }
 
-func (q *productQueryBuilder) Setwater(water string) *productQueryBuilder {
+func (q *productQueryBuilder) SetWater(water string) *productQueryBuilder {
 	if water != "" {
 		query := fmt.Sprintf("water = '%s'", water)
+		q.field[query] = true
+	}
+
+	return q
+}
+
+func (q *productQueryBuilder) SetPublished(published *bool) *productQueryBuilder {
+	if published != nil {
+		query := fmt.Sprintf(`is_publish = '%t' `, *published)
 		q.field[query] = true
 	}
 
@@ -112,6 +121,6 @@ func (q *productQueryBuilder) Build() string {
 		}
 	}
 
-	q.query += fmt.Sprintf("ORDER BY %s %s", q.sortBy, q.sort)
+	q.query += fmt.Sprintf(" ORDER BY %s %s", q.sortBy, q.sort)
 	return q.query
 }

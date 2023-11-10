@@ -18,6 +18,7 @@ type ProductRepository interface {
 	GetRecommendProducts(id uuid.UUID) ([]string, error)
 	CreateRecommendProduct(m *models.CreateRecommend) error
 	DeleteRecommendProduct(m *models.CreateRecommend) error
+	GetAllProducts(q *models.ProductQuery) ([]models.Product, error)
 }
 type ProductRepo struct {
 	db *database.DB
@@ -79,7 +80,7 @@ func (repo *ProductRepo) All(q models.ProductQuery) ([]models.ActivedProduct, er
 		SetSize(q.Fields.Size).
 		SetType(q.Fields.Type).
 		SetDifficulty(q.Fields.Difficulty).
-		Setwater(q.Fields.Water).
+		SetWater(q.Fields.Water).
 		SortBy(q.SortBy, q.Sort).
 		Build()
 
@@ -142,4 +143,32 @@ func (repo *ProductRepo) DeleteCategory(id string) error {
 
 func (repo *ProductRepo) GetCategories() ([]models.Category, error) {
 	return nil, nil
+}
+
+func (repo *ProductRepo) GetAllProducts(q *models.ProductQuery) ([]models.Product, error) {
+	limit := q.Limit
+	limit += 1
+	pageOffset := q.BaseQuery.Limit * (q.BaseQuery.OffSet - 1)
+
+	results := []models.Product{}
+	firstQuery := fmt.Sprintf(`SELECT * FROM "%s" `, ProductTable)
+	query := repo.newProductQueryBuilder(firstQuery).
+		SetName(q.Fields.Name).
+		SetAvailable(q.Fields.Available).
+		SetCategory(q.Fields.Category).
+		SetSize(q.Fields.Size).
+		SetType(q.Fields.Type).
+		SetDifficulty(q.Fields.Difficulty).
+		SetWater(q.Fields.Water).
+		SetPublished(q.Fields.IsPublish).
+		SortBy(q.SortBy, q.Sort).
+		Build()
+
+	println(query)
+	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
+	if err := repo.db.Select(&results, query); err != nil {
+		return nil, err
+	}
+
+	return results, nil
 }

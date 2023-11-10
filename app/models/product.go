@@ -70,6 +70,7 @@ type ProductQueryField struct {
 	Type       string     `query:"type" json:"type"`
 	Difficulty string     `query:"difficulty" json:"difficulty"`
 	Water      string     `query:"water" json:"water"`
+	IsPublish  *bool      `query:"is_publish" json:"is_publish"`
 }
 
 type ActivedProduct struct {

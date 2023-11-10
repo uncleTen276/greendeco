@@ -21,8 +21,10 @@ func (r *ProductRouters) RegisterRoutes() {
 
 func (r *ProductRouters) publicProductRouter() {
 	r.app.Get("/", controller.GetProducts)
+	r.app.Get("/all/", middlewares.JWTProtected(), middlewares.AdminProtected, controller.GetAllProducts)
 	r.app.Get("/:id", controller.GetProductById)
-	r.app.Get("/:id/recommend", controller.GetRecommendProductsById)
+	r.app.Get("/:id/recommend/", controller.GetRecommendProductsById)
+	// require admin protected
 }
 
 func (r *ProductRouters) privateProductRouter() {
@@ -32,7 +34,7 @@ func (r *ProductRouters) privateProductRouter() {
 	r.app.Post("/", controller.CreateProduct)
 	r.app.Put("/:id", controller.UpdateProduct)
 	r.app.Delete("/:id", controller.DeleteProduct)
-	r.app.Put("/:id/variant", controller.UpdateDefaultVariant)
+	r.app.Put("/:id/variant/", controller.UpdateDefaultVariant)
 	// recommend router
 	r.app.Post("/recommend/", controller.CreateRecommendProduct)
 }
