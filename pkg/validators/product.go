@@ -11,14 +11,12 @@ func ValidateActiveVariant(variantId uuid.UUID) bool {
 	variantRepo := repository.NewVariantRepo(database.GetDB())
 	variant, err := variantRepo.FindById(variantId)
 	if err != nil {
-		println(err)
 		return false
 	}
 
 	productRepo := repository.NewProductRepo(database.GetDB())
 	product, err := productRepo.FindById(variant.Product)
 	if err != nil {
-		println(err)
 		return false
 	}
 

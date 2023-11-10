@@ -194,7 +194,6 @@ func GetProducts(c *fiber.Ctx) error {
 
 	err := c.QueryParser(query)
 	if err != nil {
-		println("error")
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 			Message: "invalid input found",
 		})

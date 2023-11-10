@@ -141,10 +141,6 @@ func (repo *ProductRepo) DeleteCategory(id string) error {
 	return err
 }
 
-func (repo *ProductRepo) GetCategories() ([]models.Category, error) {
-	return nil, nil
-}
-
 func (repo *ProductRepo) GetAllProducts(q *models.ProductQuery) ([]models.Product, error) {
 	limit := q.Limit
 	limit += 1
@@ -164,7 +160,6 @@ func (repo *ProductRepo) GetAllProducts(q *models.ProductQuery) ([]models.Produc
 		SortBy(q.SortBy, q.Sort).
 		Build()
 
-	println(query)
 	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
 	if err := repo.db.Select(&results, query); err != nil {
 		return nil, err
