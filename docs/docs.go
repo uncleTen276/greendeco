@@ -74,7 +74,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/login/": {
+        "/admin/login": {
             "post": {
                 "description": "use for login response the access_Token",
                 "consumes": [

@@ -513,7 +513,7 @@ paths:
       summary: get customers
       tags:
       - Admin
-  /admin/login/:
+  /admin/login:
     post:
       consumes:
       - application/json
