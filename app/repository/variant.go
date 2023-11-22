@@ -127,7 +127,7 @@ func (repo *VariantRepo) FindById(id uuid.UUID) (*models.Variant, error) {
 
 func (repo *VariantRepo) Delete(id uuid.UUID) error {
 	query := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1`, VariantTable)
-	if _, err := repo.db.Exec(query); err != nil {
+	if _, err := repo.db.Exec(query, id); err != nil {
 		return err
 	}
 
