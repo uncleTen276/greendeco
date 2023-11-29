@@ -275,6 +275,9 @@ func GetOrderProductByOrderId(c *fiber.Ctx) error {
 
 // @GetOrderByToken() godoc
 // @Summary GetOrderByToken() require owner
+// @Description "field" not working on swagger you can read models.ProductQueryField for fields query
+// @Param queries query models.OrderQuery false "default: limit = 10"
+// @Param fields query string false "fields query is json" example(field={"name":"hello"})
 // @Tags Order
 // @Accept json
 // @Produce json
@@ -291,7 +294,10 @@ func GetOrderByToken(c *fiber.Ctx) error {
 	}
 
 	uid, err := middlewares.GetUserIdFromToken(token)
-	query := models.DefaultQuery()
+	query := &models.OrderQuery{
+		BaseQuery: *models.DefaultQuery(),
+	}
+
 	if err := c.QueryParser(query); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 			Message: "invalid filter",

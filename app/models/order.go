@@ -57,3 +57,13 @@ type UpdateOrder struct {
 	State   string    `json:"state" db:"state"`
 	PaidAt  string    `json:"paid_at" db:"paid_at" validate:"ISO8601date"`
 }
+
+type OrderQuery struct {
+	BaseQuery
+	Fields OrderQueryField `query:"field"`
+}
+
+type OrderQueryField struct {
+	State  string
+	Coupon *uuid.UUID `json:"coupon_id" db:"coupon_id"`
+}

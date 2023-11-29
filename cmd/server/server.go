@@ -33,6 +33,7 @@ func Serve() {
 	}
 
 	validators.AddProductQueryDecoder()
+	validators.AddOrderQueryDecoder()
 
 	app := fiber.New()
 	app.Use(logger.New())

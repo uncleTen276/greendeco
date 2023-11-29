@@ -1920,6 +1920,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
+                "description": "\"field\" not working on swagger you can read models.ProductQueryField for fields query",
                 "consumes": [
                     "application/json"
                 ],
@@ -1930,6 +1931,35 @@ const docTemplate = `{
                     "Order"
                 ],
                 "summary": "GetOrderByToken() require owner",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "offSet",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sortBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "field={\"name\":\"hello\"}",
+                        "description": "fields query is json",
+                        "name": "fields",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -3745,6 +3775,17 @@ const docTemplate = `{
             "properties": {
                 "errors": {},
                 "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.OrderQueryField": {
+            "type": "object",
+            "properties": {
+                "coupon_id": {
+                    "type": "string"
+                },
+                "state": {
                     "type": "string"
                 }
             }

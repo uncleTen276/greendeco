@@ -201,4 +201,4 @@ FOREIGN KEY(notification_id)REFERENCES notifications(id) ON DELETE CASCADE
 
 -- CREATE ADMIN Account
 -- password 1234567890
-INSERT INTO "users" (email,identifier,password,first_name,last_name, phone_number,admin) VALUES ('admin@gmail.com','admin@gmail.com','$2a$10$xIgiGxp0THwDy1R8uxko..t3O8s9aeikqk9olnJCLLI/92FUbtFey','','admin','+844785976','true');
+-- INSERT INTO "users" (email,identifier,password,first_name,last_name, phone_number,admin) VALUES ('admin@gmail.com','admin@gmail.com','$2a$10$xIgiGxp0THwDy1R8uxko..t3O8s9aeikqk9olnJCLLI/92FUbtFey','','admin','+844785976','true');
