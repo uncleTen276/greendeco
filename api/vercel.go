@@ -46,6 +46,7 @@ func handler() http.HandlerFunc {
 	}
 
 	validators.AddProductQueryDecoder()
+	validators.AddOrderQueryDecoder()
 	app := fiber.New()
 
 	app.Use(logger.New())
