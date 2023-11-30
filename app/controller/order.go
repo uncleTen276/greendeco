@@ -311,7 +311,8 @@ func GetOrderByToken(c *fiber.Ctx) error {
 	}
 
 	orderRepo := repository.NewOrderRepo(database.GetDB())
-	orders, err := orderRepo.GetOrderByOwnerId(*uid, query)
+	query.Fields.OwnerId = uid
+	orders, err := orderRepo.All(query)
 	if err != nil {
 		if err == models.ErrNotFound {
 			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
@@ -446,6 +447,53 @@ func GetTotalOrderById(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"total":        total,
 		"actual_price": actualPrice,
+	})
+}
+
+// @GetAllOrders() godoc
+// @Summary GetAllOrders() require admin
+// @Description "field" not working on swagger you can read models.ProductQueryField for fields query
+// @Param queries query models.OrderQuery false "default: limit = 10"
+// @Param fields query string false "fields query is json" example(field={"name":"hello"})
+// @Tags Order
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.BasePaginationResponse
+// @Failure 400,404,500 {object} models.ErrorResponse "Error"
+// @Router /order/all/ [get]
+// @Security Bearer
+func GetAllOrders(c *fiber.Ctx) error {
+	query := &models.OrderQuery{
+		BaseQuery: *models.DefaultQuery(),
+	}
+
+	if err := c.QueryParser(query); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid filter",
+		})
+	}
+
+	orderRepository := repository.NewOrderRepo(database.GetDB())
+	orders, err := orderRepository.All(query)
+	if err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+				Message: "record not found",
+			})
+		}
+	}
+
+	nextPage := query.HaveNextPage(len(orders))
+	if nextPage {
+		orders = orders[:len(orders)-1]
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
+		Items:    orders,
+		PageSize: len(orders),
+		Page:     query.GetPageNumber(),
+		Next:     nextPage,
+		Prev:     query.IsFirstPage(),
 	})
 }
 

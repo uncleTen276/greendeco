@@ -13,9 +13,9 @@ type OrderRepository interface {
 	CreateOrderFromCart(m *models.Order, orderItem []*models.OrderProduct, cartId uuid.UUID) (string, error)
 	GetOrderById(orderId uuid.UUID) (*models.Order, error)
 	GetOrderProductsByOrderId(orderId uuid.UUID, q *models.BaseQuery) ([]*models.OrderProduct, error)
-	GetOrderByOwnerId(ownerId uuid.UUID, q *models.OrderQuery) ([]*models.Order, error)
 	GetTotalPaymentForOrder(orderId uuid.UUID) (int, error)
 	UpdateOrder(m *models.UpdateOrder) error
+	All(q *models.OrderQuery) ([]*models.Order, error)
 }
 
 type OrderRepo struct {
@@ -107,32 +107,6 @@ func (repo *OrderRepo) GetOrderProductsByOrderId(orderId uuid.UUID, q *models.Ba
 	return products, nil
 }
 
-func (repo *OrderRepo) GetOrderByOwnerId(ownerId uuid.UUID, q *models.OrderQuery) ([]*models.Order, error) {
-	limit := q.Limit
-	limit += 1
-	pageOffset := q.Limit * (q.OffSet - 1)
-	firstQuery := fmt.Sprintf(`SELECT * FROM "%s" `, OrderTable)
-	query := repo.newOrderQueryBuilder(firstQuery).
-		SetOwner(&ownerId).
-		SetState(q.Fields.State).
-		SetCoupon(q.Fields.Coupon).
-		SortBy(q.SortBy, q.Sort).
-		Build()
-
-	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
-
-	orders := []*models.Order{}
-	if err := repo.db.Select(&orders, query); err != nil {
-		if err == sql.ErrNoRows {
-			return nil, models.ErrNotFound
-		}
-
-		return nil, err
-	}
-
-	return orders, nil
-}
-
 func (repo *OrderRepo) UpdateOrder(m *models.UpdateOrder) error {
 	query := fmt.Sprintf(`UPDATE "%s" SET state = $2, paid_at = $3  WHERE id = $1`, OrderTable)
 	if _, err := repo.db.Exec(query, m.OrderId, m.State, m.PaidAt); err != nil {
@@ -158,4 +132,30 @@ func (repo *OrderRepo) GetTotalPaymentForOrder(orderId uuid.UUID) (int, error) {
 	}
 
 	return total, nil
+}
+
+func (repo *OrderRepo) All(q *models.OrderQuery) ([]*models.Order, error) {
+	limit := q.Limit
+	limit += 1
+	pageOffset := q.Limit * (q.OffSet - 1)
+	firstQuery := fmt.Sprintf(`SELECT * FROM "%s" `, OrderTable)
+	query := repo.newOrderQueryBuilder(firstQuery).
+		SetOwner(q.Fields.OwnerId).
+		SetState(q.Fields.State).
+		SetCoupon(q.Fields.Coupon).
+		SortBy(q.SortBy, q.Sort).
+		Build()
+
+	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
+
+	orders := []*models.Order{}
+	if err := repo.db.Select(&orders, query); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, models.ErrNotFound
+		}
+
+		return nil, err
+	}
+
+	return orders, nil
 }

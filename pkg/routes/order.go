@@ -27,6 +27,7 @@ func (r *orderRoutes) publicOrderRoutes() {
 func (r *orderRoutes) privateOrderRoutes() {
 	r.app.Use(middlewares.JWTProtected())
 	r.app.Post("/", controller.CreateOrderFromCart)
+	r.app.Get("/all/", middlewares.AdminProtected, controller.GetAllOrders)
 	r.app.Get("/:id", controller.GetOrderById)
 	r.app.Get("/:id/product/", controller.GetOrderProductByOrderId)
 	r.app.Get("/", controller.GetOrderByToken)

@@ -64,6 +64,7 @@ type OrderQuery struct {
 }
 
 type OrderQueryField struct {
-	State  string
-	Coupon *uuid.UUID `json:"coupon_id" db:"coupon_id"`
+	State   string
+	Coupon  *uuid.UUID `json:"coupon_id" db:"coupon_id"`
+	OwnerId *uuid.UUID `json:"owner_id" db:"owner_id"`
 }

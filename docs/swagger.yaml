@@ -244,6 +244,8 @@ definitions:
     properties:
       coupon_id:
         type: string
+      owner_id:
+        type: string
       state:
         type: string
     type: object
@@ -1916,6 +1918,54 @@ paths:
       security:
       - Bearer: []
       summary: GetTotalOrderById() use to get total for order
+      tags:
+      - Order
+  /order/all/:
+    get:
+      consumes:
+      - application/json
+      description: '"field" not working on swagger you can read models.ProductQueryField
+        for fields query'
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offSet
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      - in: query
+        name: sortBy
+        type: string
+      - description: fields query is json
+        example: field={"name":"hello"}
+        in: query
+        name: fields
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BasePaginationResponse'
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: GetAllOrders() require admin
       tags:
       - Order
   /product/:
