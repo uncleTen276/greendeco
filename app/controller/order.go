@@ -161,12 +161,6 @@ func GetOrderById(c *fiber.Ctx) error {
 		})
 	}
 
-	if !middlewares.GetAdminFromToken(token) {
-		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
-			Message: "record not found",
-		})
-	}
-
 	orderRepo := repository.NewOrderRepo(database.GetDB())
 	order, err := orderRepo.GetOrderById(oId)
 	if err != nil {
