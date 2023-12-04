@@ -263,7 +263,7 @@ func GetOrderProductByOrderId(c *fiber.Ctx) error {
 		Page:     query.GetPageNumber(),
 		PageSize: len(products),
 		Next:     nextPage,
-		Prev:     query.IsFirstPage(),
+		Prev:     !query.IsFirstPage(),
 	})
 }
 
@@ -325,7 +325,7 @@ func GetOrderByToken(c *fiber.Ctx) error {
 		PageSize: len(orders),
 		Page:     query.GetPageNumber(),
 		Next:     nextPage,
-		Prev:     query.IsFirstPage(),
+		Prev:     !query.IsFirstPage(),
 	})
 }
 
