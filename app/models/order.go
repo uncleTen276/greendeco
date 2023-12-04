@@ -68,3 +68,8 @@ type OrderQueryField struct {
 	Coupon  *uuid.UUID `json:"coupon_id" db:"coupon_id"`
 	OwnerId *uuid.UUID `json:"owner_id" db:"owner_id"`
 }
+
+type OrderProductResponse struct {
+	OrderProduct
+	Product_id *uuid.UUID `json:"product_id" db:"product"`
+}

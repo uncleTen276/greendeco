@@ -12,7 +12,7 @@ import (
 type OrderRepository interface {
 	CreateOrderFromCart(m *models.Order, orderItem []*models.OrderProduct, cartId uuid.UUID) (string, error)
 	GetOrderById(orderId uuid.UUID) (*models.Order, error)
-	GetOrderProductsByOrderId(orderId uuid.UUID, q *models.BaseQuery) ([]*models.OrderProduct, error)
+	GetOrderProductsByOrderId(orderId uuid.UUID, q *models.BaseQuery) ([]*models.OrderProductResponse, error)
 	GetTotalPaymentForOrder(orderId uuid.UUID) (int, error)
 	UpdateOrder(m *models.UpdateOrder) error
 	All(q *models.OrderQuery) ([]*models.Order, error)
@@ -85,17 +85,17 @@ func (repo *OrderRepo) GetOrderById(orderId uuid.UUID) (*models.Order, error) {
 	return order, nil
 }
 
-func (repo *OrderRepo) GetOrderProductsByOrderId(orderId uuid.UUID, q *models.BaseQuery) ([]*models.OrderProduct, error) {
+func (repo *OrderRepo) GetOrderProductsByOrderId(orderId uuid.UUID, q *models.BaseQuery) ([]*models.OrderProductResponse, error) {
 	limit := q.Limit
 	limit += 1
 	pageOffset := q.Limit * (q.OffSet - 1)
-	firstQuery := fmt.Sprintf(`SELECT * FROM "%s" WHERE order_id = $1 `, OrderProductTable)
+	firstQuery := fmt.Sprintf(`SELECT t1.* , t2.product FROM "%s" AS t1 LEFT JOIN "%s" AS t2 ON t1.variant_id = t2.id WHERE order_id = $1 `, OrderProductTable, VariantTable)
 	query := repo.newOrderQueryBuilder(firstQuery).
 		SortBy(q.SortBy, q.Sort).
 		Build()
 
 	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
-	products := []*models.OrderProduct{}
+	products := []*models.OrderProductResponse{}
 	if err := repo.db.Select(&products, query, orderId); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, models.ErrNotFound

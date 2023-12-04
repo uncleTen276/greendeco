@@ -251,6 +251,10 @@ func GetOrderProductByOrderId(c *fiber.Ctx) error {
 				Message: "record not found",
 			})
 		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "something bad happened :(",
+		})
 	}
 
 	nextPage := query.HaveNextPage(len(products))
