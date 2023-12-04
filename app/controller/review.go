@@ -2,9 +2,11 @@ package controller
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/app/repository"
+	"github.com/sekke276/greendeco.git/pkg/middlewares"
 	"github.com/sekke276/greendeco.git/pkg/validators"
 	"github.com/sekke276/greendeco.git/platform/database"
 )
@@ -20,7 +22,24 @@ import (
 // @Router /review/ [post]
 // @Security Bearer
 func CreateReview(c *fiber.Ctx) error {
-	newReview := &models.CreateReview{}
+	token, ok := c.Locals("user").(*jwt.Token)
+	if !ok {
+		return c.Status(fiber.ErrInternalServerError.Code).JSON(models.ErrorResponse{
+			Message: "can not parse token",
+		})
+	}
+
+	uid, err := middlewares.GetUserIdFromToken(token)
+	if err != nil {
+		return c.Status(fiber.ErrNotFound.Code).JSON(models.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
+	newReview := &models.CreateReview{
+		UserId: *uid,
+	}
+
 	if err := c.BodyParser(newReview); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 			Message: "invalid input found",

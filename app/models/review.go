@@ -17,7 +17,7 @@ type Review struct {
 }
 
 type CreateReview struct {
-	UserId    uuid.UUID `db:"user_id" json:"user_id" validate:"required,uuid4"`
+	UserId    uuid.UUID `db:"user_id" json:"-" validate:"required,uuid4"`
 	ProductId uuid.UUID `db:"product_id" json:"product_id" validate:"required,uuid4"`
 	Content   string    `db:"content" json:"content" validate:"omitempty"`
 	Star      int       `db:"star" json:"star" validate:"omitempty"`

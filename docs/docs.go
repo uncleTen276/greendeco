@@ -3742,8 +3742,7 @@ const docTemplate = `{
         "models.CreateReview": {
             "type": "object",
             "required": [
-                "product_id",
-                "user_id"
+                "product_id"
             ],
             "properties": {
                 "content": {
@@ -3754,9 +3753,6 @@ const docTemplate = `{
                 },
                 "star": {
                     "type": "integer"
-                },
-                "user_id": {
-                    "type": "string"
                 }
             }
         },
