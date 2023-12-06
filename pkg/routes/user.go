@@ -20,4 +20,5 @@ func privateUserRouter(app fiber.Router) {
 	app.Use(middlewares.JWTProtected())
 	app.Get("/me", controller.GetUserInfo)
 	app.Put("/update", controller.UpdateUserInformation)
+	app.Get("/:id", middlewares.AdminProtected, controller.GetUserById)
 }

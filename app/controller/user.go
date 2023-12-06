@@ -10,6 +10,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"github.com/sekke276/greendeco.git/app/models"
 	"github.com/sekke276/greendeco.git/app/repository"
 	"github.com/sekke276/greendeco.git/app/templates"
@@ -423,4 +424,47 @@ func UpdateUserInformation(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(userRes)
+}
+
+// @GetUserById() godoc
+// @Summary get user by id
+// @Tags User
+// @Param id path string true "userId"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
+// @Router /user/{id} [get]
+// @Security Bearer
+func GetUserById(c *fiber.Ctx) error {
+	id := c.Params("id")
+	userId, err := uuid.Parse(id)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid id",
+		})
+	}
+
+	userRepo := repository.NewUserRepo(database.GetDB())
+
+	user, err := userRepo.GetUserById(userId)
+	if err != nil {
+		if err == models.ErrNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
+				Message: "record not found",
+			})
+		}
+
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+			Message: "something bad happend :(",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.BasePaginationResponse{
+		Items:    user,
+		Next:     false,
+		Prev:     false,
+		Page:     1,
+		PageSize: 1,
+	})
 }
