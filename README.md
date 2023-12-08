@@ -1,7 +1,7 @@
 # greendeco
 
 Greendeco is a backend of E-commerce website, built on golang, fiber,
-firebaseStoge, sqlx, postgresql and deployed on Vercel
+firebaseStoge, postgresql and deployed on Vercel
 
 ## Quick start
 
@@ -17,5 +17,5 @@ docker compose -f local.yml up
 Apis list:
 
 ```
-    http://localhost:8080/api/v1
+http://localhost:8080/api/v1
 ```
