@@ -363,11 +363,20 @@ func UpdateOrderStatus(c *fiber.Ctx) error {
 	}
 
 	validator := validators.NewValidator()
-	if err := validator.Struct(updateOrder); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
-			Message: "invalid input found",
-			Errors:  validators.ValidatorErrors(err),
-		})
+	if updateOrder.PaidAt == nil {
+		if err := validator.StructExcept(updateOrder, "paid_at"); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid input found",
+				Errors:  validators.ValidatorErrors(err),
+			})
+		}
+	} else {
+		if err := validator.Struct(updateOrder); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+				Message: "invalid input found",
+				Errors:  validators.ValidatorErrors(err),
+			})
+		}
 	}
 
 	if !validateOrderState(updateOrder) {

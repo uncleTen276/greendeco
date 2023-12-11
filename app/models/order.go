@@ -55,7 +55,7 @@ type CreateCartOrder struct {
 type UpdateOrder struct {
 	OrderId uuid.UUID `json:"-" db:"order_id"`
 	State   string    `json:"state" db:"state"`
-	PaidAt  string    `json:"paid_at" db:"paid_at" validate:"ISO8601date"`
+	PaidAt  *string   `json:"paid_at" db:"paid_at" validate:"ISO8601date"`
 }
 
 type OrderQuery struct {
@@ -72,4 +72,10 @@ type OrderQueryField struct {
 type OrderProductResponse struct {
 	OrderProduct
 	Product_id *uuid.UUID `json:"product_id" db:"product"`
+}
+
+type OrderCancel struct {
+	OrderId uuid.UUID `json:"-" db:"order_id"`
+	Message string    `json:"message" db:"message"`
+	Title   string    `json:"title" db:"title"`
 }
