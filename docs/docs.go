@@ -3720,11 +3720,11 @@ const docTemplate = `{
             "properties": {
                 "message": {
                     "type": "string",
-                    "maxLength": 3
+                    "minLength": 3
                 },
                 "title": {
                     "type": "string",
-                    "maxLength": 3
+                    "minLength": 3
                 }
             }
         },

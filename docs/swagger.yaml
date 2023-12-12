@@ -99,10 +99,10 @@ definitions:
   models.CreateNotification:
     properties:
       message:
-        maxLength: 3
+        minLength: 3
         type: string
       title:
-        maxLength: 3
+        minLength: 3
         type: string
     required:
     - message

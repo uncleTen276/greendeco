@@ -26,8 +26,8 @@ type NotificationUser struct {
 }
 
 type CreateNotification struct {
-	Title   string `json:"title" db:"title" validate:"required,lte=3"`
-	Message string `json:"message" db:"message" validate:"required,lte=3"`
+	Title   string `json:"title" db:"title" validate:"required,gte=3"`
+	Message string `json:"message" db:"message" validate:"required,gte=3"`
 }
 
 type CreateUserNotication struct {
