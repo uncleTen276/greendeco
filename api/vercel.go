@@ -13,7 +13,6 @@ import (
 	"github.com/sekke276/greendeco.git/pkg/validators"
 	"github.com/sekke276/greendeco.git/platform/database"
 	"github.com/sekke276/greendeco.git/platform/storage"
-	"github.com/sekke276/greendeco.git/web"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -72,7 +71,6 @@ func handler() http.HandlerFunc {
 	routes.NewCouponRouter(api).RegisterRoutes()
 	routes.NewOrderRouter(api).RegisterRoutes()
 	routes.NewNotificationRouter(api).RegisterRoutes()
-	web.Routes(app)
 
 	return adaptor.FiberApp(app)
 }
