@@ -108,13 +108,26 @@ func (repo *OrderRepo) GetOrderProductsByOrderId(orderId uuid.UUID, q *models.Ba
 }
 
 func (repo *OrderRepo) UpdateOrder(m *models.UpdateOrder) error {
-	query := fmt.Sprintf(`UPDATE "%s" SET state = $2, paid_at = $3  WHERE id = $1`, OrderTable)
-	if _, err := repo.db.Exec(query, m.OrderId, m.State, m.PaidAt); err != nil {
-		if err == sql.ErrNoRows {
-			return models.ErrNotFound
-		}
+	var query string
 
-		return err
+	if m.PaidAt != nil {
+		query = fmt.Sprintf(`UPDATE "%s" SET state = $2, paid_at = $3  WHERE id = $1`, OrderTable)
+		if _, err := repo.db.Exec(query, m.OrderId, m.State, m.PaidAt); err != nil {
+			if err == sql.ErrNoRows {
+				return models.ErrNotFound
+			}
+
+			return err
+		}
+	} else {
+		query = fmt.Sprintf(`UPDATE "%s" SET state = $2 WHERE id = $1`, OrderTable)
+		if _, err := repo.db.Exec(query, m.OrderId, m.State); err != nil {
+			if err == sql.ErrNoRows {
+				return models.ErrNotFound
+			}
+
+			return err
+		}
 	}
 
 	return nil
