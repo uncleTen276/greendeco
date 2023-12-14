@@ -2279,8 +2279,6 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      security:
-      - Bearer: []
       summary: query get all products
       tags:
       - Product
@@ -2390,6 +2388,56 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorResponse'
       summary: get review by id
+      tags:
+      - Review
+  /review/all/:
+    get:
+      consumes:
+      - application/json
+      description: |-
+        "field" not working on swagger you can read models.ReviewQuery for fields query
+        sort value can only asc or desc
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offSet
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      - in: query
+        name: sortBy
+        type: string
+      - in: query
+        name: star
+        type: integer
+      - in: query
+        name: user_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: query get all reviews
       tags:
       - Review
   /review/product/{id}:

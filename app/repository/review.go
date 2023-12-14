@@ -13,6 +13,7 @@ type ReviewRepository interface {
 	Create(m *models.CreateReview) error
 	FindById(id uuid.UUID) (*models.Review, error)
 	FindReviewsByProductId(id *uuid.UUID, q *models.ReviewQuery) ([]*models.ResponseReview, error)
+	All(m *models.ReviewQuery) ([]*models.ResponseReview, error)
 }
 
 const (
@@ -60,6 +61,30 @@ func (repo *ReviewRepo) FindReviewsByProductId(id *uuid.UUID, q *models.ReviewQu
 	firstQuery := fmt.Sprintf(`SELECT reviews.id, users.first_name, users.last_name, users.avatar, reviews.product_id, reviews.user_id, reviews.content, reviews.star, reviews.created_at FROM "%s" LEFT JOIN "users" ON users.id = reviews.user_id `, ReviewTable)
 	query := repo.newReviewQueryBuilder(firstQuery).
 		SetProduct(id).
+		SetStar(q.Star).
+		SetUser(q.UserId).
+		SortBy(q.SortBy, q.Sort).
+		Build()
+
+	query = fmt.Sprintf(query+" LIMIT %d OFFSET %d", limit, pageOffset)
+	if err := repo.db.Select(&result, query); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, models.ErrNotFound
+		}
+
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func (repo *ReviewRepo) All(q *models.ReviewQuery) ([]*models.ResponseReview, error) {
+	result := []*models.ResponseReview{}
+	limit := q.Limit
+	limit += 1
+	pageOffset := q.BaseQuery.Limit * (q.BaseQuery.OffSet - 1)
+	firstQuery := fmt.Sprintf(`SELECT reviews.id, users.first_name, users.last_name, users.avatar, reviews.product_id, reviews.user_id, reviews.content, reviews.star, reviews.created_at FROM "%s" LEFT JOIN "users" ON users.id = reviews.user_id `, ReviewTable)
+	query := repo.newReviewQueryBuilder(firstQuery).
 		SetStar(q.Star).
 		SetUser(q.UserId).
 		SortBy(q.SortBy, q.Sort).

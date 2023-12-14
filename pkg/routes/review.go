@@ -20,6 +20,7 @@ func (r *ReviewRouters) RegisterRoutes() {
 }
 
 func (r *ReviewRouters) publicReviewRouter() {
+	r.app.Get("/all/", controller.GetAllReview)
 	r.app.Get("/:id", controller.GetReviewById)
 	r.app.Get("/product/:id", controller.GetReviewByProductId)
 }

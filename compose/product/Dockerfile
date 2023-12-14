@@ -11,7 +11,6 @@ WORKDIR /build
 COPY app ./app
 COPY  .air.toml ./
 COPY go.mod go.sum main.go ./
-COPY web ./web
 COPY --from=node-builder /build/dist ./web/dist
 RUN go mod download && \
     go install github.com/cosmtrek/air@latest

@@ -158,3 +158,47 @@ func GetReviewByProductId(c *fiber.Ctx) error {
 		Prev:     !query.IsFirstPage(),
 	})
 }
+
+// @GetAllProducts() godoc
+// @Summary query get all reviews
+// @Description "field" not working on swagger you can read models.ReviewQuery for fields query
+// @Description sort value can only asc or desc
+// @Tags Review
+// @Param queries query models.ReviewQuery false "default: limit = 10"
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
+// @Router /review/all/ [Get]
+func GetAllReview(c *fiber.Ctx) error {
+	query := &models.ReviewQuery{
+		BaseQuery: *models.DefaultQuery(),
+	}
+
+	err := c.QueryParser(query)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "invalid input found",
+		})
+	}
+
+	reviewRepo := repository.NewReviewRepo(database.GetDB())
+	reviews, err := reviewRepo.All(query)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
+			Message: "record not found",
+		})
+	}
+	nextPage := query.HaveNextPage(len(reviews))
+	if nextPage {
+		reviews = reviews[:len(reviews)-1]
+	}
+
+	return c.JSON(models.BasePaginationResponse{
+		Items:    reviews,
+		Page:     query.GetPageNumber(),
+		PageSize: len(reviews),
+		Next:     nextPage,
+		Prev:     !query.IsFirstPage(),
+	})
+}

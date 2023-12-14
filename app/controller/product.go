@@ -334,7 +334,6 @@ func UpdateDefaultVariant(c *fiber.Ctx) error {
 // @Success 200
 // @Failure 400,403,404,500 {object} models.ErrorResponse "Error"
 // @Router /product/all/ [Get]
-// @Security Bearer
 func GetAllProducts(c *fiber.Ctx) error {
 	query := &models.ProductQuery{
 		BaseQuery: *models.DefaultQuery(),
