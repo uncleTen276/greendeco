@@ -117,6 +117,7 @@ func GetNotificationByToken(c *fiber.Ctx) error {
 	notiRepo := repository.NewNotificationRepo(database.GetDB())
 	notifications, err := notiRepo.GetNotificationsByUserId(*userId, query)
 	if err != nil {
+		println(err.Error())
 		if err == models.ErrNotFound {
 			return c.Status(fiber.StatusNotFound).JSON(models.ErrorResponse{
 				Message: "record not found",

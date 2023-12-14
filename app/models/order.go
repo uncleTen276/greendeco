@@ -31,6 +31,7 @@ type Order struct {
 	Coupon          *uuid.UUID `json:"coupon_id" db:"coupon_id"`
 	CouponDiscount  int        `json:"coupon_discount" db:"coupon_discount"`
 	PaidAt          *time.Time `json:"paid_at" db:"paid_at"`
+	Description     *string    `json:"description" db:"description"`
 	CreatedAt       time.Time  `db:"created_at" json:"created_at"`
 	UpdatedAt       time.Time  `db:"updated_at" json:"updated_at"`
 }
@@ -53,9 +54,10 @@ type CreateCartOrder struct {
 }
 
 type UpdateOrder struct {
-	OrderId uuid.UUID `json:"-" db:"order_id"`
-	State   string    `json:"state" db:"state"`
-	PaidAt  *string   `json:"paid_at" db:"paid_at" validate:"ISO8601date"`
+	OrderId     uuid.UUID `json:"-" db:"order_id"`
+	State       string    `json:"state" db:"state"`
+	PaidAt      *string   `json:"paid_at" db:"paid_at" validate:"ISO8601date"`
+	Description *string   `json:"description" db:"description"`
 }
 
 type OrderQuery struct {

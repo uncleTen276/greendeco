@@ -161,6 +161,7 @@ state VARCHAR(50),
 coupon_id UUID,
 coupon_discount INT,
 paid_at TIMESTAMP  NULL,
+description TEXT,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp,
 FOREIGN KEY(owner_id) REFERENCES users (id),
@@ -184,6 +185,7 @@ CREATE TABLE IF NOT EXISTS "notifications"(
 id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
 title TEXT NOT NULL,
 message TEXT NOT NULL,
+description TEXT ,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp
 );

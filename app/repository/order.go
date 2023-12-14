@@ -111,8 +111,8 @@ func (repo *OrderRepo) UpdateOrder(m *models.UpdateOrder) error {
 	var query string
 
 	if m.PaidAt != nil {
-		query = fmt.Sprintf(`UPDATE "%s" SET state = $2, paid_at = $3  WHERE id = $1`, OrderTable)
-		if _, err := repo.db.Exec(query, m.OrderId, m.State, m.PaidAt); err != nil {
+		query = fmt.Sprintf(`UPDATE "%s" SET state = $2,description = $3, paid_at = $4  WHERE id = $1`, OrderTable)
+		if _, err := repo.db.Exec(query, m.OrderId, m.State, m.Description, m.PaidAt); err != nil {
 			if err == sql.ErrNoRows {
 				return models.ErrNotFound
 			}
@@ -120,8 +120,8 @@ func (repo *OrderRepo) UpdateOrder(m *models.UpdateOrder) error {
 			return err
 		}
 	} else {
-		query = fmt.Sprintf(`UPDATE "%s" SET state = $2 WHERE id = $1`, OrderTable)
-		if _, err := repo.db.Exec(query, m.OrderId, m.State); err != nil {
+		query = fmt.Sprintf(`UPDATE "%s" SET state = $2, description = $3 WHERE id = $1`, OrderTable)
+		if _, err := repo.db.Exec(query, m.OrderId, m.State, m.Description); err != nil {
 			if err == sql.ErrNoRows {
 				return models.ErrNotFound
 			}

@@ -98,6 +98,8 @@ definitions:
     type: object
   models.CreateNotification:
     properties:
+      description:
+        type: string
       message:
         minLength: 3
         type: string
@@ -333,6 +335,8 @@ definitions:
     type: object
   models.UpdateOrder:
     properties:
+      description:
+        type: string
       paid_at:
         type: string
       state:

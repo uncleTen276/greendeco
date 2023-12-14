@@ -36,8 +36,8 @@ func NewNotificationRepo(db *database.DB) NotificationRepository {
 }
 
 func (repo *NotificationRepo) Create(m *models.CreateNotification) (string, error) {
-	query := fmt.Sprintf(`INSERT INTO "%s" (title,message) VALUES ($1,$2) RETURNING id`, NotificationTable)
-	newNoti := repo.db.QueryRow(query, m.Title, m.Message)
+	query := fmt.Sprintf(`INSERT INTO "%s" (title,message,description) VALUES ($1,$2,$3) RETURNING id`, NotificationTable)
+	newNoti := repo.db.QueryRow(query, m.Title, m.Message, m.Description)
 	var notiId string
 	if err := newNoti.Scan(&notiId); err != nil {
 		return "", err
@@ -113,7 +113,7 @@ func (repo *NotificationRepo) SendUserNotification(notification *models.CreateNo
 }
 
 func (repo *NotificationRepo) GetNotificationsByUserId(userId uuid.UUID, q *models.BaseQuery) ([]models.UserNotificationResponse, error) {
-	baseQuery := fmt.Sprintf(`SELECT nu.id, nu.notification_id, nu.state, nu.created_at, n.title, n.message FROM "%s" AS nu LEFT JOIN "%s" AS n ON n.id = nu.notification_id WHERE nu.user_id = $1 `, NotificationUserTable, NotificationTable)
+	baseQuery := fmt.Sprintf(`SELECT nu.id, nu.notification_id, nu.state, nu.created_at, n.title, n.message, n.description FROM "%s" AS nu LEFT JOIN "%s" AS n ON n.id = nu.notification_id WHERE nu.user_id = $1 `, NotificationUserTable, NotificationTable)
 	notifications := []models.UserNotificationResponse{}
 	query := newQueryBuilder(baseQuery, "n.created_at").
 		SortBy(q.SortBy, q.Sort).

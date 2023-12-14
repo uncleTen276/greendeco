@@ -3789,6 +3789,9 @@ const docTemplate = `{
                 "title"
             ],
             "properties": {
+                "description": {
+                    "type": "string"
+                },
                 "message": {
                     "type": "string",
                     "minLength": 3
@@ -4121,6 +4124,9 @@ const docTemplate = `{
         "models.UpdateOrder": {
             "type": "object",
             "properties": {
+                "description": {
+                    "type": "string"
+                },
                 "paid_at": {
                     "type": "string"
                 },

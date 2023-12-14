@@ -3783,6 +3783,9 @@
                 "title"
             ],
             "properties": {
+                "description": {
+                    "type": "string"
+                },
                 "message": {
                     "type": "string",
                     "minLength": 3
@@ -4115,6 +4118,9 @@
         "models.UpdateOrder": {
             "type": "object",
             "properties": {
+                "description": {
+                    "type": "string"
+                },
                 "paid_at": {
                     "type": "string"
                 },

@@ -488,6 +488,11 @@ func GetAllOrders(c *fiber.Ctx) error {
 				Message: "record not found",
 			})
 		}
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+				Message: "something bad happend",
+			})
+		}
 	}
 
 	nextPage := query.HaveNextPage(len(orders))
