@@ -2283,6 +2283,8 @@ paths:
           description: Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
       summary: query get all products
       tags:
       - Product
