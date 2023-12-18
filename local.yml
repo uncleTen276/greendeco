@@ -3,7 +3,6 @@ version: "3.7"
 services:
   postgresql:
     image: postgres
-    restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -35,7 +34,6 @@ services:
       - DB_PASSWORD=postgres
     ports:
       - 8080:8080
-    restart: always
     command: /start
     networks:
       - db-network
