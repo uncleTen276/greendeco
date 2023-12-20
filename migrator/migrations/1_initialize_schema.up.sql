@@ -152,7 +152,7 @@ updated_at TIMESTAMP DEFAULT current_timestamp
 
 CREATE TABLE IF NOT EXISTS "orders"(
 id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
-owner_id UUID NOT NULL,
+owner_id UUID NULL,
 user_name TEXT,
 user_email TEXT,
 shipping_address TEXT,
@@ -164,21 +164,21 @@ paid_at TIMESTAMP  NULL,
 description TEXT,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp,
-FOREIGN KEY(owner_id) REFERENCES users (id),
-FOREIGN KEY(coupon_id) REFERENCES coupons(id)
+FOREIGN KEY(owner_id) REFERENCES users (id) ON DELETE SET NULL,
+FOREIGN KEY(coupon_id) REFERENCES coupons(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS "order_variants"(
 id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
 order_id UUID NOT NULL,
-variant_id UUID NOT NULL,
+variant_id UUID NULL,
 variant_name TEXT NOT NULL,
 variant_price DECIMAL NOT NULL,
 quantity INT,
 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW (),
 updated_at TIMESTAMP DEFAULT current_timestamp,
 FOREIGN KEY(order_id)REFERENCES orders (id) ON DELETE CASCADE ,
-FOREIGN KEY(variant_id)REFERENCES variants (id)
+FOREIGN KEY(variant_id)REFERENCES variants (id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS "notifications"(
