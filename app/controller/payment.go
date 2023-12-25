@@ -96,8 +96,8 @@ func VnPay_Return(c *fiber.Ctx) error {
 	sign := hex.EncodeToString(mac.Sum(nil))
 
 	if secureHash == sign {
-		// oId, err := uuid.Parse(vpnParams["vnp_TxnRef"])
-		oId, err := uuid.Parse("078e2f28-d36f-467c-baf8-a91a0a878871")
+		oId, err := uuid.Parse(vpnParams["vnp_TxnRef"])
+		// oId, err := uuid.Parse("078e2f28-d36f-467c-baf8-a91a0a878871")
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 				Message: "invalid id",
