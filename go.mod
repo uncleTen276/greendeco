@@ -63,6 +63,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/plutov/paypal v2.0.5+incompatible // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/swaggo/files/v2 v2.0.0 // indirect

@@ -2348,6 +2348,232 @@ const docTemplate = `{
                 }
             }
         },
+        "/payment/paypal_create": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "create payment with paypal",
+                "parameters": [
+                    {
+                        "description": "request",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PaymentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/paypal_return": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "paypal return",
+                "parameters": [
+                    {
+                        "description": "request",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PayPalReturn"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/vnpay_create": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "create new order from cart",
+                "parameters": [
+                    {
+                        "description": "order request",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PaymentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/vnpay_return": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "vnPay return",
+                "parameters": [
+                    {
+                        "description": "order request",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PaymentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/product/": {
             "get": {
                 "description": "\"field\" not working on swagger you can read models.ProductQueryField for fields query\nsort value can only asc or desc",
@@ -3996,6 +4222,25 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "state": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PayPalReturn": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PaymentRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }

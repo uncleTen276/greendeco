@@ -58,6 +58,7 @@ func Serve() {
 	routes.NewCouponRouter(api).RegisterRoutes()
 	routes.NewOrderRouter(api).RegisterRoutes()
 	routes.NewNotificationRouter(api).RegisterRoutes()
+	routes.NewPaymentRouter(api).RegisterRoutes()
 	if err := app.Listen(":8080"); err != nil {
 		log.Fatal("not response")
 	}
