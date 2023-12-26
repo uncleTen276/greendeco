@@ -49,7 +49,7 @@ func handler() http.HandlerFunc {
 	app := fiber.New()
 
 	app.Use(logger.New())
-	app.Use(cors.New())
+	app.Use(cors.New(cors.ConfigDefault))
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
 	})
