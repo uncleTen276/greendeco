@@ -50,9 +50,8 @@ func handler() http.HandlerFunc {
 
 	app.Use(logger.New())
 	corsApp := cors.ConfigDefault
-	corsApp.AllowOrigins = "https://greendeco-fe.vercel.app"
 	corsApp.AllowCredentials = true
-	corsApp.AllowHeaders = "'Access-Control-Allow-Headers','Content-Type, Authorization'"
+	corsApp.AllowHeaders = "Origin, X-Requested-With, Content-Type, Accept, Authorization"
 	app.Use(cors.New(corsApp))
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
