@@ -96,11 +96,12 @@ func VnPay_Return(c *fiber.Ctx) error {
 	sign := hex.EncodeToString(mac.Sum(nil))
 
 	if secureHash == sign {
-		oId, err := uuid.Parse(vpnParams["vnp_TxnRef"])
+		orderId := vpnParams["vnp_TxnRef"]
 		if vpnParams["vnp_ResponseCode"] == "24" {
-			return c.Redirect(configs.AppConfig().VnPay.CancelUrl)
+			return c.Redirect(configs.AppConfig().VnPay.CancelUrl + "/" + orderId)
 		}
 
+		oId, err := uuid.Parse(orderId)
 		// oId, err := uuid.Parse("078e2f28-d36f-467c-baf8-a91a0a878871")
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
