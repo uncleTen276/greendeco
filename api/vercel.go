@@ -3,6 +3,7 @@ package api
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
@@ -50,6 +51,15 @@ func handler() http.HandlerFunc {
 
 	app.Use(logger.New())
 	corsApp := cors.ConfigDefault
+	corsApp.AllowMethods = strings.Join([]string{
+		fiber.MethodGet,
+		fiber.MethodOptions,
+		fiber.MethodPost,
+		fiber.MethodHead,
+		fiber.MethodPut,
+		fiber.MethodDelete,
+		fiber.MethodPatch,
+	}, ",")
 	corsApp.AllowCredentials = true
 	corsApp.AllowHeaders = "Origin, X-Requested-With, Content-Type, Accept, Authorization"
 	app.Use(cors.New(corsApp))
