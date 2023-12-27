@@ -97,6 +97,10 @@ func VnPay_Return(c *fiber.Ctx) error {
 
 	if secureHash == sign {
 		oId, err := uuid.Parse(vpnParams["vnp_TxnRef"])
+		if vpnParams["vnp_ResponseCode"] == "24" {
+			return c.Redirect(configs.AppConfig().VnPay.CancelUrl)
+		}
+
 		// oId, err := uuid.Parse("078e2f28-d36f-467c-baf8-a91a0a878871")
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
@@ -105,10 +109,7 @@ func VnPay_Return(c *fiber.Ctx) error {
 		}
 
 		if vpnParams["vnp_ResponseCode"] != "00" {
-			return c.JSON(fiber.Map{
-				"RspCode": "97",
-				"Message": "Fail checksum",
-			})
+			return c.Redirect(configs.AppConfig().VnPay.ErrorUrl)
 		}
 
 		orderRepo := repository.NewOrderRepo(database.GetDB())
@@ -128,15 +129,12 @@ func VnPay_Return(c *fiber.Ctx) error {
 			PaidAt:      &paidAt,
 			Description: order.Description,
 		}); err != nil {
-			return c.Redirect("") /// error page
+			return c.Redirect(configs.AppConfig().VnPay.ErrorUrl)
 		}
 
-		return c.Redirect("http://localhost:5173") // error page
+		return c.Redirect(configs.AppConfig().VnPay.SuccessUrl) // error page
 	} else {
-		return c.JSON(fiber.Map{
-			"RspCode": "97",
-			"Message": "Fail checksum",
-		})
+		return c.Redirect(configs.AppConfig().VnPay.ErrorUrl)
 	}
 }
 
@@ -302,7 +300,7 @@ func exchangeCurrencyFromUSDToVN(amount float64) (float64, error) {
 	req := map[string]any{
 		"from":   "USD",
 		"to":     "VND",
-		"amount": amount,
+		"amount": "1",
 	}
 
 	buf, err := json.Marshal(req)
@@ -363,7 +361,7 @@ func createVNPayBill(order *models.Order, IP string) (string, error) {
 	v.Set("vnp_TmnCode", cfgs.TmnCode)
 	v.Set("vnp_Locale", "vn")
 	v.Set("vnp_CurrCode", "VND")
-	v.Set("vnp_TxnRef", order.ID.String()) // change bac
+	v.Set("vnp_TxnRef", "1") // change bac
 	v.Set("vnp_OrderInfo", "customer paid orderId")
 	v.Set("vnp_OrderType", "other")
 	v.Set("vnp_Amount", totalString)
