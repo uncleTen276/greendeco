@@ -301,7 +301,7 @@ func exchangeCurrencyFromUSDToVN(amount float64) (float64, error) {
 	req := map[string]any{
 		"from":   "USD",
 		"to":     "VND",
-		"amount": "1",
+		"amount": amount,
 	}
 
 	buf, err := json.Marshal(req)
@@ -362,7 +362,7 @@ func createVNPayBill(order *models.Order, IP string) (string, error) {
 	v.Set("vnp_TmnCode", cfgs.TmnCode)
 	v.Set("vnp_Locale", "vn")
 	v.Set("vnp_CurrCode", "VND")
-	v.Set("vnp_TxnRef", "1") // change bac
+	v.Set("vnp_TxnRef", order.ID.String()) // change bac
 	v.Set("vnp_OrderInfo", "customer paid orderId")
 	v.Set("vnp_OrderType", "other")
 	v.Set("vnp_Amount", totalString)
