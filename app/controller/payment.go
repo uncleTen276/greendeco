@@ -185,7 +185,7 @@ func CreatePayPalPayment(c *fiber.Ctx) error {
 		actualPrice *= float64(order.CouponDiscount) / 100
 	}
 
-	totalString := fmt.Sprintf("%.0f", actualPrice*100)
+	totalString := fmt.Sprintf("%.0f", actualPrice)
 	//
 	cfg := configs.AppConfig().PayPal
 	client, err := paypal.NewClient(cfg.ClientId, cfg.SecretKey, paypal.APIBaseSandBox)
