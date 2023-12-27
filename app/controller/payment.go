@@ -294,7 +294,7 @@ func PayPalReturn(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(fiber.Map{"message": "Payment executed successfully"})
+	return c.Redirect(configs.AppConfig().PayPal.SuccessUrl + orderIdString.String())
 }
 
 func exchangeCurrencyFromUSDToVN(amount float64) (float64, error) {

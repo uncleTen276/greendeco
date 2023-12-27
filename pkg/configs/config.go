@@ -52,9 +52,10 @@ type Config struct {
 		ErrorUrl   string `envconfig:"VNPAY_ERROR_URL" default:""`
 	}
 	PayPal struct {
-		ClientId  string `envconfig:"PAYPAL_CLIENT" default:"ARd2n7YRPvm8jG2enCE7SXX5CLxlHSx0a8DlGfMmZEn18qKM8WHB8jHYoOputMIEMZLrhdZ1QO4bvsgD"`
-		SecretKey string `envconfig:"PAYPAL_SECRET_KEY" default:"EOZ8Wy0m32AVqv1mCHQHs8FqSkitSiar1Dk1zLsFpLUaRAKzWXHVlFTTzwQ1jI79Svrbz1ljy4FKv_xq"`
-		ReturnUrl string `envconfig:"PAYPAL_RETURN_URL" `
+		ClientId   string `envconfig:"PAYPAL_CLIENT" default:"ARd2n7YRPvm8jG2enCE7SXX5CLxlHSx0a8DlGfMmZEn18qKM8WHB8jHYoOputMIEMZLrhdZ1QO4bvsgD"`
+		SecretKey  string `envconfig:"PAYPAL_SECRET_KEY" default:"EOZ8Wy0m32AVqv1mCHQHs8FqSkitSiar1Dk1zLsFpLUaRAKzWXHVlFTTzwQ1jI79Svrbz1ljy4FKv_xq"`
+		ReturnUrl  string `envconfig:"PAYPAL_RETURN_URL" `
+		SuccessUrl string `envconfig:"VNPAY_SUCCESS_URL" default:"http://localhost:3000/payment/received"`
 	}
 
 	ExchangeMoneyApi struct {
