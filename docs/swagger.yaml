@@ -248,6 +248,18 @@ definitions:
       state:
         type: string
     type: object
+  models.PayPalReturn:
+    properties:
+      id:
+        type: string
+    type: object
+  models.PaymentRequest:
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+    type: object
   models.ProductQueryField:
     properties:
       available:
@@ -1969,6 +1981,150 @@ paths:
       summary: GetAllOrders() require admin
       tags:
       - Order
+  /payment/paypal_create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: request
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.PaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create payment with paypal
+      tags:
+      - Payment
+  /payment/paypal_return:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: request
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.PayPalReturn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: paypal return
+      tags:
+      - Payment
+  /payment/vnpay_create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: order request
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.PaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: create new order from cart
+      tags:
+      - Payment
+  /payment/vnpay_return:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: order request
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.PaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: vnPay return
+      tags:
+      - Payment
   /product/:
     get:
       consumes:

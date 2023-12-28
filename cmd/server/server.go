@@ -37,7 +37,11 @@ func Serve() {
 
 	app := fiber.New()
 	app.Use(logger.New())
-	app.Use(cors.New())
+
+	corsApp := cors.ConfigDefault
+	corsApp.AllowCredentials = true
+	corsApp.AllowHeaders = "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	app.Use(cors.New(corsApp))
 
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hellooo")
@@ -58,6 +62,7 @@ func Serve() {
 	routes.NewCouponRouter(api).RegisterRoutes()
 	routes.NewOrderRouter(api).RegisterRoutes()
 	routes.NewNotificationRouter(api).RegisterRoutes()
+	routes.NewPaymentRouter(api).RegisterRoutes()
 	if err := app.Listen(":8080"); err != nil {
 		log.Fatal("not response")
 	}

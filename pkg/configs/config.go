@@ -43,6 +43,24 @@ type Config struct {
 		}
 		Bucket string `envconfig:"FIREBASE_BUCKET" default:"greendeco-2726b.appspot.com"`
 	}
+	VnPay struct {
+		Secret     string `envconfig:"VNPAY_SECRET" default:"XNBCJFAKAZQSGTARRLGCHVZWCIOIGSHN"`
+		TmnCode    string `envcofig:"VNPAY_TMNCODE" default:"CGXZLS0Z"`
+		ReturnUrl  string `envconfig:"VNPAY_RETURN_URL" default:"http://localhost:8080/api/v1/payment/vnpay_return"`
+		CancelUrl  string `envconfig:"VNPAY_CANCEL_URL" default:"http://localhost:3000/user/order/"`
+		SuccessUrl string `envconfig:"VNPAY_SUCCESS_URL" default:"http://localhost:3000/payment/received"`
+		ErrorUrl   string `envconfig:"VNPAY_ERROR_URL" default:"http://localhost:3000/payment/error"`
+	}
+	PayPal struct {
+		ClientId   string `envconfig:"PAYPAL_CLIENT" default:"ARd2n7YRPvm8jG2enCE7SXX5CLxlHSx0a8DlGfMmZEn18qKM8WHB8jHYoOputMIEMZLrhdZ1QO4bvsgD"`
+		SecretKey  string `envconfig:"PAYPAL_SECRET_KEY" default:"EOZ8Wy0m32AVqv1mCHQHs8FqSkitSiar1Dk1zLsFpLUaRAKzWXHVlFTTzwQ1jI79Svrbz1ljy4FKv_xq"`
+		ReturnUrl  string `envconfig:"PAYPAL_RETURN_URL" default:"http://localhost:3000/payment/error" `
+		SuccessUrl string `envconfig:"PAYPAL_SUCCESS_URL" default:"http://localhost:3000/payment/received"`
+	}
+
+	ExchangeMoneyApi struct {
+		Url string `envconfig:"EXCHANGE_MONEY_API" default:"https://api.currencybeacon.com/v1/convert?api_key=R4XVKm6WBbcB13ACSc3SweC93YKmuoEi"`
+	}
 }
 
 var appConfig = &Config{}
