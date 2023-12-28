@@ -256,7 +256,10 @@ func PayPalReturn(c *fiber.Ctx) error {
 
 	_, err = client.CaptureOrder(newReq.ID, paypal.CaptureOrderRequest{})
 	if err != nil {
-		return err
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse{
+			Message: "record not found",
+			Errors:  err.Error(),
+		})
 	}
 
 	paypalOrder, err := client.GetOrder(string(newReq.ID))
@@ -294,7 +297,7 @@ func PayPalReturn(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.RedirectBack(configs.AppConfig().PayPal.SuccessUrl)
+	return c.Redirect(configs.AppConfig().PayPal.SuccessUrl)
 }
 
 func exchangeCurrencyFromUSDToVN(amount float64) (float64, error) {
