@@ -74,6 +74,7 @@ func handler() http.HandlerFunc {
 	routes.NewCouponRouter(api).RegisterRoutes()
 	routes.NewOrderRouter(api).RegisterRoutes()
 	routes.NewNotificationRouter(api).RegisterRoutes()
+	routes.NewPaymentRouter(api).RegisterRoutes()
 
 	return adaptor.FiberApp(app)
 }
