@@ -97,19 +97,18 @@ func VnPay_Return(c *fiber.Ctx) error {
 
 	if secureHash == sign {
 		orderId := vpnParams["vnp_TxnRef"]
-		if vpnParams["vnp_ResponseCode"] == "24" {
-			return c.Redirect(configs.AppConfig().VnPay.CancelUrl + "/" + orderId)
+		if vpnParams["vnp_ResponseCode"] == "24" { // status cancel
+			return c.Redirect(configs.AppConfig().VnPay.CancelUrl + orderId)
 		}
 
 		oId, err := uuid.Parse(orderId)
-		// oId, err := uuid.Parse("078e2f28-d36f-467c-baf8-a91a0a878871")
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse{
 				Message: "invalid id",
 			})
 		}
 
-		if vpnParams["vnp_ResponseCode"] != "00" {
+		if vpnParams["vnp_ResponseCode"] != "00" { // 00 is status success
 			return c.Redirect(configs.AppConfig().VnPay.ErrorUrl)
 		}
 
@@ -133,7 +132,7 @@ func VnPay_Return(c *fiber.Ctx) error {
 			return c.Redirect(configs.AppConfig().VnPay.ErrorUrl)
 		}
 
-		return c.Redirect(configs.AppConfig().VnPay.SuccessUrl) // error page
+		return c.Redirect(configs.AppConfig().VnPay.SuccessUrl)
 	} else {
 		return c.Redirect(configs.AppConfig().VnPay.ErrorUrl)
 	}
@@ -213,7 +212,7 @@ func CreatePayPalPayment(c *fiber.Ctx) error {
 		},
 	}, &paypal.CreateOrderPayer{}, &paypal.ApplicationContext{
 		BrandName: "greendeco",
-		ReturnURL: "http://localhost:8080/api/v1",
+		ReturnURL: cfg.ReturnUrl,
 	})
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
@@ -297,7 +296,9 @@ func PayPalReturn(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Redirect(configs.AppConfig().PayPal.SuccessUrl)
+	return c.JSON(fiber.Map{
+		"url": cfg.SuccessUrl,
+	})
 }
 
 func exchangeCurrencyFromUSDToVN(amount float64) (float64, error) {
@@ -313,7 +314,7 @@ func exchangeCurrencyFromUSDToVN(amount float64) (float64, error) {
 	}
 
 	agent := fiber.AcquireAgent()
-	agent.Request().Header.SetMethod("GET")
+	agent.Request().Header.SetMethod(fiber.MethodGet)
 	agent.Request().Header.SetContentType("application/json")
 	agent.Request().SetRequestURI(configs.AppConfig().ExchangeMoneyApi.Url)
 	agent.Body(buf)
@@ -321,9 +322,10 @@ func exchangeCurrencyFromUSDToVN(amount float64) (float64, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	statusCode, body, errs := agent.Bytes()
 	if statusCode == fiber.StatusInternalServerError {
-		return 0, errors.New("fail to get Currency")
+		return 0, errors.New("fail to get currency")
 	}
 
 	if len(errs) > 0 {
@@ -374,7 +376,6 @@ func createVNPayBill(order *models.Order, IP string) (string, error) {
 	v.Set("vnp_CreateDate", t)
 
 	sortedParam := sortURLValues(v)
-
 	hash := hmac.New(sha512.New, []byte(cfgs.Secret))
 	hash.Write([]byte(sortedParam.Encode()))
 
