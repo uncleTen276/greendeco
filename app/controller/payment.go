@@ -125,7 +125,7 @@ func VnPay_Return(c *fiber.Ctx) error {
 		paidAt := time.Now().Format(time.RFC3339)
 		if err := orderRepo.UpdateOrder(&models.UpdateOrder{
 			OrderId:     order.ID,
-			State:       order.State,
+			State:       models.StatusProcessing,
 			PaidAt:      &paidAt,
 			Description: order.Description,
 		}); err != nil {
@@ -287,7 +287,7 @@ func PayPalReturn(c *fiber.Ctx) error {
 	paidAt := time.Now().Format(time.RFC3339)
 	if err := orderRepo.UpdateOrder(&models.UpdateOrder{
 		OrderId:     order.ID,
-		State:       order.State,
+		State:       models.StatusProcessing,
 		PaidAt:      &paidAt,
 		Description: order.Description,
 	}); err != nil {
