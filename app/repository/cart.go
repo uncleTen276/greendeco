@@ -21,6 +21,7 @@ type CartRepository interface {
 	GetCartById(cartId uuid.UUID) (*models.Cart, error)
 	GetCartProductByCartId(cartId uuid.UUID, query *models.BaseQuery) ([]*models.CartProduct, error)
 	GetAllCartProductByCartId(cartId uuid.UUID) ([]*models.CartProduct, error)
+	DeleteCartItemByVariantId(variantId uuid.UUID) error
 }
 
 type CartRepo struct {
@@ -172,4 +173,15 @@ func (repo *CartRepo) GetAllCartProductByCartId(cartId uuid.UUID) ([]*models.Car
 	}
 
 	return cartProductList, nil
+}
+
+func (repo *CartRepo) DeleteCartItemByVariantId(variantId uuid.UUID) error {
+	query := fmt.Sprintf(`DELETE FROM "%s" WHERE variant_id = $1`, CartProductTable)
+	_, err := repo.db.Exec(query, variantId)
+	if err == sql.ErrNoRows {
+		return models.ErrNotFound
+	} else if err != nil {
+		return err
+	}
+	return nil
 }
