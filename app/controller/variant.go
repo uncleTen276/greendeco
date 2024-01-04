@@ -278,6 +278,15 @@ func UpdateVariant(c *fiber.Ctx) error {
 		})
 	}
 
+	if !updateVariant.Available {
+		cartRepo := repository.NewCartRepo(database.GetDB())
+		if err := cartRepo.DeleteCartItemByVariantId(updateVariant.ID); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(models.ErrorResponse{
+				Message: "something bad happend :(",
+			})
+		}
+	}
+
 	return c.SendStatus(fiber.StatusCreated)
 }
 
