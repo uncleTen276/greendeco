@@ -17,7 +17,7 @@ COPY cmd ./cmd
 COPY platform ./platform
 
 RUN go mod download && \
-    go install github.com/cosmtrek/air@latest && \
-    go install github.com/swaggo/swag/cmd/swag@latest
+  go install github.com/cosmtrek/air@latest && \
+  go install github.com/swaggo/swag/cmd/swag@latest
 
 ENTRYPOINT ["/entrypoint"]
