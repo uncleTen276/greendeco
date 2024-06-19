@@ -29,7 +29,7 @@ func (db *DB) connectPostgresql() error {
 
 	if err := db.Ping(); err != nil {
 		defer db.Close()
-		return fmt.Errorf("Can not send ping to database, %w", err)
+		return fmt.Errorf("can not send ping to database, %w", err)
 	}
 	return nil
 }
